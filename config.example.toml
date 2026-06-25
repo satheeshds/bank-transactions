@@ -1,0 +1,13 @@
+[mailbox]
+host = "imap.gmail.com"
+username = "you@example.com"
+password = "app-password"
+
+[query]
+from_ = "ELITE.card@sbicard.com"
+subject = "Your SBI Card ELITE Monthly Statement"
+gmail_label = "Statement"
+
+[fetch]
+reverse = true
+limit = 15
