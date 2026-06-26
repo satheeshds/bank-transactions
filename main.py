@@ -1,34 +1,38 @@
-from pathlib import Path
-import tomllib
+from __future__ import annotations
 
-from imap_tools import AND, MailBox
-
-
-CONFIG_PATH = Path(__file__).with_name("config.toml")
-
-
-def load_config(config_path: Path = CONFIG_PATH) -> dict:
-    with config_path.open("rb") as config_file:
-        return tomllib.load(config_file)
+from config import build_statement_definitions, load_config
+from imap_client import build_query, get_mailbox_client
+from parser import convert_to_timezone, extract_transaction_details
 
 
 def main():
     config = load_config()
-    mailbox_config = config["mailbox"]
     fetch_config = config.get("fetch", {})
-    query = AND(**config["query"])
+    statements = build_statement_definitions(config)
 
     print("Hello from bank-transactions!")
-    with MailBox(mailbox_config["host"]).login(
-        mailbox_config["username"],
-        mailbox_config["password"],
-    ) as mailbox:
-        for msg in mailbox.fetch(
-            query,
-            reverse=fetch_config.get("reverse", True),
-            limit=fetch_config.get("limit", 15),
-        ):
-            print(msg.date, msg.subject, len(msg.text or msg.html))
+    for statement in statements:
+        mailbox_config = statement.get("mailbox")
+        if mailbox_config is None:
+            raise KeyError("mailbox configuration is required for each statement")
+
+        with get_mailbox_client(mailbox_config) as mailbox:
+            for query_filter in statement.get("query", []):
+                query = build_query(query_filter)
+                for msg in mailbox.fetch(
+                    query,
+                    reverse=fetch_config.get("reverse", True),
+                    limit=fetch_config.get("limit", 15),
+                ):
+                    try:
+                        details = extract_transaction_details(
+                            msg,
+                            config={**config, "transaction_patterns": statement.get("transaction_patterns")},
+                        )
+                    except ValueError:
+                        details = None
+
+                    print(convert_to_timezone(msg.date), msg.subject, details)
 
 
 if __name__ == "__main__":

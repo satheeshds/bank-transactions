@@ -11,3 +11,6 @@ wheels/
 
 # Local mailbox credentials
 config.toml
+.vscode/
+attachments/
+sample-data/
