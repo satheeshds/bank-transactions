@@ -87,16 +87,38 @@ def build_statement_definitions(config: dict | None = None) -> list[dict]:
         if patterns is None:
             patterns = config.get("transaction_patterns")
 
+        firefly_config = definition.get("firefly")
+        if not isinstance(firefly_config, dict):
+            firefly_config = {}
+
         definitions.append(
             {
                 "name": definition.get("name"),
                 "mailbox": mailbox_config,
                 "query": [dict(item) for item in query],
                 "transaction_patterns": patterns,
+                "firefly": {
+                    "source_id": firefly_config.get("source_id", ""),
+                },
             }
         )
 
     return definitions
+
+
+def build_firefly_config(config: dict | None = None) -> dict:
+    if not config:
+        return {}
+
+    firefly_config = config.get("firefly")
+    if not isinstance(firefly_config, dict):
+        return {}
+
+    return {
+        "base_url": firefly_config.get("base_url", ""),
+        "token": firefly_config.get("token", ""),
+        "timeout": firefly_config.get("timeout", 15),
+    }
 
 
 def build_transaction_patterns(config: dict | None = None) -> list[dict]:
