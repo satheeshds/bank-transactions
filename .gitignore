@@ -14,3 +14,5 @@ config.toml
 .vscode/
 attachments/
 sample-data/
+.db.env
+.env
