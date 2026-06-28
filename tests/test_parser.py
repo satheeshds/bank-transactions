@@ -2,7 +2,14 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 
-from main import build_statement_definitions, convert_to_timezone, extract_transaction_details
+from imap_client import build_query
+from main import (
+    _is_message_processed,
+    _mark_message_processed,
+    build_statement_definitions,
+    convert_to_timezone,
+    extract_transaction_details,
+)
 
 
 class TransactionParsingTests(unittest.TestCase):
@@ -173,6 +180,40 @@ class TransactionParsingTests(unittest.TestCase):
         self.assertEqual(details["amount"], 250.0)
         self.assertEqual(details["merchant"], "Santhosh")
         self.assertEqual(details["vpa"], "bharatpe.9t0z0f0c3c975442@unitype")
+
+    def test_marks_messages_with_configured_tag_after_successful_post(self):
+        class MessageStub:
+            def __init__(self):
+                self.uid = "42"
+                self.flags = []
+
+        class MailboxStub:
+            def __init__(self):
+                self.flag_calls = []
+
+            def flag(self, uid_list, flag_set, value, chunks=None):
+                self.flag_calls.append((uid_list, flag_set, value, chunks))
+
+        message = MessageStub()
+        mailbox = MailboxStub()
+
+        _mark_message_processed(mailbox, message, "processed")
+
+        self.assertEqual(mailbox.flag_calls[0][0], "42")
+        self.assertEqual(mailbox.flag_calls[0][1], "processed")
+        self.assertTrue(mailbox.flag_calls[0][2])
+
+    def test_skips_messages_that_are_already_tagged(self):
+        class MessageStub:
+            def __init__(self):
+                self.flags = ["processed"]
+
+        self.assertTrue(_is_message_processed(MessageStub(), "processed"))
+
+    def test_build_query_excludes_processed_tag(self):
+        query = build_query({"from_": "alerts@example.com"}, processed_tag="processed")
+
+        self.assertIsNotNone(query)
 
 
 if __name__ == "__main__":

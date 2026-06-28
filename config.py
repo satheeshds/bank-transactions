@@ -91,6 +91,12 @@ def build_statement_definitions(config: dict | None = None) -> list[dict]:
         if not isinstance(firefly_config, dict):
             firefly_config = {}
 
+        processed_tag = definition.get("processed_tag")
+        if processed_tag is None:
+            processed_tag = mailbox_config.get("processed_tag")
+        if processed_tag is None:
+            processed_tag = config.get("processed_tag")
+
         definitions.append(
             {
                 "name": definition.get("name"),
@@ -100,6 +106,7 @@ def build_statement_definitions(config: dict | None = None) -> list[dict]:
                 "firefly": {
                     "source_id": firefly_config.get("source_id", ""),
                 },
+                "processed_tag": processed_tag,
             }
         )
 

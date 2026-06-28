@@ -6,6 +6,29 @@ from imap_client import build_query, get_mailbox_client
 from parser import convert_to_timezone, extract_transaction_details
 
 
+def _is_message_processed(message: object, tag: str | None = None) -> bool:
+    if not tag:
+        return False
+
+    flags = getattr(message, "flags", None) or []
+    if not isinstance(flags, (list, tuple, set)):
+        return False
+
+    tag_lower = str(tag).strip().lower()
+    return any(str(flag).strip().lower() == tag_lower for flag in flags)
+
+
+def _mark_message_processed(mailbox: object, message: object, tag: str | None = None) -> None:
+    if not tag:
+        return
+
+    message_uid = getattr(message, "uid", None)
+    if message_uid in (None, ""):
+        return
+
+    mailbox.flag(message_uid, tag, True)
+
+
 def _build_firefly_transaction(
     details: dict,
     message_date: object | None = None,
@@ -83,12 +106,17 @@ def main():
 
         with get_mailbox_client(mailbox_config) as mailbox:
             for query_filter in statement.get("query", []):
-                query = build_query(query_filter)
+                query = build_query(query_filter, processed_tag=statement.get("processed_tag"))
                 for msg in mailbox.fetch(
                     query,
                     reverse=fetch_config.get("reverse", True),
                     limit=fetch_config.get("limit", 15),
                 ):
+                    processed_tag = statement.get("processed_tag")
+                    if _is_message_processed(msg, processed_tag):
+                        print("Skipping already processed message:", msg.subject)
+                        continue
+
                     try:
                         details = extract_transaction_details(
                             msg,
@@ -102,6 +130,7 @@ def main():
                             payload = _build_firefly_transaction(details, msg.date, statement)
                             firefly_client.create_transaction(payload)
                             print("Posted to Firefly:", payload)
+                            _mark_message_processed(mailbox, msg, processed_tag)
                         except FireflyClientError as exc:
                             print("Firefly post failed:", exc)
 

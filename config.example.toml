@@ -2,6 +2,7 @@
 host = "imap.gmail.com"
 username = "you@example.com"
 password = "app-password"
+processed_tag = "processed"
 
 [[mailbox.statements]]
 name = "sbi_card_statement"

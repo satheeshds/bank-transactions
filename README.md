@@ -30,6 +30,7 @@ You can now:
 - define multiple mailbox queries using `[[queries]]`
 - add multiple transaction parsers with `[[transaction_patterns]]`
 - keep the old single-query format working via `query` as a fallback
+- set a `processed_tag` to mark emails after a successful Firefly import so they are skipped on later runs
 
 Run the script with:
 
