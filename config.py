@@ -4,6 +4,8 @@ from pathlib import Path
 import re
 import tomllib
 
+from models import SourceDefinition
+
 CONFIG_PATH = Path(__file__).with_name("config.toml")
 DEFAULT_TRANSACTION_PATTERNS = [
     {
@@ -21,7 +23,18 @@ DEFAULT_TRANSACTION_PATTERNS = [
 
 def load_config(config_path: Path = CONFIG_PATH) -> dict:
     with config_path.open("rb") as config_file:
-        return tomllib.load(config_file)
+        config = tomllib.load(config_file)
+
+    mailbox = config.get("mailbox")
+    if isinstance(mailbox, dict):
+        sources = mailbox.get("sources")
+        statements = mailbox.get("statements")
+        if sources is not None and statements is None:
+            mailbox["statements"] = sources
+        if statements is not None and sources is None:
+            mailbox["sources"] = statements
+
+    return config
 
 
 def _coerce_flags(flags: object) -> int:
@@ -111,6 +124,20 @@ def build_source_definitions(config: dict | None = None) -> list[dict]:
         )
 
     return definitions
+
+
+def build_source_models(config: dict | None = None) -> list[SourceDefinition]:
+    return [
+        SourceDefinition(
+            name=source.get("name"),
+            mailbox=dict(source.get("mailbox") or {}),
+            query=[dict(item) for item in source.get("query", [])],
+            transaction_patterns=source.get("transaction_patterns"),
+            firefly=dict(source.get("firefly") or {}),
+            processed_tag=source.get("processed_tag"),
+        )
+        for source in build_source_definitions(config)
+    ]
 
 
 def build_firefly_config(config: dict | None = None) -> dict:

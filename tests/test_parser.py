@@ -6,6 +6,7 @@ from config import load_config
 from imap_client import build_query, is_message_processed
 from main import (
     _build_firefly_transaction,
+    _mark_message_processed,
     build_source_definitions,
     convert_to_timezone,
     extract_transaction_details,

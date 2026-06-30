@@ -1,7 +1,16 @@
 from __future__ import annotations
 
+from models import TransactionDetails
+
+
+def _coerce_details(details: dict | TransactionDetails) -> dict:
+    if isinstance(details, TransactionDetails):
+        return details.as_dict()
+    return details
+
 
 def _get_firefly_mapping(details: dict, statement_config: dict | None = None) -> dict:
+    details = _coerce_details(details)
     statement_firefly = (statement_config or {}).get("firefly") or {}
     details_firefly = (details.get("firefly") or {}) if isinstance(details.get("firefly"), dict) else {}
     if details_firefly:
@@ -35,6 +44,7 @@ def _resolve_mapping_value(value: object, details: dict | None = None, statement
 
 
 def _build_firefly_payload(details: dict, statement_config: dict | None = None) -> dict:
+    details = _coerce_details(details)
     statement_firefly = (statement_config or {}).get("firefly") or {}
     configured_account_id = str(statement_firefly.get("account_id", "") or "")
     merchant_name = str(details.get("merchant") or "Bank transaction")
@@ -72,10 +82,11 @@ def _build_firefly_payload(details: dict, statement_config: dict | None = None) 
 
 
 def _build_firefly_transaction(
-    details: dict,
+    details: dict | TransactionDetails,
     message_date: object | None = None,
     statement_config: dict | None = None,
 ) -> dict:
+    details = _coerce_details(details)
     amount = float(details.get("amount", 0))
     transaction_date = message_date
     description_value = str(details.get("description") or details.get("merchant") or "Bank transaction")

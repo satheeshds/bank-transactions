@@ -9,6 +9,7 @@ import re
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from config import build_transaction_patterns
+from models import TransactionDetails
 
 
 def _extract_text_from_message(message) -> str:
@@ -95,7 +96,7 @@ def convert_to_timezone(value: datetime | None, tz_name: str = "Asia/Kolkata") -
     return value.astimezone(target_tz)
 
 
-def extract_transaction_details(source: str | Path | bytes | object, config: dict | None = None) -> dict:
+def extract_transaction(source: str | Path | bytes | object, config: dict | None = None) -> TransactionDetails:
     if isinstance(source, bytes):
         raw_email = source
         message = BytesParser(policy=policy.default).parsebytes(raw_email)
@@ -162,20 +163,21 @@ def extract_transaction_details(source: str | Path | bytes | object, config: dic
         channel_value = _get_match_group(match, channel_group, "") or ""
         vpa_value = _get_match_group(match, vpa_group, "") or ""
 
-        details = {
-            "amount": float(amount_text),
-            "currency": currency,
-            "merchant": merchant_value.strip(), # type: ignore
-            "description": description_value.strip() or merchant_value.strip(), # type: ignore
-            "card_last4": card_value,
-            "transaction_date": _normalize_date(str(date_value) if date_value is not None else ""),
-            "reference_no": reference_value,
-            "channel": channel_value.strip(), # pyright: ignore[reportAttributeAccessIssue]
-            "firefly": pattern.get("firefly_mapping", pattern.get("firefly", {})),
-        }
-        if vpa_value:
-            details["vpa"] = vpa_value.strip() # type: ignore
-
-        return details
+        return TransactionDetails(
+            amount=float(amount_text),
+            currency=currency,
+            merchant=str(merchant_value).strip(),
+            description=str(description_value).strip() or str(merchant_value).strip(),
+            card_last4=str(card_value) if card_value is not None else None,
+            transaction_date=_normalize_date(str(date_value) if date_value is not None else ""),
+            reference_no=str(reference_value) if reference_value is not None else None,
+            channel=str(channel_value).strip(),
+            firefly=pattern.get("firefly_mapping", pattern.get("firefly", {})),
+            vpa=str(vpa_value).strip() if vpa_value else None,
+        )
 
     raise ValueError("Could not find a supported transaction pattern in the email")
+
+
+def extract_transaction_details(source: str | Path | bytes | object, config: dict | None = None) -> dict:
+    return extract_transaction(source, config=config).as_dict()
