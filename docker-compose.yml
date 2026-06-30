@@ -42,6 +42,15 @@ services:
       - firefly_iii
     depends_on:
       - app
+  categorizer:
+    image: ghcr.io/ejagombar/fireflyiii-ai-categorizer:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - firefly_iii
+    volumes:
+      - ./categorizer-data:/data
 
 volumes:
    firefly_iii_upload:
