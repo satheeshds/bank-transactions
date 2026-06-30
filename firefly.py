@@ -99,7 +99,7 @@ def _build_firefly_transaction(
 
     return {
         "error_if_duplicate_hash": False,
-        "apply_rules": False,
+        "apply_rules": True,
         "fire_webhooks": True,
         "transactions": [
             {
@@ -115,7 +115,7 @@ def _build_firefly_transaction(
                 "reconciled": False,
                 "tags": None,
                 "internal_reference": "",
-                "external_id": "",
+                "external_id": details.get("vpa") or "",
                 "external_url": "",
                 "sepa_cc": "",
                 "sepa_ct_op": "",
