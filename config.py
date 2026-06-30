@@ -44,7 +44,7 @@ def _coerce_flags(flags: object) -> int:
     return compiled_flags
 
 
-def build_statement_definitions(config: dict | None = None) -> list[dict]:
+def build_source_definitions(config: dict | None = None) -> list[dict]:
     if not config:
         return []
 
@@ -52,9 +52,9 @@ def build_statement_definitions(config: dict | None = None) -> list[dict]:
     if mailbox_config is None:
         mailbox_config = {}
 
-    raw_definitions = mailbox_config.get("statements")
+    raw_definitions = mailbox_config.get("sources")
     if raw_definitions is None:
-        raw_definitions = config.get("statements")
+        raw_definitions = config.get("sources")
     if raw_definitions is None:
         raw_query = config.get("query")
         if raw_query is None:
@@ -64,7 +64,7 @@ def build_statement_definitions(config: dict | None = None) -> list[dict]:
     if isinstance(raw_definitions, dict):
         raw_definitions = [raw_definitions]
     if not isinstance(raw_definitions, list):
-        raise TypeError("mailbox.statements must be a mapping or a list of mappings")
+        raise TypeError("mailbox.sources must be a mapping or a list of mappings")
 
     definitions: list[dict] = []
     for definition in raw_definitions:
@@ -104,7 +104,7 @@ def build_statement_definitions(config: dict | None = None) -> list[dict]:
                 "query": [dict(item) for item in query],
                 "transaction_patterns": patterns,
                 "firefly": {
-                    "source_id": firefly_config.get("source_id", ""),
+                    "account_id": firefly_config.get("account_id", ""),
                 },
                 "processed_tag": processed_tag,
             }
@@ -128,6 +128,26 @@ def build_firefly_config(config: dict | None = None) -> dict:
     }
 
 
+def _coerce_firefly_mapping(pattern_config: dict | None) -> dict:
+    if not isinstance(pattern_config, dict):
+        return {}
+
+    firefly_mapping = pattern_config.get("firefly_mapping")
+    if isinstance(firefly_mapping, dict):
+        return firefly_mapping
+
+    firefly_config = pattern_config.get("firefly")
+    if isinstance(firefly_config, dict):
+        return firefly_config
+
+    legacy_mapping: dict[str, object] = {}
+    for key in ("source_field", "destination_field", "source_value", "destination_value"):
+        value = pattern_config.get(key)
+        if value is not None:
+            legacy_mapping[key] = value
+    return legacy_mapping
+
+
 def build_transaction_patterns(config: dict | None = None) -> list[dict]:
     raw_patterns = (config or {}).get("transaction_patterns")
     if raw_patterns is None:
@@ -144,20 +164,29 @@ def build_transaction_patterns(config: dict | None = None) -> list[dict]:
             pattern_name = f"pattern_{index + 1}"
             regex = pattern_config
             flags = []
+            pattern_transaction_type = ""
         elif isinstance(pattern_config, dict):
             pattern_name = pattern_config.get("name", f"pattern_{index + 1}")
             regex = pattern_config.get("regex") or pattern_config.get("pattern")
             if not regex:
                 raise ValueError("each transaction pattern requires a regex or pattern value")
             flags = pattern_config.get("flags", [])
+            pattern_transaction_type = str(pattern_config.get("transaction_type", "") or "").strip().lower()
+            defaults = pattern_config.get("defaults", {}) if isinstance(pattern_config.get("defaults"), dict) else {}
+            if not pattern_transaction_type:
+                pattern_transaction_type = str(defaults.get("transaction_type", "") or "").strip().lower()
         else:
             raise TypeError("transaction patterns must be strings or mappings")
 
+        firefly_mapping = _coerce_firefly_mapping(pattern_config if isinstance(pattern_config, dict) else None)
         compiled_patterns.append(
             {
                 "name": pattern_name,
                 "regex": regex,
                 "field_mapping": pattern_config.get("field_mapping", {}) if isinstance(pattern_config, dict) else {},
+                "defaults": pattern_config.get("defaults", {}) if isinstance(pattern_config, dict) else {},
+                "transaction_type": pattern_transaction_type,
+                "firefly_mapping": firefly_mapping,
                 "compiled": re.compile(regex, _coerce_flags(flags)),
             }
         )

@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from email import policy
 from email.parser import BytesParser
 from html import unescape
 from pathlib import Path
 import re
-from zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from config import build_transaction_patterns
 
@@ -83,9 +83,16 @@ def _get_match_group(match: re.Match[str], group_name: str | None, default: obje
 def convert_to_timezone(value: datetime | None, tz_name: str = "Asia/Kolkata") -> datetime | None:
     if value is None:
         return None
+
     if value.tzinfo is None:
         value = value.replace(tzinfo=ZoneInfo("UTC"))
-    return value.astimezone(ZoneInfo(tz_name))
+
+    try:
+        target_tz = ZoneInfo(tz_name)
+    except ZoneInfoNotFoundError:
+        return value.astimezone(timezone.utc)
+
+    return value.astimezone(target_tz)
 
 
 def extract_transaction_details(source: str | Path | bytes | object, config: dict | None = None) -> dict:
@@ -112,9 +119,9 @@ def extract_transaction_details(source: str | Path | bytes | object, config: dic
     elif hasattr(source, "text") or hasattr(source, "html"):
         body_parts: list[str] = []
         if getattr(source, "text", None):
-            body_parts.append(_coerce_text_content(str(source.text)))
+            body_parts.append(_coerce_text_content(str(source.text))) # type: ignore
         if getattr(source, "html", None):
-            body_parts.append(_coerce_text_content(str(source.html)))
+            body_parts.append(_coerce_text_content(str(source.html))) # type: ignore
         body_text = "\n".join(part for part in body_parts if part)
     else:
         raise TypeError("source must be a path, string, bytes, or mailbox-like message")
@@ -129,8 +136,10 @@ def extract_transaction_details(source: str | Path | bytes | object, config: dic
             continue
 
         field_mapping = pattern.get("field_mapping", {})
+        defaults = pattern.get("defaults", {}) or {}
         amount_group = field_mapping.get("amount", "amount")
         merchant_group = field_mapping.get("merchant", "merchant")
+        description_group = field_mapping.get("description", "description")
         card_group = field_mapping.get("card_last4", "card_last4")
         date_group = field_mapping.get("transaction_date", "date")
         reference_group = field_mapping.get("reference_no", "reference_no")
@@ -146,6 +155,7 @@ def extract_transaction_details(source: str | Path | bytes | object, config: dic
         currency = "INR" if currency_value in {"Rs.", "₹"} else "INR"
 
         merchant_value = _get_match_group(match, merchant_group, "") or ""
+        description_value = _get_match_group(match, description_group, "") or ""
         card_value = _get_match_group(match, card_group)
         date_value = _get_match_group(match, date_group)
         reference_value = _get_match_group(match, reference_group)
@@ -155,14 +165,16 @@ def extract_transaction_details(source: str | Path | bytes | object, config: dic
         details = {
             "amount": float(amount_text),
             "currency": currency,
-            "merchant": merchant_value.strip(),
+            "merchant": merchant_value.strip(), # type: ignore
+            "description": description_value.strip() or merchant_value.strip(), # type: ignore
             "card_last4": card_value,
             "transaction_date": _normalize_date(str(date_value) if date_value is not None else ""),
             "reference_no": reference_value,
-            "channel": channel_value.strip(),
+            "channel": channel_value.strip(), # pyright: ignore[reportAttributeAccessIssue]
+            "firefly": pattern.get("firefly_mapping", pattern.get("firefly", {})),
         }
         if vpa_value:
-            details["vpa"] = vpa_value.strip()
+            details["vpa"] = vpa_value.strip() # type: ignore
 
         return details
 

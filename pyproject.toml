@@ -6,4 +6,5 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "imap-tools>=1.13.0",
+    "tzdata>=2024.2",
 ]

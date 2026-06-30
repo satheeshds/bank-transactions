@@ -4,33 +4,33 @@ username = "you@example.com"
 password = "app-password"
 processed_tag = "processed"
 
-[[mailbox.statements]]
+[[mailbox.sources]]
 name = "sbi_card_statement"
 
-[mailbox.statements.firefly]
+[mailbox.sources.firefly]
 source_id = "2"
 
-[[mailbox.statements.query]]
+[[mailbox.sources.query]]
 from_ = "ELITE.card@sbicard.com"
 subject = "Your SBI Card ELITE Monthly Statement"
 gmail_label = "Statement"
 
-[[mailbox.statements.transaction_patterns]]
+[[mailbox.sources.transaction_patterns]]
 name = "sbi_card"
 regex = "(?P<currency>Rs\\.|₹)\\s*(?P<amount>[\\d,]+(?:\\.\\d+)?)\\s*spent on your\\s+SBI Credit Card\\s+ending with\\s+(?P<card_last4>\\d{4})\\s+at\\s+(?P<merchant>.+?)\\s+on\\s+(?P<date>\\d{1,2}-\\d{1,2}-\\d{2,4})\\s+via\\s+(?P<channel>.+?)\\s*\\(Ref No\\.\\s*(?P<reference_no>\\d+)\\)"
 flags = ["IGNORECASE"]
 
-[[mailbox.statements]]
+[[mailbox.sources]]
 name = "hdfc_statement"
 
-[mailbox.statements.firefly]
+[mailbox.sources.firefly]
 source_id = "7"
 
-[[mailbox.statements.query]]
+[[mailbox.sources.query]]
 from_ = "alerts@hdfcbank.bank.in"
 subject = "You have done a UPI txn. Check details!"
 
-[[mailbox.statements.transaction_patterns]]
+[[mailbox.sources.transaction_patterns]]
 name = "hdfc_card"
 regex = "(?P<currency>Rs\\.|₹)\\s*(?P<amount>[\\d,]+(?:\\.\\d+)?)\\s+is debited from your account ending\\s+(?P<card_last4>\\d{4})\\s+towards(?:\\s+VPA)?\\s+(?P<vpa>[^\\s]+)\\s+\\((?P<merchant>[^)]+)\\)\\s+on\\s+(?P<date>\\d{1,2}-\\d{1,2}-\\d{2,4})\\.\\s*(?P<channel>UPI)\\s+transaction reference no\\.\\s*:\\s*(?P<reference_no>\\d+)\\."
 field_mapping = { amount = "amount", merchant = "merchant", card_last4 = "card_last4", transaction_date = "date", reference_no = "reference_no", channel = "channel", currency = "currency", vpa = "vpa" }
@@ -39,6 +39,10 @@ flags = ["IGNORECASE"]
 [fetch]
 reverse = true
 limit = 15
+
+[dev]
+# Set to false to disable processed tagging in dev mode (allows re-processing emails)
+enable_processed_tagging = true
 
 [firefly]
 base_url = "http://localhost:8080"

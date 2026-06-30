@@ -2,11 +2,11 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 
-from imap_client import build_query
+from config import load_config
+from imap_client import build_query, is_message_processed
 from main import (
-    _is_message_processed,
-    _mark_message_processed,
-    build_statement_definitions,
+    _build_firefly_transaction,
+    build_source_definitions,
     convert_to_timezone,
     extract_transaction_details,
 )
@@ -35,7 +35,7 @@ class TransactionParsingTests(unittest.TestCase):
 
         converted = convert_to_timezone(value)
 
-        self.assertEqual(converted.strftime("%Y-%m-%d %H:%M:%S"), "2026-06-26 08:49:31")
+        self.assertEqual(converted.strftime("%Y-%m-%d %H:%M:%S"), "2026-06-26 08:49:31") # type: ignore
 
     def test_extracts_transaction_details_with_comma_separated_amount(self):
         sample_text = (
@@ -48,6 +48,13 @@ class TransactionParsingTests(unittest.TestCase):
         self.assertEqual(details["amount"], 4012.44)
         self.assertEqual(details["merchant"], "LuluTrivandrum")
         self.assertEqual(details["reference_no"], "609118054276")
+
+    def test_falls_back_to_utc_when_timezone_is_unavailable(self):
+        value = datetime(2026, 6, 26, 3, 19, 31, tzinfo=timezone.utc)
+
+        converted = convert_to_timezone(value, tz_name="Not/ARealTimezone")
+
+        self.assertEqual(converted, value)
 
     def test_extracts_transaction_details_from_mailbox_message_object(self):
         class MailboxMessageStub:
@@ -102,7 +109,7 @@ class TransactionParsingTests(unittest.TestCase):
                 "host": "mail.example.com",
                 "username": "u",
                 "password": "p",
-                "statements": [
+                "sources": [
                     {
                         "name": "sbi",
                         "query": [{"name": "alerts", "from_": "alerts@example.com", "subject": "Alert"}],
@@ -117,7 +124,7 @@ class TransactionParsingTests(unittest.TestCase):
             }
         }
 
-        definitions = build_statement_definitions(config)
+        definitions = build_source_definitions(config)
 
         self.assertEqual(len(definitions), 2)
         self.assertEqual(definitions[0]["name"], "sbi")
@@ -181,6 +188,201 @@ class TransactionParsingTests(unittest.TestCase):
         self.assertEqual(details["merchant"], "Santhosh")
         self.assertEqual(details["vpa"], "bharatpe.9t0z0f0c3c975442@unitype")
 
+    def test_does_not_populate_transaction_type_from_pattern_data(self):
+        config = {
+            "transaction_patterns": [
+                {
+                    "name": "credit_alert",
+                    "regex": r"Your salary of (?P<amount>[\d,]+(?:\.\d+)?) has been added (?P<transaction_type>credit)",
+                }
+            ]
+        }
+
+        details = extract_transaction_details("Your salary of 2,17,105.00 has been added credit", config=config)
+
+        self.assertEqual(details["amount"], 217105.0)
+        self.assertNotIn("transaction_type", details)
+
+    def test_does_not_populate_transaction_type_from_pattern_config(self):
+        config = {
+            "transaction_patterns": [
+                {
+                    "name": "credit_alert",
+                    "regex": r"Your salary of (?P<amount>[\d,]+(?:\.\d+)?) has been added in your account",
+                    "transaction_type": "credit",
+                }
+            ]
+        }
+
+        details = extract_transaction_details("Your salary of 2,17,105.00 has been added in your account", config=config)
+
+        self.assertEqual(details["amount"], 217105.0)
+        self.assertNotIn("transaction_type", details)
+
+    def test_parses_hdfc_salary_credit_email_without_explicit_transaction_type(self):
+        config_data = load_config()
+        statement_config = None
+        for statement in config_data.get("mailbox", {}).get("statements", []):
+            if statement.get("name") == "hdfc_statement":
+                statement_config = {"transaction_patterns": statement.get("transaction_patterns", [])}
+                break
+
+        self.assertIsNotNone(statement_config)
+
+        sample_text = (
+            "Dear Customer,\n\nGreetings from HDFC Bank!\n\n"
+            "Your salary of Rs. INR 2,17,105.00 has been added in your account ending XX8367 "
+            "on 01-JUN-2026 from Salary for May 2026\n\n"
+            "The available balance in your account is Rs. INR 3,28,355.35\n\n"
+            "For real-time account updates, WhatsApp to our Chat Banking number 7070022222 or dial 18002703333."
+        )
+
+        details = extract_transaction_details(sample_text, config=statement_config)
+
+        self.assertEqual(details["amount"], 217105.0)
+        self.assertEqual(details["merchant"], "Salary")
+        self.assertEqual(details["description"], "Salary for May 2026")
+        self.assertNotIn("transaction_type", details)
+
+    def test_stops_description_at_following_account_notice_text(self):
+        config_data = load_config()
+        statement_config = None
+        for statement in config_data.get("mailbox", {}).get("statements", []):
+            if statement.get("name") == "hdfc_statement":
+                statement_config = {"transaction_patterns": statement.get("transaction_patterns", [])}
+                break
+
+        self.assertIsNotNone(statement_config)
+
+        sample_text = (
+            "Your salary of Rs. INR 2,17,105.00 has been added in your account ending XX8367 "
+            "on 01-JUN-2026 from Salary for May 2026 The available balance in your account is Rs. INR 3,28,355.35"
+        )
+
+        details = extract_transaction_details(sample_text, config=statement_config)
+
+        self.assertEqual(details["description"], "Salary for May 2026")
+
+    def test_builds_firefly_transaction_as_deposit_for_credit_details(self):
+        details = {
+            "amount": 217105.0,
+            "currency": "INR",
+            "merchant": "Salary",
+            "transaction_type": "credit",
+            "firefly_mapping": {"transaction_type": "deposit"},
+        }
+
+        payload = _build_firefly_transaction(
+            details,
+            "2026-06-01",
+            {
+                "firefly": {"account_id": "7", "source_field": "source_name", "destination_field": "destination_id"},
+            },
+        )
+
+        self.assertEqual(payload["transactions"][0]["type"], "deposit")
+        self.assertEqual(payload["transactions"][0]["source_name"], "Salary")
+        self.assertEqual(payload["transactions"][0]["destination_id"], "7")
+
+    def test_uses_pattern_firefly_mapping_for_payload_fields(self):
+        details = {
+            "amount": 217105.0,
+            "currency": "INR",
+            "merchant": "Salary",
+            "transaction_type": "credit",
+            "firefly": {
+                "source_field": "source_name",
+                "destination_field": "destination_id",
+                "source_value": "Salary Credit",
+                "destination_value": "acct-9",
+            },
+        }
+
+        payload = _build_firefly_transaction(
+            details,
+            "2026-06-01",
+            {"firefly": {"account_id": "7"}},
+        )
+
+        self.assertEqual(payload["transactions"][0]["source_name"], "Salary Credit")
+        self.assertEqual(payload["transactions"][0]["destination_id"], "acct-9")
+
+    def test_uses_pattern_firefly_mapping_config_from_transaction_patterns(self):
+        config = {
+            "transaction_patterns": [
+                {
+                    "name": "credit_alert",
+                    "regex": r"Your salary of (?P<amount>[\d,]+(?:\.\d+)?) has been added in your account",
+                    "firefly_mapping": {
+                        "source_field": "source_name",
+                        "destination_field": "destination_id",
+                        "source_value": "Salary Credit",
+                        "destination_value": "acct-9",
+                    },
+                }
+            ]
+        }
+
+        details = extract_transaction_details(
+            "Your salary of 2,17,105.00 has been added in your account",
+            config=config,
+        )
+        payload = _build_firefly_transaction(
+            details,
+            "2026-06-01",
+            {"firefly": {"account_id": "7"}},
+        )
+
+        self.assertEqual(payload["transactions"][0]["source_name"], "Salary Credit")
+        self.assertEqual(payload["transactions"][0]["destination_id"], "acct-9")
+
+    def test_uses_account_id_placeholders_in_firefly_mapping(self):
+        details = {
+            "amount": 217105.0,
+            "currency": "INR",
+            "merchant": "Salary",
+            "transaction_type": "credit",
+            "firefly": {
+                "source_field": "source_name",
+                "destination_field": "destination_id",
+                "source_value": "{account_id}",
+                "destination_value": "{account_id}",
+            },
+        }
+
+        payload = _build_firefly_transaction(
+            details,
+            "2026-06-01",
+            {"firefly": {"account_id": "7"}},
+        )
+
+        self.assertEqual(payload["transactions"][0]["source_name"], "7")
+        self.assertEqual(payload["transactions"][0]["destination_id"], "7")
+
+    def test_uses_transaction_detail_placeholders_in_firefly_mapping(self):
+        details = {
+            "amount": 217105.0,
+            "currency": "INR",
+            "merchant": "Salary",
+            "description": "Salary for May 2026",
+            "transaction_type": "credit",
+            "firefly": {
+                "source_field": "source_name",
+                "destination_field": "destination_id",
+                "source_value": "{merchant}",
+                "destination_value": "{description}",
+            },
+        }
+
+        payload = _build_firefly_transaction(
+            details,
+            "2026-06-01",
+            {"firefly": {"account_id": "7"}},
+        )
+
+        self.assertEqual(payload["transactions"][0]["source_name"], "Salary")
+        self.assertEqual(payload["transactions"][0]["destination_id"], "Salary for May 2026")
+
     def test_marks_messages_with_configured_tag_after_successful_post(self):
         class MessageStub:
             def __init__(self):
@@ -197,7 +399,7 @@ class TransactionParsingTests(unittest.TestCase):
         message = MessageStub()
         mailbox = MailboxStub()
 
-        _mark_message_processed(mailbox, message, "processed")
+        _mark_message_processed(mailbox, message, "processed") # type: ignore
 
         self.assertEqual(mailbox.flag_calls[0][0], "42")
         self.assertEqual(mailbox.flag_calls[0][1], "processed")
@@ -208,7 +410,7 @@ class TransactionParsingTests(unittest.TestCase):
             def __init__(self):
                 self.flags = ["processed"]
 
-        self.assertTrue(_is_message_processed(MessageStub(), "processed"))
+        self.assertTrue(is_message_processed(MessageStub(), "processed"))
 
     def test_build_query_excludes_processed_tag(self):
         query = build_query({"from_": "alerts@example.com"}, processed_tag="processed")
