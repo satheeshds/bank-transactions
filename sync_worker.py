@@ -3,9 +3,9 @@ from __future__ import annotations
 import threading
 from typing import Any
 
-from config import load_config
-import database
-from service import TransactionImportService
+from app.config import load_config
+from app.db import session as database
+from app.services.service import TransactionImportService
 
 # Thread lock to prevent concurrent sync runs
 _sync_lock = threading.Lock()
