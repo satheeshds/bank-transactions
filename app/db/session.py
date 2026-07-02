@@ -69,6 +69,24 @@ def init_db() -> None:
 
         conn.commit()
 
+        # 4. Sources Table (mailbox fields stored in separate columns)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS mailboxes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL UNIQUE,
+                host TEXT,
+                port INTEGER,
+                username TEXT,
+                password TEXT,
+                encryption TEXT,
+                smtp_host TEXT,
+                smtp_port INTEGER,
+                processed_tag TEXT
+            )
+        """)
+
+        conn.commit()
+
 
 def log_transaction(
     transaction_date: str | None,
@@ -230,3 +248,98 @@ def get_stats_today() -> dict[str, Any]:
             "total_runs_today": total_runs_today,
             "latest_run": latest_run,
         }
+
+
+def list_mailboxes() -> list[dict[str, Any]]:
+    """Return stored mailboxes from the database."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT id, name, host, port, username, encryption, smtp_host, smtp_port, processed_tag FROM mailboxes ORDER BY id"
+        )
+        return [dict(row) for row in cursor.fetchall()]
+
+
+def add_mailbox(
+    name: str,
+    host: str | None = None,
+    port: int | None = None,
+    username: str | None = None,
+    password: str | None = None,
+    encryption: str | None = None,
+    smtp_host: str | None = None,
+    smtp_port: int | None = None,
+    processed_tag: str | None = None,
+    firefly_account_id: str | None = None,
+) -> int:
+    """Insert a new mailbox definition and return its id."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            INSERT INTO mailboxes (
+                name, host, port, username, password, encryption, smtp_host, smtp_port, processed_tag
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (name, host, port, username, password, encryption, smtp_host, smtp_port, processed_tag),
+        )
+        conn.commit()
+        return cursor.lastrowid or 0
+
+
+def update_mailbox(
+    mailbox_id: int,
+    name: str | None = None,
+    host: str | None = None,
+    port: int | None = None,
+    username: str | None = None,
+    password: str | None = None,
+    encryption: str | None = None,
+    smtp_host: str | None = None,
+    smtp_port: int | None = None,
+) -> None:
+    """Update mailbox fields by id."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        # Build dynamic update
+        fields = []
+        values = []
+        if name is not None:
+            fields.append('name = ?')
+            values.append(name)
+        if host is not None:
+            fields.append('host = ?')
+            values.append(host)
+        if port is not None:
+            fields.append('port = ?')
+            values.append(port)
+        if username is not None:
+            fields.append('username = ?')
+            values.append(username)
+        if password is not None:
+            fields.append('password = ?')
+            values.append(password)
+        if encryption is not None:
+            fields.append('encryption = ?')
+            values.append(encryption)
+        if smtp_host is not None:
+            fields.append('smtp_host = ?')
+            values.append(smtp_host)
+        if smtp_port is not None:
+            fields.append('smtp_port = ?')
+            values.append(smtp_port)
+
+        if not fields:
+            return
+
+        sql = f"UPDATE mailboxes SET {', '.join(fields)} WHERE id = ?"
+        values.append(mailbox_id)
+        cursor.execute(sql, tuple(values))
+        conn.commit()
+
+
+def delete_mailbox(mailbox_id: int) -> None:
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM mailboxes WHERE id = ?", (mailbox_id,))
+        conn.commit()

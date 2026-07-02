@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.db import session as database
-from app.api.v1.endpoints import status, sync, logs, transactions, rules
+from app.api.v1.endpoints import status, sync, logs, transactions, rules, mailboxes
 
 # Create FastAPI app
 app = FastAPI(title="Mail2Firefly Dashboard")
@@ -54,6 +54,7 @@ app.include_router(sync.router)
 app.include_router(logs.router)
 app.include_router(transactions.router)
 app.include_router(rules.router)
+app.include_router(mailboxes.router)
 
 
 # Keep legacy /api/* routes for backward compatibility
