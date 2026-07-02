@@ -179,3 +179,39 @@ def build_transaction_patterns(config: dict | None = None) -> list[dict]:
     raw_patterns = (config or {}).get("transaction_patterns")
     if raw_patterns is None:
         raw_patterns = DEFAULT_TRANSACTION_PATTERNS
+
+    if isinstance(raw_patterns, dict):
+        raw_patterns = [raw_patterns]
+    if not isinstance(raw_patterns, list):
+        raise TypeError("transaction_patterns must be a mapping or a list of mappings")
+
+    compiled_patterns: list[dict] = []
+    for pattern_config in raw_patterns:
+        if not isinstance(pattern_config, dict):
+            raise TypeError("each transaction pattern must be a mapping")
+
+        regex_str = pattern_config.get("regex")
+        if not regex_str:
+            continue
+
+        flags = _coerce_flags(pattern_config.get("flags"))
+        compiled_regex = re.compile(regex_str, flags)
+
+        field_mapping = pattern_config.get("field_mapping", {})
+        if not isinstance(field_mapping, dict):
+            field_mapping = {}
+
+        firefly_mapping = _coerce_firefly_mapping(pattern_config)
+
+        compiled_patterns.append(
+            {
+                "name": pattern_config.get("name"),
+                "compiled": compiled_regex,
+                "field_mapping": field_mapping,
+                "defaults": pattern_config.get("defaults", {}),
+                "firefly_mapping": firefly_mapping,
+                "firefly": pattern_config.get("firefly", {}),
+            }
+        )
+
+    return compiled_patterns

@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from app.config import load_config, build_firefly_config, build_source_definitions
 from app.db import session as database
 from app.services.firefly_client import build_firefly_client
-import sync_worker
+from cli import sync_worker
 
 router = APIRouter(prefix="/api/v1", tags=["status"])
 

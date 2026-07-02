@@ -3,7 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
-import sync_worker
+from cli import sync_worker
 
 router = APIRouter(prefix="/api/v1", tags=["sync"])
 

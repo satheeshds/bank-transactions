@@ -45,7 +45,7 @@ class TransactionImportService:
 
     def log(self, message: str, level: str = "INFO") -> None:
         print(f"[{level}] {message}")
-        from database import log_sync_message
+        from app.db.session import log_sync_message
         log_sync_message(self.run_id, level, message)
 
     def run(self) -> None:
@@ -97,7 +97,7 @@ class TransactionImportService:
         except Exception as exc:
             self.log(f"Parser failed for '{message.subject}': {exc}", "ERROR")
             self.error_count += 1
-            from database import log_transaction
+            from app.db.session import log_transaction
             log_transaction(
                 transaction_date=None,
                 merchant=None,
@@ -113,7 +113,7 @@ class TransactionImportService:
         if details is None:
             self.log(f"No transaction details matched in email: {message.subject}", "WARNING")
             self.error_count += 1
-            from database import log_transaction
+            from app.db.session import log_transaction
             log_transaction(
                 transaction_date=None,
                 merchant=None,
@@ -148,7 +148,7 @@ class TransactionImportService:
             status = "pending"
             self.parsed_count += 1
 
-        from database import log_transaction
+        from app.db.session import log_transaction
         log_transaction(
             transaction_date=details.transaction_date,
             merchant=details.merchant,
