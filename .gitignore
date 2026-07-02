@@ -9,6 +9,11 @@ wheels/
 # Virtual environments
 .venv
 
+# Frontend (Node.js)
+frontend/node_modules/
+frontend/dist/
+static/dist/
+
 # Local mailbox credentials
 config.toml
 .vscode/
@@ -17,3 +22,4 @@ sample-data/
 .db.env
 .env
 categorizer-data/
+data/
