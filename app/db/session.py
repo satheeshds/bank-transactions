@@ -87,6 +87,16 @@ def init_db() -> None:
 
         conn.commit()
 
+        # 5. Settings Table for storing key/value pairs (e.g., firefly options)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS settings (
+                key TEXT PRIMARY KEY,
+                value TEXT
+            )
+        """)
+
+        conn.commit()
+
 
 def log_transaction(
     transaction_date: str | None,
@@ -178,6 +188,28 @@ def get_recent_transactions(limit: int = 50) -> list[dict[str, Any]]:
             (limit,),
         )
         return [dict(row) for row in cursor.fetchall()]
+
+
+def get_setting(key: str) -> str | None:
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT value FROM settings WHERE key = ?", (key,))
+        row = cursor.fetchone()
+        return row[0] if row else None
+
+
+def set_setting(key: str, value: str | None) -> None:
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        if value is None:
+            cursor.execute("DELETE FROM settings WHERE key = ?", (key,))
+        else:
+            # Use SQLite-compatible upsert
+            cursor.execute(
+                "INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)",
+                (key, value),
+            )
+        conn.commit()
 
 
 def get_recent_logs(limit: int = 100) -> list[dict[str, Any]]:

@@ -1,10 +1,13 @@
 <script setup>
 import { ref, reactive, onMounted, onUnmounted, watch } from 'vue'
 import store from '../store.js'
+import { reactive as r } from 'vue'
 
 const conn = reactive({ connected: false, latency: null, baseUrl: '-', error: null })
 const loading = ref(true)
 const testing = ref(false)
+const editing = ref(false)
+const form = reactive({ base_url: '', token: '', timeout: '' })
 let interval = null
 
 async function loadStatus() {
@@ -25,6 +28,28 @@ async function testConnection() {
     testing.value = true
     await loadStatus()
     testing.value = false
+}
+
+async function loadFireflyConfig() {
+    try {
+        const res = await fetch('/api/v1/firefly')
+        if (!res.ok) throw new Error('Failed to load')
+        const j = await res.json()
+        form.base_url = j.base_url || ''
+        form.token = j.token || ''
+        form.timeout = j.timeout || ''
+    } catch (e) { console.error('loadFireflyConfig', e) }
+}
+
+async function saveFireflyConfig() {
+    try {
+        const payload = { base_url: form.base_url || null, token: form.token || null, timeout: form.timeout ? parseInt(form.timeout) : null }
+        const res = await fetch('/api/v1/firefly', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        if (!res.ok) throw new Error('Save failed')
+        editing.value = false
+        await loadStatus()
+        await loadFireflyConfig()
+    } catch (e) { console.error('saveFireflyConfig', e) }
 }
 
 watch(() => store.refreshTrigger, loadStatus)
@@ -84,6 +109,22 @@ onUnmounted(() => { if (interval) clearInterval(interval) })
             <!-- Config Reference -->
             <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg">
                 <h4 class="font-headline-sm text-headline-sm mb-md">Configuration</h4>
+                <div class="mb-md">
+                    <button @click="() => { editing = !editing; if(editing) loadFireflyConfig() }" class="px-sm py-xs bg-secondary text-on-secondary rounded">{{ editing ? 'Cancel' : 'Edit' }}</button>
+                </div>
+                <div v-if="editing" class="mb-md">
+                    <div class="space-y-sm">
+                        <label class="font-body-sm">Base URL</label>
+                        <input v-model="form.base_url" class="w-full p-sm border rounded" />
+                        <label class="font-body-sm">API Token</label>
+                        <input v-model="form.token" class="w-full p-sm border rounded" />
+                        <label class="font-body-sm">Timeout (s)</label>
+                        <input v-model="form.timeout" class="w-24 p-sm border rounded" />
+                        <div class="mt-sm">
+                            <button @click="saveFireflyConfig" class="px-md py-sm bg-primary text-on-primary rounded">Save</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="space-y-sm">
                     <div class="flex items-center justify-between py-sm border-b border-outline-variant">
                         <div class="flex items-center gap-sm">

@@ -60,8 +60,21 @@ def get_status():
     firefly_connected = False
     firefly_latency_ms = None
     firefly_error = None
-    firefly_cfg = build_firefly_config(config)
-    
+
+    # Prefer settings stored in DB (saved via UI). Fall back to config.toml.
+    db_base = database.get_setting('firefly.base_url')
+    db_token = database.get_setting('firefly.token')
+    db_timeout = database.get_setting('firefly.timeout')
+
+    if db_base or db_token:
+        firefly_cfg = {
+            'base_url': db_base or '',
+            'token': db_token or '',
+            'timeout': int(db_timeout) if db_timeout and db_timeout.isdigit() else 15,
+        }
+    else:
+        firefly_cfg = build_firefly_config(config)
+
     if firefly_cfg.get("base_url") and firefly_cfg.get("token"):
         try:
             client = build_firefly_client(firefly_cfg)
