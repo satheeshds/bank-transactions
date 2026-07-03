@@ -13,6 +13,8 @@ const form = reactive({
     name: '', host: '', port: 993, username: '', password: '', encryption: 'ssl/tls', smtp_host: '', smtp_port: 587
 })
 const adding = ref(false)
+const testing = ref(false)
+const testResult = ref(null)
 
 async function loadSources() {
     loading.value = true
@@ -80,6 +82,28 @@ async function saveMailbox() {
         }
     } catch (e) { console.error('saveMailbox', e) }
     finally { adding.value = false }
+}
+
+async function testConnection() {
+    if (!form.host) return alert('Host is required')
+    testing.value = true
+    try {
+        const payload = {
+            host: form.host,
+            port: form.port,
+            username: form.username,
+            password: form.password,
+        }
+        const res = await fetch('/api/v1/mailboxes/test', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        if (res.ok) {
+            const data = await res.json()
+            if (data.connected) testResult.value = { ok: true, msg: 'Connection successful' + (data.warning ? `: ${data.warning}` : '') }
+            else testResult.value = { ok: false, msg: 'Connection failed: ' + (data.error || 'unknown') }
+        } else {
+            testResult.value = { ok: false, msg: 'Test request failed' }
+        }
+    } catch (e) { console.error('testConnection', e); alert('Test failed: ' + e) }
+    finally { testing.value = false }
 }
 
 function editMailbox(m) {
@@ -188,7 +212,11 @@ async function deleteMailbox(id) {
                 </div>
                 <div class="mt-md">
                     <button class="px-md py-2 bg-secondary text-on-secondary rounded-md mr-sm" @click="saveMailbox" :disabled="adding">{{ adding ? 'Saving...' : (form.id ? 'Save Changes' : 'Save Mailbox') }}</button>
+                    <button class="px-md py-2 border rounded-md mr-sm" @click="testConnection" :disabled="testing">{{ testing ? 'Testing...' : 'Test Connection' }}</button>
                     <button class="px-md py-2 border rounded-md" @click="() => (showForm = false)" :disabled="adding">Cancel</button>
+                </div>
+                <div v-if="testResult" class="mt-sm">
+                    <p :class="testResult.ok ? 'text-success' : 'text-error'">{{ testResult.msg }}</p>
                 </div>
             </div>
 

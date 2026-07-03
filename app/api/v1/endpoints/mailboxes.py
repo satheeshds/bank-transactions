@@ -3,6 +3,9 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from typing import Any
+import socket
+
+from app.services import imap as imap_service
 
 from app.db import session as database
 
@@ -16,8 +19,74 @@ def list_mailboxes() -> dict[str, Any]:
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    # strip any internal-only fields (none left) and return
-    return {"mailboxes": boxes}
+    # Attach a quick connectivity check per mailbox (socket-level)
+    enhanced = []
+    for b in boxes:
+        host = b.get("host")
+        port = b.get("port") or 993
+        connected = False
+        error = None
+        if host:
+            try:
+                with socket.create_connection((host, int(port)), timeout=2.0):
+                    connected = True
+            except Exception as e:
+                error = str(e)
+        else:
+            error = "host not configured"
+
+        nb = dict(b)
+        nb["connected"] = connected
+        nb["error"] = error
+        enhanced.append(nb)
+
+    return {"mailboxes": enhanced}
+
+
+
+@router.post("/mailboxes/test")
+def test_mailbox_connection(payload: dict) -> JSONResponse:
+    """Test IMAP connectivity for a mailbox payload.
+
+    Expects same fields as adding a mailbox. Returns JSON with connected/error.
+    """
+    host = payload.get("host")
+    port = payload.get("port") or 993
+    username = payload.get("username")
+    password = payload.get("password")
+
+    if not host:
+        raise HTTPException(status_code=400, detail="`host` is required for test")
+
+    try:
+        # First quick socket check
+        with socket.create_connection((host, int(port)), timeout=3.0):
+            pass
+    except Exception as e:
+        return JSONResponse(status_code=200, content={"connected": False, "error": f"socket: {e}"})
+
+    # Try a full IMAP login if imap_tools is available and credentials provided
+    try:
+        try:
+            MailBox = imap_service.MailBox
+        except Exception:
+            MailBox = None
+
+        if MailBox is None:
+            return JSONResponse(status_code=200, content={"connected": True, "warning": "imap_tools not installed; socket check passed"})
+
+        if not username or not password:
+            return JSONResponse(status_code=200, content={"connected": True, "warning": "Socket ok; credentials not provided for full IMAP login"})
+
+        # perform login attempt
+        mb = imap_service.MailBox(host).login(username, password)
+        try:
+            mb.logout()
+        except Exception:
+            pass
+        return JSONResponse(status_code=200, content={"connected": True})
+    except Exception as e:
+        return JSONResponse(status_code=200, content={"connected": False, "error": str(e)})
 
 
 @router.post("/mailboxes")

@@ -8,7 +8,7 @@ const refreshKey = ref(0)
 
 const NAV_ITEMS = [
     { to: '/dashboard',          icon: 'dashboard',       label: 'Dashboard' },
-    { to: '/email-sources',      icon: 'mail',            label: 'Email Sources' },
+    { to: '/mailboxes',          icon: 'mail',            label: 'Mailboxes' },
     { to: '/parsing-rules',      icon: 'rule',            label: 'Parsing Rules' },
     { to: '/failed-parses',      icon: 'error',           label: 'Failed Parses' },
     { to: '/firefly-connection', icon: 'account_balance', label: 'Firefly Connection' },

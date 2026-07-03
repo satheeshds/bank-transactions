@@ -24,20 +24,37 @@ def get_status():
             content={"error": f"Failed to load config.toml: {e}"}
         )
 
-    # 1. Check IMAP Connectivity
+    # 1. Check IMAP Connectivity using configured mailboxes from DB
     imap_connected = False
     imap_error = None
-    mailbox_cfg = config.get("mailbox", {})
-    imap_host = mailbox_cfg.get("host")
-    if imap_host:
-        try:
-            # Quick socket check on port 993 (IMAPS) with a 2-second timeout
-            with socket.create_connection((imap_host, 993), timeout=2.0):
-                imap_connected = True
-        except Exception as e:
-            imap_error = str(e)
-    else:
-        imap_error = "IMAP host not configured"
+    db_mailboxes = database.list_mailboxes()
+    imap_mailboxes = []
+    for mb in db_mailboxes:
+        host = mb.get("host")
+        port = mb.get("port") or 993
+        connected = False
+        error = None
+        if host:
+            try:
+                with socket.create_connection((host, int(port)), timeout=2.0):
+                    connected = True
+            except Exception as e:
+                error = str(e)
+        else:
+            error = "host not configured"
+
+        imap_mailboxes.append({
+            "id": mb.get("id"),
+            "name": mb.get("name"),
+            "host": host,
+            "username": mb.get("username"),
+            "connected": connected,
+            "error": error,
+        })
+
+    # overall connected if any mailbox is connected
+    imap_connected = any(m.get("connected") for m in imap_mailboxes)
+    imap_error = None if imap_connected else "No configured mailboxes are reachable"
 
     # 2. Check Firefly III Connectivity
     firefly_connected = False
@@ -68,8 +85,7 @@ def get_status():
         "current_run_id": current_run_id,
         "imap": {
             "connected": imap_connected,
-            "host": imap_host,
-            "username": mailbox_cfg.get("username"),
+            "mailboxes": imap_mailboxes,
             "error": imap_error
         },
         "firefly": {

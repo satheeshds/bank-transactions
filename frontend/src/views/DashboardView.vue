@@ -127,7 +127,18 @@ async function refreshStatus() {
         stats.errors = String(data.stats.errors_today).padStart(2, '0')
         imap.badge = data.imap.connected ? 'Connected' : 'Offline'
         imap.ok = data.imap.connected
-        imap.detail = data.imap.connected ? `${data.imap.username}@${data.imap.host}` : (data.imap.error || 'Configuration error')
+        // Build a human-friendly detail string from DB mailboxes
+        const mboxes = Array.isArray(data.imap.mailboxes) ? data.imap.mailboxes : []
+        let detail = data.imap.error || 'Configuration error'
+        if (mboxes.length > 0) {
+            // prefer a connected mailbox
+            const preferred = mboxes.find(m => m.connected) || mboxes[0]
+            const name = preferred.name || 'Mailbox'
+            const user = preferred.username || '-'
+            const host = preferred.host || '-'
+            detail = `${name}: ${user}@${host}`
+        }
+        imap.detail = detail
         ff.badge = data.firefly.connected ? 'Active' : 'Offline'
         ff.ok = data.firefly.connected
         ff.detail = data.firefly.connected ? data.firefly.base_url : (data.firefly.error || 'Configuration error')
