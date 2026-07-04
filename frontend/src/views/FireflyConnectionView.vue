@@ -7,7 +7,23 @@ const conn = reactive({ connected: false, latency: null, baseUrl: '-', error: nu
 const loading = ref(true)
 const testing = ref(false)
 const editing = ref(false)
-const form = reactive({ base_url: '', token: '', timeout: '' })
+const form = reactive({ base_url: '', token: '', timeout: '', custom_keys: {} })
+const _newKey = ref('')
+const _newVal = ref('')
+
+function addCustomKey() {
+    if (!_newKey.value) return
+    const copy = { ...(form.custom_keys || {}) }
+    copy[_newKey.value] = _newVal.value || ''
+    form.custom_keys = copy
+    _newKey.value = ''
+    _newVal.value = ''
+}
+function removeCustomKey(key) {
+    const copy = { ...(form.custom_keys || {}) }
+    delete copy[key]
+    form.custom_keys = copy
+}
 let interval = null
 
 async function loadStatus() {
@@ -38,12 +54,13 @@ async function loadFireflyConfig() {
         form.base_url = j.base_url || ''
         form.token = j.token || ''
         form.timeout = j.timeout || ''
+        form.custom_keys = j.custom_keys || {}
     } catch (e) { console.error('loadFireflyConfig', e) }
 }
 
 async function saveFireflyConfig() {
     try {
-        const payload = { base_url: form.base_url || null, token: form.token || null, timeout: form.timeout ? parseInt(form.timeout) : null }
+        const payload = { base_url: form.base_url || null, token: form.token || null, timeout: form.timeout ? parseInt(form.timeout) : null, custom_keys: form.custom_keys || {} }
         const res = await fetch('/api/v1/firefly', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
         if (!res.ok) throw new Error('Save failed')
         editing.value = false
@@ -122,6 +139,24 @@ onUnmounted(() => { if (interval) clearInterval(interval) })
                         <input v-model="form.timeout" class="w-24 p-sm border rounded" />
                         <div class="mt-sm">
                             <button @click="saveFireflyConfig" class="px-md py-sm bg-primary text-on-primary rounded">Save</button>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="editing" class="mb-md">
+                    <h4 class="font-headline-sm">Custom Keys</h4>
+                    <p class="text-sm text-on-surface-variant">Add key/value pairs which will be available in mappings as fixed variables.</p>
+                    <div class="mt-sm space-y-sm">
+                        <template v-for="(v,k) in form.custom_keys" :key="k">
+                            <div class="flex items-center gap-sm">
+                                <div class="px-sm py-xs border rounded w-48 font-label-mono">{{ k }}</div>
+                                <input v-model="form.custom_keys[k]" class="px-sm py-xs border rounded flex-1" />
+                                <button @click.prevent="removeCustomKey(k)" class="px-sm py-xs bg-error-container/20 rounded">Remove</button>
+                            </div>
+                        </template>
+                        <div class="flex items-center gap-sm">
+                            <input v-model="_newKey" placeholder="key" class="px-sm py-xs border rounded w-48" />
+                            <input v-model="_newVal" placeholder="value" class="px-sm py-xs border rounded flex-1" />
+                            <button @click.prevent="addCustomKey" class="px-sm py-xs bg-secondary text-white rounded">Add Key</button>
                         </div>
                     </div>
                 </div>

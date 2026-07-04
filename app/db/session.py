@@ -97,6 +97,33 @@ def init_db() -> None:
 
         conn.commit()
 
+        # 6. Parsing Rules Table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS parsing_rules (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                source_name TEXT NOT NULL,
+                rule_name TEXT NOT NULL,
+                regex TEXT NOT NULL,
+                transaction_type TEXT NOT NULL DEFAULT 'withdrawal',
+                card_last4 TEXT,
+                conditions_json TEXT,
+                mappings_json TEXT,
+                condition_mode TEXT
+            )
+        """)
+
+        conn.commit()
+        # Ensure new columns exist for older DBs (migrations)
+        cursor.execute("PRAGMA table_info(parsing_rules)")
+        cols = [r[1] for r in cursor.fetchall()]
+        if 'conditions_json' not in cols:
+            cursor.execute("ALTER TABLE parsing_rules ADD COLUMN conditions_json TEXT")
+        if 'mappings_json' not in cols:
+            cursor.execute("ALTER TABLE parsing_rules ADD COLUMN mappings_json TEXT")
+        if 'condition_mode' not in cols:
+            cursor.execute("ALTER TABLE parsing_rules ADD COLUMN condition_mode TEXT")
+        conn.commit()
+
 
 def log_transaction(
     transaction_date: str | None,
@@ -290,6 +317,18 @@ def list_mailboxes() -> list[dict[str, Any]]:
             "SELECT id, name, host, port, username, encryption, smtp_host, smtp_port, processed_tag FROM mailboxes ORDER BY id"
         )
         return [dict(row) for row in cursor.fetchall()]
+
+
+def get_mailbox_by_id(mailbox_id: int) -> dict[str, Any] | None:
+    """Return mailbox row including sensitive fields (password) for internal use."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT id, name, host, port, username, password, encryption, smtp_host, smtp_port, processed_tag FROM mailboxes WHERE id = ?",
+            (mailbox_id,),
+        )
+        row = cursor.fetchone()
+        return dict(row) if row else None
 
 
 def add_mailbox(

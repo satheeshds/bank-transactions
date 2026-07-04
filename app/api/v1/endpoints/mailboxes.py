@@ -4,10 +4,13 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from typing import Any
 import socket
+from datetime import datetime, date
 
 from app.services import imap as imap_service
 
 from app.db import session as database
+from app import config as app_config
+from app.config import load_config
 
 router = APIRouter(prefix="/api/v1", tags=["mailboxes"])
 
@@ -18,6 +21,27 @@ def list_mailboxes() -> dict[str, Any]:
         boxes = database.list_mailboxes()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+    # If no mailboxes are stored in DB, fall back to config.toml definitions
+    if not boxes:
+        try:
+            cfg = load_config()
+            defs = app_config.build_source_definitions(cfg)
+            boxes = []
+            for d in defs:
+                mb = d.get('mailbox') or {}
+                boxes.append({
+                    'id': None,
+                    'name': d.get('name') or 'config',
+                    'host': mb.get('host'),
+                    'port': mb.get('port'),
+                    'username': mb.get('username'),
+                    'encryption': mb.get('encryption'),
+                    'processed_tag': d.get('processed_tag') or mb.get('processed_tag'),
+                })
+        except Exception:
+            # ignore config load errors and proceed with empty list
+            boxes = []
 
     # Attach a quick connectivity check per mailbox (socket-level)
     enhanced = []
@@ -41,6 +65,9 @@ def list_mailboxes() -> dict[str, Any]:
         enhanced.append(nb)
 
     return {"mailboxes": enhanced}
+
+
+    
 
 
 
@@ -147,3 +174,189 @@ def delete_mailbox_endpoint(mailbox_id: int) -> JSONResponse:
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     return JSONResponse(status_code=200, content={"status": "deleted", "id": mailbox_id})
+
+
+@router.get("/mailboxes/{mailbox_id}/sample")
+def mailbox_sample(mailbox_id: int) -> dict:
+    """Fetch a single sample email body from the mailbox (requires imap_tools).
+
+    Returns a JSON dict: { "sample_text": str } or an error message.
+    """
+    # Prefer mailbox from DB including credentials
+    try:
+        mb = database.get_mailbox_by_id(mailbox_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    # If not in DB, try config sources
+    if mb is None:
+        try:
+            cfg = load_config()
+            defs = app_config.build_source_definitions(cfg)
+            for d in defs:
+                if d.get("id") == mailbox_id or d.get("name") == mailbox_id:
+                    mb = d.get("mailbox") or {}
+                    break
+        except Exception:
+            mb = None
+
+    if mb is None:
+        raise HTTPException(status_code=404, detail="Mailbox not found")
+
+    # Validate mailbox config
+    if not mb.get("host"):
+        return {"error": "mailbox host not configured"}
+    if not mb.get("username") or not mb.get("password"):
+        return {"error": "mailbox username/password not configured"}
+
+    # Attempt to fetch a sample message using imap_tools
+    try:
+        MailBox = imap_service.MailBox
+        if MailBox is None:
+            return {"error": "imap_tools not installed on server"}
+
+        # Build mailbox config structure expected by service
+        mb_conf = {
+            "host": mb.get("host"),
+            "username": mb.get("username"),
+            "password": mb.get("password"),
+        }
+        client = imap_service.get_mailbox_client(mb_conf)
+        try:
+            # fetch most recent message; imap_tools MailBox.fetch supports reverse=True and limit
+            messages = list(client.fetch(limit=1, reverse=True))
+            if not messages:
+                return {"sample_text": "", "sample_meta": {}}
+            msg = messages[0]
+            # Message may have text/plain or html; prefer plain
+            body = getattr(msg, "text", None) or getattr(msg, "html", None) or ""
+            # collect metadata for IMAP field preview
+            meta = {
+                "subject": getattr(msg, "subject", None) or "",
+                "from": getattr(msg, "from_", None) or "",
+                "to": getattr(msg, "to", None) or "",
+                "cc": getattr(msg, "cc", None) or "",
+                "bcc": getattr(msg, "bcc", None) or "",
+                "sent_date": getattr(msg, "date", None) or "",
+                "message_id": getattr(msg, "message_id", None) or "",
+            }
+            return {"sample_text": body, "sample_meta": meta}
+        finally:
+            try:
+                client.logout()
+            except Exception:
+                pass
+    except Exception as e:
+        return {"error": str(e)}
+
+
+
+@router.post("/mailboxes/{mailbox_id}/sample")
+def mailbox_sample_with_filter(mailbox_id: int, payload: dict) -> dict:
+    """Fetch a sample email matching provided filter conditions.
+
+    Expects JSON payload with optional `conditions` (list) and `condition_mode` ('AND'|'OR').
+    """
+    # Reuse the same mailbox resolution as the GET endpoint
+    try:
+        mb = database.get_mailbox_by_id(mailbox_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    if mb is None:
+        try:
+            cfg = load_config()
+            defs = app_config.build_source_definitions(cfg)
+            for d in defs:
+                if d.get("id") == mailbox_id or d.get("name") == mailbox_id:
+                    mb = d.get("mailbox") or {}
+                    break
+        except Exception:
+            mb = None
+
+    if mb is None:
+        raise HTTPException(status_code=404, detail="Mailbox not found")
+
+    # Build query filter from payload.conditions
+    conditions = payload.get("conditions") or []
+    condition_mode = payload.get("condition_mode") or None
+
+    try:
+        MailBox = imap_service.MailBox
+        if MailBox is None:
+            return {"error": "imap_tools not installed on server"}
+
+        mb_conf = {"host": mb.get("host"), "username": mb.get("username"), "password": mb.get("password")}
+        client = imap_service.get_mailbox_client(mb_conf)
+        try:
+            # Build imap_tools query kwargs from conditions: simple mapping
+            query_filter = {}
+            for c in conditions:
+                field = c.get('field')
+                value = c.get('value')
+                if field and value:
+                    # map our fields to imap_tools keywords
+                    if field == 'from':
+                        query_filter['from_'] = value
+                    elif field == 'to':
+                        query_filter['to'] = value
+                    elif field == 'subject':
+                        query_filter['subject'] = value
+                    elif field == 'text':
+                        query_filter['text'] = value
+                    elif field == 'sent_date':
+                        # imap_tools expects datetime.date for date filters.
+                        # Determine operator and map to imap keywords: equals -> date, >= -> since, <= -> before
+                        op = (c.get('operator') or '').strip()
+                        parsed_date = None
+                        if isinstance(value, date):
+                            parsed_date = value
+                        else:
+                            try:
+                                parsed_date = datetime.fromisoformat(str(value)).date()
+                            except Exception:
+                                for fmt in ("%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y", "%m/%d/%Y"):
+                                    try:
+                                        parsed_date = datetime.strptime(str(value), fmt).date()
+                                        break
+                                    except Exception:
+                                        parsed_date = None
+                        if not parsed_date:
+                            continue
+
+                        if op in ("equals", "=", "=="):
+                            query_filter['sent_date'] = parsed_date
+                        elif op in (">=", "greater than or equal", ">"):
+                            # use sent_date_gte for on-or-after
+                            query_filter['sent_date_gte'] = parsed_date
+                        elif op in ("<=", "less than or equal", "<"):
+                            # use sent_date_lt for strictly before; caller can adjust to make inclusive if desired
+                            query_filter['sent_date_lt'] = parsed_date
+                        else:
+                            # unknown operator: default to exact date
+                            query_filter['sent_date'] = parsed_date
+
+            # build_query will add processed_tag if configured
+            q = imap_service.build_query(query_filter, processed_tag=mb.get('processed_tag'))
+            messages = list(client.fetch(q, limit=1, reverse=True))
+            if not messages:
+                return {"sample_text": "", "sample_meta": {}}
+            msg = messages[0]
+            body = getattr(msg, "text", None) or getattr(msg, "html", None) or ""
+            meta = {
+                "subject": getattr(msg, "subject", None) or "",
+                "from": getattr(msg, "from_", None) or "",
+                "to": getattr(msg, "to", None) or "",
+                "cc": getattr(msg, "cc", None) or "",
+                "bcc": getattr(msg, "bcc", None) or "",
+                "sent_date": getattr(msg, "date", None) or "",
+                "message_id": getattr(msg, "message_id", None) or "",
+            }
+            return {"sample_text": body, "sample_meta": meta}
+        finally:
+            try:
+                client.logout()
+            except Exception:
+                pass
+    except Exception as e:
+        return {"error": str(e)}

@@ -17,6 +17,18 @@ async function loadRules() {
     finally { loading.value = false }
 }
 
+async function confirmDelete(id) {
+    if (!confirm('Delete this rule? This action cannot be undone.')) return
+    try {
+        const res = await fetch(`/api/v1/rules/${id}`, { method: 'DELETE' })
+        if (!res.ok) throw new Error('Delete failed')
+        await loadRules()
+    } catch (e) {
+        console.error('Failed to delete rule', e)
+        alert('Failed to delete rule')
+    }
+}
+
 watch(() => store.refreshTrigger, loadRules)
 onMounted(() => { loadRules(); interval = setInterval(loadRules, 30000) })
 onUnmounted(() => { if (interval) clearInterval(interval) })
@@ -29,7 +41,10 @@ onUnmounted(() => { if (interval) clearInterval(interval) })
                 <h2 class="font-headline-md text-headline-md text-primary">Parsing Rules</h2>
                 <p class="font-body-md text-on-surface-variant mt-xs">Regex-based rules used to extract transaction data from bank alert emails.</p>
             </div>
-            <span class="px-md py-sm bg-surface-container border border-outline-variant rounded-xl font-label-mono text-label-mono text-on-surface-variant">{{ count }}</span>
+            <div class="flex items-center gap-sm">
+                <a href="#/parsing-rules/add" class="px-md py-sm bg-secondary text-white rounded">Add Rule</a>
+                <span class="px-md py-sm bg-surface-container border border-outline-variant rounded-xl font-label-mono text-label-mono text-on-surface-variant">{{ count }}</span>
+            </div>
         </div>
 
         <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
@@ -74,6 +89,12 @@ onUnmounted(() => { if (interval) clearInterval(interval) })
                             <span :class="['px-sm py-1 rounded-full text-[10px] font-bold uppercase tracking-wider', rule.transaction_type === 'withdrawal' ? 'bg-error-container/30 text-on-error-container' : 'bg-on-tertiary-container/10 text-on-tertiary-container']">{{ rule.transaction_type || 'withdrawal' }}</span>
                         </td>
                         <td class="px-lg py-md font-label-mono text-label-mono text-on-surface-variant">{{ rule.card_last4 ? '···· ' + rule.card_last4 : '-' }}</td>
+                        <td class="px-lg py-md text-right">
+                            <div class="flex items-center gap-sm justify-end">
+                                <a v-if="rule.id" :href="`#/parsing-rules/add?id=${rule.id}`" class="px-sm py-xs border rounded">Edit</a>
+                                <button v-if="rule.id" @click="() => confirmDelete(rule.id)" class="px-sm py-xs bg-error-container/20 rounded">Delete</button>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -81,7 +102,7 @@ onUnmounted(() => { if (interval) clearInterval(interval) })
 
         <div class="flex items-start gap-sm p-md bg-surface-container border border-outline-variant rounded-xl text-on-surface-variant">
             <span class="material-symbols-outlined text-sm shrink-0 mt-xs">info</span>
-            <p class="font-body-md text-body-md">Rules are defined in <code class="font-label-mono bg-surface-container-high px-xs rounded">config.toml</code> under each source's <code class="font-label-mono bg-surface-container-high px-xs rounded">transaction_patterns</code> section. Restart the service to apply changes.</p>
+            <p class="font-body-md text-body-md">Parsing rules are stored in the application's database and can be added, edited, or deleted using the UI. Use the Add Rule button to create new rules; changes apply immediately.</p>
         </div>
     </div>
 </template>
