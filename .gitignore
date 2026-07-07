@@ -17,3 +17,6 @@ sample-data/
 .db.env
 .env
 categorizer-data/
+data/
+rclone-config/rclone.conf
+frontend/node_modules/
