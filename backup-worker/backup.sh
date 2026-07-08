@@ -1,23 +1,28 @@
 #!/bin/sh
 
-BACKUP_FILE="$(date +%Y-%m-%d_%H-%M-%S).sql"
+set -ex
 
-echo "exporting database"
+BACKUP_FILE="$(date +%Y-%m-%d_%H-%M-%S).sql.gz"
+echo "DB debug: DB_CONNECTION='${DB_CONNECTION}' DB_HOST='${DB_HOST}' DB_PORT='${DB_PORT}' DB_DATABASE='${DB_DATABASE}' DB_USERNAME='${DB_USERNAME}' DB_FILE='${DB_FILE}'"
+echo "exporting database ${DB_CONNECTION}"
 
 case "${DB_CONNECTION}" in
 
   mysql)
-    mysqldump --host="${DB_HOST}" --port="${DB_PORT}" --user="${DB_USERNAME}" --password="${DB_PASSWORD}" "${DB_DATABASE}" > "${BACKUP_FILE}"
+    mysqldump --host="${DB_HOST}" --port="${DB_PORT}" --user="${DB_USERNAME}" --password="${DB_PASSWORD}" "${DB_DATABASE}" | gzip > "${BACKUP_FILE}"
     ;;
 
   postgres)
     export PGPASSWORD="${DB_PASSWORD}"
-    pg_dump --host="${DB_HOST}" --port="${DB_PORT}" --dbname="${DB_DATABASE}" --username="${DB_USERNAME}" --no-password > "${BACKUP_FILE}"
+    pg_dump --host="${DB_HOST}" --port="${DB_PORT}" --dbname="${DB_DATABASE}" --username="${DB_USERNAME}" --no-password | gzip > "${BACKUP_FILE}"
     ;;
 
   sqlite)
-    BACKUP_FILE="$(date +%Y-%m-%d_%H-%M-%S).sqlite"
-    sqlite3 "/database/${DB_FILE}" ".backup '${BACKUP_FILE}'"
+    # create sqlite backup then gzip it
+    BACKUP_FILE_UNCOMPRESSED="$(date +%Y-%m-%d_%H-%M-%S).sqlite"
+    sqlite3 "/database/${DB_FILE}" ".backup '${BACKUP_FILE_UNCOMPRESSED}'"
+    gzip "${BACKUP_FILE_UNCOMPRESSED}"
+    BACKUP_FILE="${BACKUP_FILE_UNCOMPRESSED}.gz"
     ;;
 
   *)
@@ -46,7 +51,7 @@ rm -f "${BACKUP_FILE}"
 
 echo "deleting any old backups"
 
-rclone delete --min-age "${BACKUP_AGE}"d --include "*.{sql,sqlite}" "${RCLONE_REMOTE}:${BACKUP_FOLDER}"
+rclone delete --min-age "${BACKUP_AGE}"d --include "*.{sql,sqlite,sql.gz,sqlite.gz}" "${RCLONE_REMOTE}:${BACKUP_FOLDER}"
 
 echo "done"
 echo "==================================="

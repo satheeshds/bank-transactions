@@ -13,6 +13,8 @@ if [ "$1" = "rclone" ]; then
   exit 0
 fi
 
+echo "DB debug: DB_CONNECTION='${DB_CONNECTION}' DB_HOST='${DB_HOST}' DB_PORT='${DB_PORT}' DB_DATABASE='${DB_DATABASE}' DB_USERNAME='${DB_USERNAME}' DB_FILE='${DB_FILE}'"
+
 # check if all environment variables are set
 check_env "${TZ}"
 check_env "${RCLONE_REMOTE}"
@@ -52,5 +54,19 @@ fi
 # crontab -l | grep -q "backup.sh" && echo "cron entry exists" || echo "${CRON} cd /app/src && sh backup.sh > /dev/stdout" | crontab - && echo "created cron entry"
 
 #
-echo "starting anacron"
+# write env file that fcron jobs can source (so cron-run jobs see the same env)
+cat > /etc/backup_env <<EOF
+DB_CONNECTION='${DB_CONNECTION}'
+DB_HOST='${DB_HOST}'
+DB_PORT='${DB_PORT}'
+DB_DATABASE='${DB_DATABASE}'
+DB_USERNAME='${DB_USERNAME}'
+DB_PASSWORD='${DB_PASSWORD}'
+RCLONE_REMOTE='${RCLONE_REMOTE}'
+BACKUP_FOLDER='${BACKUP_FOLDER}'
+BACKUP_AGE='${BACKUP_AGE}'
+TZ='${TZ}'
+EOF
+
+echo "starting fcron"
 exec "$@"
