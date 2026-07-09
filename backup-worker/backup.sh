@@ -17,7 +17,10 @@ case "${DB_CONNECTION}" in
 
   postgres)
     export PGPASSWORD="${DB_PASSWORD}"
-    pg_dump --host="${DB_HOST}" --port="${DB_PORT}" --dbname="${DB_DATABASE}" --username="${DB_USERNAME}" --no-password | gzip > "${BACKUP_FILE}"
+    BACKUP_FILE_RAW="${BACKUP_FILE%.gz}"
+    pg_dump --host="${DB_HOST}" --port="${DB_PORT}" --dbname="${DB_DATABASE}" --username="${DB_USERNAME}" --no-password > "${BACKUP_FILE_RAW}"
+    gzip -c "${BACKUP_FILE_RAW}" > "${BACKUP_FILE}"
+    rm -f "${BACKUP_FILE_RAW}"
     ;;
 
   sqlite)
