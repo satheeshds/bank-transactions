@@ -1,0 +1,22 @@
+# Treat all files as text and enforce LF in the repository
+* text=auto eol=lf
+
+# Ensure common script and text file types use LF
+*.sh text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.toml text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.csv text eol=lf
+*.txt text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.tar.gz binary

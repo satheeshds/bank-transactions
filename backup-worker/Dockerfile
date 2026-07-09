@@ -16,6 +16,7 @@ WORKDIR /app
 COPY entrypoint.sh /app/entrypoint.sh
 COPY backup.sh /app/backup.sh
 RUN chmod a+x /app/backup.sh
+RUN chmod a+x /app/entrypoint.sh
 
 # volume for rclone config
 VOLUME ["/root/.config/rclone"]

@@ -39,4 +39,4 @@ PATH=/usr/local/bin:/usr/bin:/bin
 # */2 * * * * run-logged sh -c "exit 1"
 
 # backup script run daily (source /etc/backup_env so job sees container env)
-%daily * * run-logged sh -c '. /etc/backup_env && /app/backup.sh'
+%daily * * run-logged sh /app/backup.sh
