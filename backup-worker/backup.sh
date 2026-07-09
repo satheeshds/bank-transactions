@@ -38,10 +38,7 @@ case "${DB_CONNECTION}" in
 
 esac
 
-if [ "$?" != 0 ]; then
-  echo "could not export database"
-  exit 1
-fi
+# Export failures will stop the script due to 'set -e'
 
 echo "uploading file"
 
