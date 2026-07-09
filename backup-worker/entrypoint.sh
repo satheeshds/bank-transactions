@@ -23,7 +23,7 @@ check_env "${BACKUP_AGE}"
 check_env "${DB_CONNECTION}"
 if [ "${DB_CONNECTION}" = "sqlite" ]; then
   check_env "${DB_FILE}"
-  check_file "/database/${DB_FILE}"
+  [ -f "/database/${DB_FILE}" ] || { echo "sqlite database file not found: /database/${DB_FILE}"; exit 1; }
 else
   check_env "${DB_HOST}"
   check_env "${DB_PORT}"
