@@ -9,7 +9,10 @@ echo "exporting database ${DB_CONNECTION}"
 case "${DB_CONNECTION}" in
 
   mysql)
-    mysqldump --host="${DB_HOST}" --port="${DB_PORT}" --user="${DB_USERNAME}" --password="${DB_PASSWORD}" "${DB_DATABASE}" | gzip > "${BACKUP_FILE}"
+    BACKUP_FILE_RAW="${BACKUP_FILE%.gz}"
+    mysqldump --host="${DB_HOST}" --port="${DB_PORT}" --user="${DB_USERNAME}" --password="${DB_PASSWORD}" "${DB_DATABASE}" > "${BACKUP_FILE_RAW}"
+    gzip -c "${BACKUP_FILE_RAW}" > "${BACKUP_FILE}"
+    rm -f "${BACKUP_FILE_RAW}"
     ;;
 
   postgres)
