@@ -52,9 +52,34 @@ services:
     volumes:
       - ./categorizer-data:/data
 
+  backup:
+    build:
+      context: ./backup-worker
+      dockerfile: Dockerfile
+    env_file: ./backup-worker/.env
+    networks:
+      - firefly_iii
+    environment:
+      - TZ=Asia/Kolkata
+      - RCLONE_REMOTE=dropbox-firefly-db
+      - BACKUP_FOLDER=firefly_iii_backup
+      - BACKUP_AGE=7
+      - DB_CONNECTION=mysql
+      # - DB_FILE=path_to_sqlite_database_file.sqlite # sqlite only
+      # mysql or postgres only
+      - DB_HOST=db
+      - DB_PORT=3306
+      # SMTP settings for msmtp (fill with real values or set in env file)
+
+    volumes:
+      - ./rclone-config:/root/.config/rclone
+      - ./backup-worker/crontab:/config/crontab
+    restart: unless-stopped
+
+
 volumes:
-   firefly_iii_upload:
-   firefly_iii_db:
+  firefly_iii_upload:
+  firefly_iii_db:
 
 networks:
   firefly_iii:
