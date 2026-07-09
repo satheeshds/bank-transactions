@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -ex
+set -e
 
 BACKUP_FILE="$(date +%Y-%m-%d_%H-%M-%S).sql.gz"
 echo "DB debug: DB_CONNECTION='${DB_CONNECTION}' DB_HOST='${DB_HOST}' DB_PORT='${DB_PORT}' DB_DATABASE='${DB_DATABASE}' DB_USERNAME='${DB_USERNAME}' DB_FILE='${DB_FILE}'"
