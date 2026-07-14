@@ -8,6 +8,7 @@ import ParsingRulesView from './views/ParsingRulesView.vue'
 import AddParsingRuleView from './views/AddParsingRuleView.vue'
 import FailedParsesView from './views/FailedParsesView.vue'
 import FireflyConnectionView from './views/FireflyConnectionView.vue'
+import SettingsView from './views/SettingsView.vue'
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -19,6 +20,7 @@ const router = createRouter({
         { path: '/parsing-rules/add',  component: AddParsingRuleView,   meta: { title: 'Add Parsing Rule' } },
         { path: '/failed-parses',      component: FailedParsesView,     meta: { title: 'Failed Parses' } },
         { path: '/firefly-connection', component: FireflyConnectionView, meta: { title: 'Firefly Connection' } },
+        { path: '/settings', component: SettingsView, meta: { title: 'Settings' } },
     ],
 })
 

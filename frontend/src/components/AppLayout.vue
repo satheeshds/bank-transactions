@@ -12,6 +12,7 @@ const NAV_ITEMS = [
     { to: '/parsing-rules',      icon: 'rule',            label: 'Parsing Rules' },
     { to: '/failed-parses',      icon: 'error',           label: 'Failed Parses' },
     { to: '/firefly-connection', icon: 'account_balance', label: 'Firefly Connection' },
+    { to: '/settings',           icon: 'settings',        label: 'Settings' },
 ]
 
 const pageTitle = computed(() => route.meta?.title || '')

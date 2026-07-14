@@ -13,6 +13,7 @@ router = APIRouter(prefix="/api/v1", tags=["rules"])
 class RuleIn(BaseModel):
     source_name: str
     rule_name: str
+    description: str | None = None
     regex: str
     transaction_type: str = "withdrawal"
     card_last4: str | None = None
@@ -28,7 +29,7 @@ def get_rules():
         # Try DB first
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT id, source_name, rule_name, regex, transaction_type, card_last4 FROM parsing_rules ORDER BY id")
+        cursor.execute("SELECT id, source_name, rule_name, regex, description, transaction_type, card_last4 FROM parsing_rules ORDER BY id")
         rows = cursor.fetchall()
         if rows:
             rules_list = [
@@ -37,8 +38,9 @@ def get_rules():
                     "source_name": row[1],
                     "rule_name": row[2],
                     "regex": row[3],
-                    "transaction_type": row[4],
-                    "card_last4": row[5],
+                    "description": row[4],
+                    "transaction_type": row[5],
+                    "card_last4": row[6],
                 }
                 for row in rows
             ]
@@ -77,11 +79,12 @@ def add_rule(rule: RuleIn):
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO parsing_rules (source_name, rule_name, regex, transaction_type, card_last4, conditions_json, mappings_json, condition_mode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO parsing_rules (source_name, rule_name, regex, description, transaction_type, card_last4, conditions_json, mappings_json, condition_mode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 rule.source_name,
                 rule.rule_name,
                 rule.regex,
+                rule.description,
                 rule.transaction_type,
                 rule.card_last4,
                 None if rule.conditions is None else __import__('json').dumps(rule.conditions),
@@ -100,7 +103,7 @@ def get_rule(rule_id: int):
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT id, source_name, rule_name, regex, transaction_type, card_last4, conditions_json, mappings_json, condition_mode FROM parsing_rules WHERE id = ?", (rule_id,))
+        cursor.execute("SELECT id, source_name, rule_name, regex, description, transaction_type, card_last4, conditions_json, mappings_json, condition_mode FROM parsing_rules WHERE id = ?", (rule_id,))
         row = cursor.fetchone()
         if not row:
             raise HTTPException(status_code=404, detail='Rule not found')
@@ -109,11 +112,12 @@ def get_rule(rule_id: int):
             'source_name': row[1],
             'rule_name': row[2],
             'regex': row[3],
-            'transaction_type': row[4],
-            'card_last4': row[5],
-            'conditions': __import__('json').loads(row[6]) if row[6] else None,
-            'mappings': __import__('json').loads(row[7]) if row[7] else None,
-            'condition_mode': row[8]
+            'description': row[4],
+            'transaction_type': row[5],
+            'card_last4': row[6],
+            'conditions': __import__('json').loads(row[7]) if row[7] else None,
+            'mappings': __import__('json').loads(row[8]) if row[8] else None,
+            'condition_mode': row[9]
         }
     except HTTPException:
         raise
@@ -127,11 +131,12 @@ def update_rule(rule_id: int, rule: RuleIn):
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "UPDATE parsing_rules SET source_name = ?, rule_name = ?, regex = ?, transaction_type = ?, card_last4 = ?, conditions_json = ?, mappings_json = ?, condition_mode = ? WHERE id = ?",
+            "UPDATE parsing_rules SET source_name = ?, rule_name = ?, regex = ?, description = ?, transaction_type = ?, card_last4 = ?, conditions_json = ?, mappings_json = ?, condition_mode = ? WHERE id = ?",
             (
                 rule.source_name,
                 rule.rule_name,
                 rule.regex,
+                rule.description,
                 rule.transaction_type,
                 rule.card_last4,
                 None if rule.conditions is None else __import__('json').dumps(rule.conditions),

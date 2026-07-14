@@ -55,13 +55,15 @@ onMounted(async () => {
 
 import { computed, watch, nextTick } from 'vue'
 
-// reload custom keys when user navigates to Destination step
-watch(step, (s) => { if (s === 4) loadFireflyKeys() })
+// reload custom keys when user navigates to Destination step; auto-load sample when entering Patterns step
+watch(step, (s) => { if (s === 4) loadFireflyKeys(); if (s === 3) loadSample() })
 
 const serverPreview = ref([])
 const serverNamed = ref({})
 const serverGroupIndex = ref({})
 let previewTimer = null
+const extraGroups = ref([])
+const sampleLoading = ref(false)
 
 // Debounced call to server preview
 async function fetchServerPreview() {
@@ -148,12 +150,17 @@ function availableGroups() {
     if (cnt <= 0) return []
     const out = []
     for (let i = 1; i <= cnt && i <= 12; i++) out.push(String(i))
+    // include any extra groups preserved from saved mappings (when no sample available)
+    for (const g of (extraGroups.value || [])) {
+        if (!out.includes(String(g))) out.push(String(g))
+    }
     return out
 }
 
 function loadSample() {
     // If a mailbox is selected (form.source_id), request a sample from the server
     if (form.source_id) {
+        sampleLoading.value = true
         // send conditions and mode so server can fetch a matching message
         fetch(`/api/v1/mailboxes/${form.source_id}/sample`, {
             method: 'POST',
@@ -162,7 +169,8 @@ function loadSample() {
         })
             .then(r => r.json())
             .then(data => {
-                if (data && data.sample_text) form.sample_text = data.sample_text
+                if (data && data.sample_text) form.sample_text = stripHtml(data.sample_text)
+                else if (data && data.sample_html) form.sample_text = stripHtml(data.sample_html)
                 else if (data && data.error) form.sample_text = `Error: ${data.error}`
                 else form.sample_text = ''
                 // capture optional metadata (subject, from, sent_date, etc.) for IMAP field preview
@@ -172,11 +180,36 @@ function loadSample() {
             .catch(() => {
                 form.sample_text = ''
             })
+            .finally(() => { sampleLoading.value = false })
         return
     }
 
     // fallback placeholder sample
     form.sample_text = "Total: Rs. 1,234.56 spent on your SBI Credit Card ending with 1234 at Amazon on 02-07-2026"
+}
+
+function stripHtml(html) {
+    if (!html) return ''
+    // Use DOMParser to reliably extract visible text while preserving punctuation and numbers
+    try {
+        const parser = new DOMParser()
+        const doc = parser.parseFromString(String(html), 'text/html')
+        // remove script/style nodes
+        doc.querySelectorAll('script,style').forEach(n => n.remove())
+        // convert <br> and <p> boundaries to newlines
+        doc.querySelectorAll('br').forEach(b => b.replaceWith('\n'))
+        doc.querySelectorAll('p').forEach(p => p.replaceWith(p.textContent + '\n'))
+        // textContent gives decoded entities and preserves punctuation/numbers
+        let text = doc.body ? doc.body.textContent || '' : ''
+        // normalize non-breaking spaces and collapse multiple blank lines
+        text = text.replace(/\u00A0/g, ' ').replace(/\s+\n/g, '\n').replace(/\n{2,}/g, '\n')
+        // remove lines that are only punctuation (but keep amounts like Rs.160.00)
+        text = text.split(/\r?\n/).map(l => l.trim()).filter(l => !/^[^\w\d]+$/.test(l)).join('\n')
+        return text.trim()
+    } catch (e) {
+        // fallback to original string if parsing fails
+        return String(html).replace(/<[^>]+>/g, ' ').trim()
+    }
 }
 
 const fireflyFields = [
@@ -236,6 +269,11 @@ const imapFields = [
 
 // custom keys from Firefly connection (loaded on mount)
 const customKeys = ref({})
+const aiLoading = ref(false)
+// autocomplete cache, timers and loading per mapping index
+const autocompleteResults = ref({})
+const autocompleteLoading = ref({})
+const autocompleteTimers = {}
 
 async function loadFireflyKeys() {
     try {
@@ -245,6 +283,18 @@ async function loadFireflyKeys() {
         customKeys.value = j.custom_keys || {}
     } catch (e) { /* ignore */ }
 }
+
+async function aiSuggest() {
+    if (!form.sample_text) return
+    aiLoading.value = true
+    try {
+        const res = await fetch('/api/v1/ai/regex', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ sample_text: form.sample_text }) })
+        if (!res.ok) throw new Error('AI service failed')
+        const j = await res.json()
+        if (j && j.regex) form.regex = j.regex
+    } catch (e) { console.error('aiSuggest', e); error.value = 'AI suggestion failed' }
+    finally { aiLoading.value = false }
+}
 onMounted(() => { loadFireflyKeys() })
 
 async function loadExistingRule(id) {
@@ -253,7 +303,7 @@ async function loadExistingRule(id) {
         if (!res.ok) return
         const j = await res.json()
         form.rule_name = j.rule_name || ''
-        form.description = ''
+            form.description = j.description || ''
         form.source_name = j.source_name || ''
         form.regex = j.regex || ''
         form.transaction_type = j.transaction_type || 'withdrawal'
@@ -261,6 +311,20 @@ async function loadExistingRule(id) {
         form.conditions = j.conditions || []
         form.condition_mode = j.condition_mode || 'AND'
         form.mappings = j.mappings || []
+        // restore firefly_selected if rule stored an id/name
+        for (const m of form.mappings) {
+            if (m && m.firefly_id) {
+                m.firefly_selected = { id: m.firefly_id, name: m.firefly_name || m.firefly_selected || null, label: m.firefly_name || m.firefly_selected || String(m.firefly_id) }
+            }
+        }
+        // preserve any mapping.group values so they remain selectable even without a sample
+        extraGroups.value = []
+        for (const m of form.mappings) {
+            if (m && m.group) {
+                const g = String(m.group)
+                if (!extraGroups.value.includes(g)) extraGroups.value.push(g)
+            }
+        }
         // ensure amount mapping exists
         if (!form.mappings.find(m=>m.fieldKey==='amount')) ensureMapping('amount')
     } catch (e) { console.error('loadExistingRule', e) }
@@ -290,7 +354,7 @@ function ensureMapping(fieldKey) {
             const k = String(initialKey).split(':')[1]
             m = { fieldKey: initialKey, field: label, source_type: 'fixed', value: (customKeys.value && customKeys.value[k]) || '', group: groups.length ? groups[0] : '1' }
         } else {
-            m = { fieldKey: initialKey, field: label, source_type: 'regex_group', value: '', group: groups.length ? groups[0] : '1' }
+            m = { fieldKey: initialKey, field: label, source_type: 'regex_group', value: '', group: groups.length ? groups[0] : '1', firefly_query: '', firefly_selected: null }
         }
         form.mappings.push(m)
     }
@@ -341,6 +405,53 @@ function toggleConnector(index) {
 }
 function back() { if (step.value > 1) step.value-- }
 
+function fieldToAutocompleteEndpoint(fieldKey) {
+    // map fieldKey to endpoint and optional params
+    if (!fieldKey) return null
+    if (fieldKey === 'source_id' || fieldKey === 'source_name' || fieldKey.includes('source')) return { path: 'accounts', dateParam: true }
+    if (fieldKey === 'destination_id' || fieldKey.includes('destination') ) return { path: 'accounts', dateParam: true }
+    if (fieldKey === 'tags') return { path: 'tags' }
+    if (fieldKey === 'category_id' || fieldKey === 'category_name' || fieldKey.includes('category')) return { path: 'categories' }
+    if (fieldKey === 'currency_id' || fieldKey === 'currency_code' || fieldKey.includes('currency')) return { path: 'currencies' }
+    if (fieldKey === 'type' || fieldKey === 'transaction_type') return { path: 'transaction-types' }
+    return null
+}
+
+function onFireflyQueryChange(m, mi) {
+    const q = String(m.firefly_query || '').trim()
+    autocompleteResults.value[mi] = []
+    if (autocompleteTimers[mi]) clearTimeout(autocompleteTimers[mi])
+    if (!q) return
+    autocompleteTimers[mi] = setTimeout(async () => {
+        autocompleteLoading.value[mi] = true
+        const ep = fieldToAutocompleteEndpoint(m.fieldKey)
+        if (!ep) return
+        const params = new URLSearchParams({ query: q, limit: '10' })
+        try {
+            const res = await fetch(`/api/v1/autocomplete/${ep.path}?${params.toString()}`)
+            if (!res.ok) return
+            const j = await res.json()
+            // expect array of results
+            autocompleteResults.value[mi] = j || []
+        } catch (e) { /* ignore */ } finally { autocompleteLoading.value[mi] = false }
+    }, 250)
+}
+
+function selectFireflyOption(m, mi, opt) {
+    m.firefly_selected = opt
+    m.firefly_query = opt.label || opt.name || opt.title || opt.id
+    autocompleteResults.value[mi] = []
+}
+
+function onSourceTypeSelect(m, mi) {
+    // when user switches to firefly selection, trigger an initial empty query
+    if (m.source_type === 'firefly') {
+        m.firefly_query = ''
+        // call fetch with empty query to populate initial suggestions
+        onFireflyQueryChange(m, mi)
+    }
+}
+
 function isValidEmail(v) {
     if (!v) return false
     // simple RFC-like check
@@ -373,10 +484,30 @@ async function submitRule() {
         const body = {
             source_name: form.source_name || (form.source_id ? `mailbox:${form.source_id}` : 'Unnamed Source'),
             rule_name: form.rule_name || 'Unnamed Rule',
+            description: form.description || '',
             regex: form.regex,
             conditions: form.conditions,
             condition_mode: form.condition_mode,
-            mappings: form.mappings,
+            mappings: form.mappings.map(m => {
+                // build minimal mapping object to persist
+                const out = {
+                    fieldKey: m.fieldKey,
+                    field: m.field,
+                    source_type: m.source_type,
+                    value: m.value || '',
+                    group: m.group || null,
+                }
+                if (m.source_type === 'fixed') out.value = m.value || ''
+                if (m.source_type === 'regex_group') out.group = m.group || null
+                if (m.source_type === 'custom_key') out.custom_key = m.custom_key || ''
+                if (m.source_type === 'imap') out.imap_field = m.imap_field || ''
+                if (m.source_type === 'firefly' && m.firefly_selected) {
+                    // store id for *_id fields, otherwise store name
+                    if (String(m.fieldKey || '').endsWith('_id')) out.value = m.firefly_selected.id || ''
+                    else out.value = m.firefly_selected.name || m.firefly_selected.label || ''
+                }
+                return out
+            }),
             transaction_type: form.transaction_type || 'withdrawal',
             card_last4: form.card_last4 || null,
         }
@@ -532,14 +663,20 @@ async function submitRule() {
                                 </label>
 
                                 <div class="flex items-center gap-sm">
-                                    <button class="px-sm py-xs border rounded">AI Suggest</button>
+                                    <button :disabled="!form.sample_text || aiLoading" @click="aiSuggest" class="px-sm py-xs border rounded flex items-center gap-xs">
+                                        <span v-if="!aiLoading">AI Suggest</span>
+                                        <span v-else class="flex items-center gap-xs">
+                                            <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-opacity="0.2" stroke-width="4"/><path d="M22 12a10 10 0 00-10-10" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+                                            <span>Generating…</span>
+                                        </span>
+                                    </button>
                                     <button class="px-sm py-xs border rounded">Real-time validation</button>
                                     <div class="flex-1"></div>
-                                    <button @click="loadSample" class="px-sm py-xs border rounded">Load Sample Email</button>
                                 </div>
 
                                 <label class="flex flex-col"><span class="font-label-mono mb-xs">Sample Text</span>
                                     <textarea v-model="form.sample_text" rows="6" class="px-sm py-xs border rounded" placeholder="Paste email content here to test your regex..."></textarea>
+                                    <div v-if="sampleLoading" class="text-xs text-on-surface-variant mt-xs">Loading sample email…</div>
                                 </label>
 
                                 <div class="grid grid-cols-3 gap-md">
@@ -564,15 +701,16 @@ async function submitRule() {
                                 <div v-for="(m,mi) in form.mappings" :key="m.fieldKey || m.field" class="grid grid-cols-12 gap-sm items-center p-sm border rounded">
                                     <div class="col-span-3 font-label-mono">{{ m.field }}</div>
                                     <div class="col-span-5 flex items-center gap-sm">
-                                        <select v-model="m.source_type" class="px-sm py-xs border rounded">
+                                        <select v-model="m.source_type" @change="onSourceTypeSelect(m, mi)" class="px-sm py-xs border rounded">
                                             <option value="regex_group">Regex Group</option>
                                             <option value="fixed">Fixed Value</option>
                                             <option value="custom_key">Custom Key</option>
-                                            <option value="imap">IMAP Field</option>
+                                                                            <option value="imap">IMAP Field</option>
+                                                                            <option value="firefly">Firefly Value</option>
                                         </select>
                                         <select v-if="m.source_type === 'regex_group'" v-model="m.group" class="px-sm py-xs border rounded">
                                             <option v-if="availableGroups().length===0" disabled>No groups</option>
-                                            <option v-for="g in availableGroups()" :key="g" :value="g">{{ previewNames[g] ? ('Group ' + g + ' (' + previewNames[g] + ')') : ('Group ' + g) }}</option>
+                                            <option v-for="g in availableGroups()" :key="g" :value="g">{{ previewNames[Number(g)] ? ('Group ' + g + ' (' + previewNames[Number(g)] + ')') : ('Group ' + g) }}</option>
                                         </select>
                                         <input v-if="m.source_type === 'fixed'" v-model="m.value" class="px-sm py-xs border rounded" placeholder="Fixed value" />
                                         <select v-if="m.source_type === 'custom_key'" v-model="m.custom_key" class="px-sm py-xs border rounded">
@@ -583,9 +721,24 @@ async function submitRule() {
                                             <option disabled value="">Select IMAP field...</option>
                                             <option v-for="f in imapFields" :key="f.key" :value="f.key">{{ f.label }}</option>
                                         </select>
+                                        <div v-if="m.source_type === 'firefly'" class="relative w-64">
+                                            <div class="flex items-center">
+                                                <input v-model="m.firefly_query" @input="onFireflyQueryChange(m, mi)" placeholder="Search Firefly..." class="px-sm py-xs border rounded w-full" />
+                                                <svg v-if="autocompleteLoading[mi]" class="animate-spin ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-opacity="0.2" stroke-width="4"/><path d="M22 12a10 10 0 00-10-10" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>
+                                            </div>
+                                            <ul v-if="(autocompleteResults[mi] && autocompleteResults[mi].length)" class="absolute bg-white border rounded mt-xs w-full max-h-40 overflow-auto z-10">
+                                                <li v-for="(opt,oi) in autocompleteResults[mi]" :key="oi" @click.prevent="selectFireflyOption(m, mi, opt)" class="px-sm py-xs hover:bg-surface-container">{{ opt.label || opt.name || opt.title || opt.id }}</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                     <div class="col-span-3 text-right text-sm text-on-surface-variant">Preview: <span class="font-headline-sm">
-                                        {{ m.source_type === 'regex_group' ? (previewGroups[Number(m.group)] || '-') : (m.source_type === 'custom_key' ? (customKeys[m.custom_key] || '-') : (m.source_type === 'imap' ? (form.sample_meta && form.sample_meta[m.imap_field] ? form.sample_meta[m.imap_field] : '-') : (m.value || '-'))) }}
+                                        {{
+                                            m.source_type === 'regex_group' ? (previewGroups[Number(m.group)] || '-') :
+                                            (m.source_type === 'custom_key' ? (customKeys[m.custom_key] || '-') :
+                                            (m.source_type === 'imap' ? (form.sample_meta && form.sample_meta[m.imap_field] ? form.sample_meta[m.imap_field] : '-') :
+                                            (m.source_type === 'firefly' ? (m.firefly_selected ? (String(m.fieldKey || '').endsWith('_id') ? (m.firefly_selected.id || '-') : (m.firefly_selected.name || m.firefly_selected.label || m.firefly_selected.id || '-')) : '-') :
+                                            (m.value || '-'))))
+                                        }}
                                     </span></div>
                                     <div class="col-span-1 text-right">
                                         <button @click.prevent="form.mappings.splice(mi,1)" class="px-sm py-xs bg-error-container/20 rounded">Remove</button>
