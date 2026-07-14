@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.config import build_firefly_config, build_source_models
+from app.db import session as database
 from app.services.firefly_builder import _build_firefly_transaction
 from app.services.firefly_client import FireflyClientError, build_firefly_client
 from app.services.imap import build_query, get_mailbox_client, is_message_processed, mark_message_processed
@@ -32,6 +33,29 @@ class TransactionImportService:
     @classmethod
     def from_config(cls, config: dict[str, Any], run_id: int | None = None) -> "TransactionImportService":
         sources = build_source_models(config)
+
+        # If there are parsing rules stored in the DB, prefer those per-source.
+        try:
+            db_rules = database.get_parsing_rules()
+            if db_rules:
+                # Group rules by source_name
+                rules_by_source: dict[str, list[dict]] = {}
+                for r in db_rules:
+                    key = r.get("source_name") or ""
+                    rules_by_source.setdefault(key, []).append(r)
+
+                for src in sources:
+                    name = src.name or ""
+                    patterns = rules_by_source.get(name) or rules_by_source.get("")
+                    if patterns:
+                        # Convert DB rule shape to expected transaction_patterns shape (regex + name)
+                        src.transaction_patterns = [
+                            {"name": p.get("rule_name"), "regex": p.get("regex"), "defaults": {}, "flags": []}
+                            for p in patterns
+                        ]
+        except Exception:
+            # If DB access fails, fall back to configured patterns
+            pass
 
         firefly_client = None
         firefly_config = build_firefly_config(config)

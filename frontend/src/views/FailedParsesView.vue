@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import store from '../store.js'
 import { formatRelativeTime } from '../utils.js'
 
@@ -12,6 +13,7 @@ const countClass = computed(() =>
         : 'px-md py-sm bg-surface-container border border-outline-variant rounded-xl font-label-mono text-label-mono text-on-surface-variant'
 )
 let interval = null
+const router = useRouter()
 
 async function loadFailed() {
     loading.value = true
@@ -69,7 +71,7 @@ onUnmounted(() => { if (interval) clearInterval(interval) })
                             </div>
                         </td>
                     </tr>
-                    <tr v-for="tx in failed" :key="tx.id || tx.timestamp" class="hover:bg-surface-container-low transition-colors border-b border-outline-variant">
+                    <tr v-for="tx in failed" :key="tx.id || tx.timestamp" @click="router.push(`/failed-parses/${tx.id || tx.timestamp}`)" class="cursor-pointer hover:bg-surface-container-low transition-colors border-b border-outline-variant">
                         <td class="px-lg py-md">
                             <div class="flex items-center gap-md">
                                 <div class="w-8 h-8 bg-error-container/30 text-error rounded flex items-center justify-center shrink-0">

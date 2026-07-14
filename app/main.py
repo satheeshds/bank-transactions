@@ -89,6 +89,12 @@ def get_transactions_legacy(limit: int = 50, status_filter: str | None = None):
     return transactions.get_transactions(limit, status_filter)
 
 
+@app.get("/api/transactions/{tx_id}")
+def get_transaction_legacy(tx_id: int):
+    """Legacy endpoint for single transaction by id."""
+    return transactions.get_transaction(tx_id)
+
+
 @app.get("/api/rules")
 def get_rules_legacy():
     """Legacy endpoint - use /api/v1/rules instead."""

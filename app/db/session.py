@@ -218,6 +218,40 @@ def get_recent_transactions(limit: int = 50) -> list[dict[str, Any]]:
         return [dict(row) for row in cursor.fetchall()]
 
 
+def get_transaction_by_id(tx_id: int) -> dict[str, Any] | None:
+    """Retrieve a single transaction row by id."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM transactions WHERE id = ?", (tx_id,))
+        row = cursor.fetchone()
+        return dict(row) if row else None
+
+
+def get_parsing_rules() -> list[dict[str, Any]]:
+    """Return parsing rules stored in the DB."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, source_name, rule_name, regex, description, transaction_type, card_last4, conditions_json, mappings_json, condition_mode FROM parsing_rules ORDER BY id")
+        rows = cursor.fetchall()
+        rules = []
+        for row in rows:
+            rules.append(
+                {
+                    "id": row[0],
+                    "source_name": row[1],
+                    "rule_name": row[2],
+                    "regex": row[3],
+                    "description": row[4],
+                    "transaction_type": row[5],
+                    "card_last4": row[6],
+                    "conditions": __import__('json').loads(row[7]) if row[7] else None,
+                    "mappings": __import__('json').loads(row[8]) if row[8] else None,
+                    "condition_mode": row[9],
+                }
+            )
+        return rules
+
+
 def get_setting(key: str) -> str | None:
     with get_db_connection() as conn:
         cursor = conn.cursor()
