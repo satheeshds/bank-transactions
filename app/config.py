@@ -144,15 +144,27 @@ def build_firefly_config(config: dict | None = None) -> dict:
     if not config:
         return {}
 
-    firefly_config = config.get("firefly")
-    if not isinstance(firefly_config, dict):
-        return {}
+    # Prefer runtime overrides stored in the database (settings table) when available.
+    try:
+        from app.db import session as database
 
-    return {
-        "base_url": firefly_config.get("base_url", ""),
-        "token": firefly_config.get("token", ""),
-        "timeout": firefly_config.get("timeout", 15),
-    }
+        db_base = database.get_setting("firefly.base_url")
+        db_token = database.get_setting("firefly.token")
+        db_timeout = database.get_setting("firefly.timeout")
+    except Exception:
+        db_base = db_token = db_timeout = None
+
+
+    # db_timeout stored as string; coerce to int when possible, else fallback
+    if db_timeout is not None:
+        try:
+            timeout = int(db_timeout)
+        except Exception:
+            timeout = 15
+    else:
+        timeout = 15
+
+    return {"base_url": db_base or "", "token": db_token or "", "timeout": timeout}
 
 
 def _coerce_firefly_mapping(pattern_config: dict | None) -> dict:

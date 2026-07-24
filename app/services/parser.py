@@ -180,4 +180,41 @@ def extract_transaction(source: str | Path | bytes | object, config: dict | None
 
 
 def extract_transaction_details(source: str | Path | bytes | object, config: dict | None = None) -> dict:
-    return extract_transaction(source, config=config).as_dict()
+    # Return the same TransactionDetails as a dict but include regex groups
+    # so mapping resolvers can consume `regex_group` mappings.
+    tx = extract_transaction(source, config=config)
+    base = tx.as_dict()
+
+    # attempt to find the matching pattern again to capture groups
+    body_text = None
+    if isinstance(source, bytes):
+        message = BytesParser(policy=policy.default).parsebytes(source)
+        body_text = _extract_text_from_message(message)
+    elif isinstance(source, (str, Path)):
+        path = Path(source) if isinstance(source, (str, Path)) else None
+        if path is not None and path.exists():
+            raw_email = path.read_bytes()
+            message = BytesParser(policy=policy.default).parsebytes(raw_email)
+            body_text = _extract_text_from_message(message)
+        else:
+            body_text = _coerce_text_content(str(source))
+    elif hasattr(source, "text") or hasattr(source, "html"):
+        body_parts: list[str] = []
+        if getattr(source, "text", None):
+            body_parts.append(_coerce_text_content(str(source.text))) # type: ignore
+        if getattr(source, "html", None):
+            body_parts.append(_coerce_text_content(str(source.html))) # type: ignore
+        body_text = "\n".join(part for part in body_parts if part)
+
+    patterns = build_transaction_patterns(config)
+    if body_text is not None and patterns:
+        for pattern in patterns:
+            m = pattern["compiled"].search(body_text)
+            if not m:
+                continue
+            # attach positional groups and named groupdict
+            base["groups"] = list(m.groups())
+            base["groupdict"] = m.groupdict()
+            break
+
+    return base

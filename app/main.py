@@ -4,6 +4,7 @@ import os
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
+import logging
 
 from app.db import session as database
 from app.api.v1.endpoints import status, sync, logs, transactions, rules, mailboxes
@@ -12,6 +13,10 @@ from app.api.v1.endpoints import regex_preview, ai, settings, autocomplete
 
 # Create FastAPI app
 app = FastAPI(title="Mail2Firefly Dashboard")
+
+# Configure logging so debug messages from the service are visible under uvicorn
+logging.basicConfig(level=logging.DEBUG)
+logging.getLogger('mail2firefly').setLevel(logging.DEBUG)
 
 
 def _get_dist_dir() -> str:

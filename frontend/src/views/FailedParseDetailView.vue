@@ -50,13 +50,11 @@ onMounted(load)
                     <p class="font-body-md">{{ tx.status }}</p>
 
                     <p class="mt-sm font-label-mono text-label-mono">Matched Rule</p>
-                    <p class="font-body-md">{{ tx.rule_name || 'Unknown / Not recorded' }}</p>
+                    <p class="font-body-md">
+                        <router-link v-if="tx.rule_id" :to="`/parsing-rules/add?id=${tx.rule_id}`">{{ tx.rule_name || 'Unnamed rule' }}</router-link>
+                        <span v-else>{{ tx.rule_name || 'Unknown / Not recorded' }}</span>
+                    </p>
                 </div>
-            </div>
-
-            <div class="bg-surface-container p-md rounded-xl">
-                <h3 class="font-body-md">Error</h3>
-                <pre class="whitespace-pre-wrap">{{ tx.error_message || 'No error message recorded' }}</pre>
             </div>
 
             <div class="bg-surface-container p-md rounded-xl">
@@ -65,6 +63,21 @@ onMounted(load)
                 <p>{{ tx.email_subject || '—' }}</p>
                 <p class="font-label-mono text-label-mono mt-sm">Source</p>
                 <p>{{ tx.source_name || '—' }}</p>
+                <div class="mt-sm">
+                    <h4 class="font-body-sm">Rendered Body</h4>
+                    <div class="prose bg-white p-sm rounded-sm" v-if="tx.raw_email" v-html="tx.raw_email"></div>
+                    <div v-else class="font-label-mono text-label-mono">(no raw email available)</div>
+                </div>
+            </div>
+
+            <div class="bg-surface-container p-md rounded-xl">
+                <h3 class="font-body-md">Body Sent To Firefly</h3>
+                <pre class="whitespace-pre-wrap">{{ tx.firefly_payload || 'No payload recorded' }}</pre>
+            </div>
+
+            <div class="bg-surface-container p-md rounded-xl">
+                <h3 class="font-body-md">Error</h3>
+                <pre class="whitespace-pre-wrap">{{ tx.error_message || 'No error message recorded' }}</pre>
             </div>
         </div>
     </div>

@@ -36,9 +36,13 @@ def init_db() -> None:
                 currency TEXT,
                 status TEXT NOT NULL, -- 'synced', 'pending', 'error'
                 error_message TEXT,
+                rule_name TEXT,
+                rule_id INTEGER,
                 source_name TEXT,
                 email_subject TEXT,
-                reference_no TEXT
+                reference_no TEXT,
+                raw_email TEXT,
+                firefly_payload TEXT
             )
         """)
 
@@ -123,6 +127,17 @@ def init_db() -> None:
             cursor.execute("ALTER TABLE parsing_rules ADD COLUMN mappings_json TEXT")
         if 'condition_mode' not in cols:
             cursor.execute("ALTER TABLE parsing_rules ADD COLUMN condition_mode TEXT")
+        # Ensure transactions has rule_name and rule_id columns for older DBs
+        cursor.execute("PRAGMA table_info(transactions)")
+        tx_cols = [r[1] for r in cursor.fetchall()]
+        if 'rule_name' not in tx_cols:
+            cursor.execute("ALTER TABLE transactions ADD COLUMN rule_name TEXT")
+        if 'rule_id' not in tx_cols:
+            cursor.execute("ALTER TABLE transactions ADD COLUMN rule_id INTEGER")
+        if 'raw_email' not in tx_cols:
+            cursor.execute("ALTER TABLE transactions ADD COLUMN raw_email TEXT")
+        if 'firefly_payload' not in tx_cols:
+            cursor.execute("ALTER TABLE transactions ADD COLUMN firefly_payload TEXT")
         conn.commit()
 
 
@@ -136,6 +151,10 @@ def log_transaction(
     source_name: str | None = None,
     email_subject: str | None = None,
     reference_no: str | None = None,
+    rule_name: str | None = None,
+    rule_id: int | None = None,
+    raw_email: str | None = None,
+    firefly_payload: str | None = None,
 ) -> int:
     """Logs a parsed transaction attempt to the database."""
     with get_db_connection() as conn:
@@ -143,8 +162,8 @@ def log_transaction(
         cursor.execute(
             """
             INSERT INTO transactions (
-                timestamp, transaction_date, merchant, amount, currency, status, error_message, source_name, email_subject, reference_no
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                timestamp, transaction_date, merchant, amount, currency, status, error_message, rule_name, rule_id, source_name, email_subject, reference_no, raw_email, firefly_payload
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 datetime.now().isoformat(),
@@ -154,9 +173,13 @@ def log_transaction(
                 currency,
                 status,
                 error_message,
+                rule_name,
+                rule_id,
                 source_name,
                 email_subject,
                 reference_no,
+                raw_email,
+                firefly_payload,
             ),
         )
         conn.commit()

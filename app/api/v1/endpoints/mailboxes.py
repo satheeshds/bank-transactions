@@ -1,4 +1,5 @@
 from __future__ import annotations
+import logging
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
@@ -14,6 +15,7 @@ from app.config import load_config
 
 router = APIRouter(prefix="/api/v1", tags=["mailboxes"])
 
+logger = logging.getLogger(__name__)
 
 @router.get("/mailboxes")
 def list_mailboxes() -> dict[str, Any]:
@@ -65,9 +67,6 @@ def list_mailboxes() -> dict[str, Any]:
         enhanced.append(nb)
 
     return {"mailboxes": enhanced}
-
-
-    
 
 
 
@@ -257,6 +256,7 @@ def mailbox_sample_with_filter(mailbox_id: int, payload: dict) -> dict:
 
     Expects JSON payload with optional `conditions` (list) and `condition_mode` ('AND'|'OR').
     """
+    logger.debug("getting sample")
     # Reuse the same mailbox resolution as the GET endpoint
     try:
         mb = database.get_mailbox_by_id(mailbox_id)
@@ -294,6 +294,9 @@ def mailbox_sample_with_filter(mailbox_id: int, payload: dict) -> dict:
             for c in conditions:
                 field = c.get('field')
                 value = c.get('value')
+                neg = c.get('not')
+                if neg is True:
+                    query_filter["not"] = True
                 if field and value:
                     # map our fields to imap_tools keywords
                     if field == 'from':
@@ -337,8 +340,10 @@ def mailbox_sample_with_filter(mailbox_id: int, payload: dict) -> dict:
                             query_filter['sent_date'] = parsed_date
 
             # build_query will add processed_tag if configured
-            q = imap_service.build_query(query_filter, processed_tag=mb.get('processed_tag'))
+            logger.debug("building query")
+            q = imap_service.build_query(conditions, processed_tag=mb.get('processed_tag'))
             messages = list(client.fetch(q, limit=1, reverse=True))
+            logger.debug(f"fetched {len(messages)} messages")
             if not messages:
                 return {"sample_text": "", "sample_meta": {}}
             msg = messages[0]
@@ -349,7 +354,7 @@ def mailbox_sample_with_filter(mailbox_id: int, payload: dict) -> dict:
                 "to": getattr(msg, "to", None) or "",
                 "cc": getattr(msg, "cc", None) or "",
                 "bcc": getattr(msg, "bcc", None) or "",
-                "sent_date": getattr(msg, "date", None) or "",
+                "date": getattr(msg, "date", None) or "",
                 "message_id": getattr(msg, "message_id", None) or "",
             }
             return {"sample_text": body, "sample_meta": meta}

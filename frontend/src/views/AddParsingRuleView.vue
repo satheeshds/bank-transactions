@@ -173,7 +173,7 @@ function loadSample() {
                 else if (data && data.sample_html) form.sample_text = stripHtml(data.sample_html)
                 else if (data && data.error) form.sample_text = `Error: ${data.error}`
                 else form.sample_text = ''
-                // capture optional metadata (subject, from, sent_date, etc.) for IMAP field preview
+                // capture optional metadata (subject, from, date, etc.) for IMAP field preview
                 if (data && data.sample_meta) form.sample_meta = data.sample_meta
                 else form.sample_meta = {}
             })
@@ -212,53 +212,10 @@ function stripHtml(html) {
     }
 }
 
-const fireflyFields = [
-    { key: 'type', label: 'Type' },
-    { key: 'date', label: 'Date' },
-    { key: 'amount', label: 'Amount' },
-    { key: 'description', label: 'Description' },
-    { key: 'order', label: 'Order' },
-    { key: 'currency_id', label: 'Currency ID' },
-    { key: 'currency_code', label: 'Currency Code' },
-    { key: 'foreign_amount', label: 'Foreign Amount' },
-    { key: 'foreign_currency_id', label: 'Foreign Currency ID' },
-    { key: 'foreign_currency_code', label: 'Foreign Currency Code' },
-    { key: 'budget_id', label: 'Budget ID' },
-    { key: 'budget_name', label: 'Budget Name' },
-    { key: 'category_id', label: 'Category ID' },
-    { key: 'category_name', label: 'Category Name' },
-    { key: 'source_id', label: 'Source Account ID' },
-    { key: 'source_name', label: 'Source Account Name' },
-    { key: 'destination_id', label: 'Destination Account ID' },
-    { key: 'destination_name', label: 'Destination Account Name' },
-    { key: 'reconciled', label: 'Reconciled' },
-    { key: 'piggy_bank_id', label: 'Piggy Bank ID' },
-    { key: 'piggy_bank_name', label: 'Piggy Bank Name' },
-    { key: 'bill_id', label: 'Bill ID' },
-    { key: 'bill_name', label: 'Bill Name' },
-    { key: 'tags', label: 'Tags' },
-    { key: 'notes', label: 'Notes' },
-    { key: 'internal_reference', label: 'Internal Reference' },
-    { key: 'external_id', label: 'External ID' },
-    { key: 'external_url', label: 'External URL' },
-    { key: 'sepa_cc', label: 'SEPA CC' },
-    { key: 'sepa_ct_op', label: 'SEPA CT OP' },
-    { key: 'sepa_ct_id', label: 'SEPA CT ID' },
-    { key: 'sepa_db', label: 'SEPA DB' },
-    { key: 'sepa_country', label: 'SEPA Country' },
-    { key: 'sepa_ep', label: 'SEPA EP' },
-    { key: 'sepa_ci', label: 'SEPA CI' },
-    { key: 'sepa_batch_id', label: 'SEPA Batch ID' },
-    { key: 'interest_date', label: 'Interest Date' },
-    { key: 'book_date', label: 'Book Date' },
-    { key: 'process_date', label: 'Process Date' },
-    { key: 'due_date', label: 'Due Date' },
-    { key: 'payment_date', label: 'Payment Date' },
-    { key: 'invoice_date', label: 'Invoice Date' },
-]
+import fireflyFields from '../../../data/firefly_fields.json'
 
 const imapFields = [
-    { key: 'sent_date', label: 'Sent Date' },
+    { key: 'date', label: 'Sent Date' },
     { key: 'subject', label: 'Subject' },
     { key: 'from', label: 'From' },
     { key: 'to', label: 'To' },
@@ -617,7 +574,7 @@ async function submitRule() {
                                         <option value="to">To</option>
                                         <option value="subject">Subject</option>
                                         <option value="text">Text</option>
-                                        <option value="sent_date">Sent Date</option>
+                                        <option value="date">Sent Date</option>
                                     </select>
 
                                     <!-- Operators: fixed for certain fields -->
@@ -626,13 +583,13 @@ async function submitRule() {
                                     <select v-else v-model="c.operator" class="px-sm py-xs border rounded">
                                         <option value="equals">Equals</option>
                                         <option value=">=">Greater than or equal</option>
-                                        <option value="<=">Less than or equal</option>
+                                        <option value="<">Less than</option>
                                     </select>
 
-                                    <!-- Value input: date picker for sent_date, email validation for from/to, text input otherwise -->
-                                    <input v-if="c.field !== 'sent_date' && c.operator !== 'within_last'" v-model="c.value" :class="['px-sm py-xs border rounded', isEmailField(c.field) && c.value && !isValidEmail(c.value) ? 'border-error' : '']" placeholder="Value" />
+                                    <!-- Value input: date picker for date, email validation for from/to, text input otherwise -->
+                                    <input v-if="c.field !== 'date' && c.operator !== 'within_last'" v-model="c.value" :class="['px-sm py-xs border rounded', isEmailField(c.field) && c.value && !isValidEmail(c.value) ? 'border-error' : '']" placeholder="Value" />
 
-                                    <input v-else-if="c.field === 'sent_date'" type="date" v-model="c.value" class="px-sm py-xs border rounded" />
+                                    <input v-else-if="c.field === 'date'" type="date" v-model="c.value" class="px-sm py-xs border rounded" />
 
                                     <div v-if="isEmailField(c.field) && c.value" class="text-xs ml-xs" :class="isValidEmail(c.value) ? 'text-muted' : 'text-error'">{{ isValidEmail(c.value) ? 'Valid email' : 'Invalid email' }}</div>
 
@@ -705,8 +662,8 @@ async function submitRule() {
                                             <option value="regex_group">Regex Group</option>
                                             <option value="fixed">Fixed Value</option>
                                             <option value="custom_key">Custom Key</option>
-                                                                            <option value="imap">IMAP Field</option>
-                                                                            <option value="firefly">Firefly Value</option>
+                                            <option value="imap">IMAP Field</option>
+                                            <option value="firefly">Firefly Value</option>
                                         </select>
                                         <select v-if="m.source_type === 'regex_group'" v-model="m.group" class="px-sm py-xs border rounded">
                                             <option v-if="availableGroups().length===0" disabled>No groups</option>

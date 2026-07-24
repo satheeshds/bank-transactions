@@ -1,6 +1,32 @@
 from __future__ import annotations
 
 from app.models import TransactionDetails
+from app.services.mapping_resolvers import apply_mappings
+from pathlib import Path
+import json
+
+# cached firefly fields loaded from shared data file
+_FIREFLY_FIELDS: list[dict] | None = None
+
+
+def _load_firefly_fields() -> list[dict]:
+    global _FIREFLY_FIELDS
+    if _FIREFLY_FIELDS is not None:
+        return _FIREFLY_FIELDS
+    try:
+        base = Path(__file__).resolve().parents[2]
+        p = base / "data" / "firefly_fields.json"
+        if p.exists():
+            with p.open("r", encoding="utf-8") as fh:
+                _FIREFLY_FIELDS = json.load(fh)
+        else:
+            _FIREFLY_FIELDS = []
+    except Exception:
+        _FIREFLY_FIELDS = []
+    return _FIREFLY_FIELDS
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def _coerce_details(details: dict | TransactionDetails) -> dict:
@@ -9,20 +35,7 @@ def _coerce_details(details: dict | TransactionDetails) -> dict:
     return details
 
 
-def _get_firefly_mapping(details: dict, statement_config: dict | None = None) -> dict:
-    details = _coerce_details(details)
-    statement_firefly = (statement_config or {}).get("firefly") or {}
-    details_firefly = (details.get("firefly") or {}) if isinstance(details.get("firefly"), dict) else {}
-    if details_firefly:
-        return details_firefly
-
-    details_firefly_mapping = (
-        details.get("firefly_mapping") or {}
-    ) if isinstance(details.get("firefly_mapping"), dict) else {}
-    if details_firefly_mapping:
-        return details_firefly_mapping
-
-    return statement_firefly
+# firefly mapping resolution inlined into payload builder; helper removed
 
 
 def _resolve_mapping_value(value: object, details: dict | None = None, statement_config: dict | None = None) -> object:
@@ -43,48 +56,66 @@ def _resolve_mapping_value(value: object, details: dict | None = None, statement
     return resolved.replace("{account_id}", account_id)
 
 
-def _build_firefly_payload(details: dict, statement_config: dict | None = None) -> dict:
+def _build_firefly_payload(details: dict, statement_config: dict | None = None, message: object | None = None) -> dict:
     details = _coerce_details(details)
+    logger.debug("build_firefly_payload start - details: %s, statement_config: %s", details, statement_config)
+    # apply parsing-rule mappings if present on details
+    mappings = details.get("mappings") or details.get("mappings_json") or None
+    logger.debug("mappings: %s", mappings)
+    if isinstance(mappings, list):
+        logger.debug("applying mappings: %s", mappings)
+        details = apply_mappings(details, mappings, message)
+        logger.debug("details after mappings: %s", details)
     statement_firefly = (statement_config or {}).get("firefly") or {}
     configured_account_id = str(statement_firefly.get("account_id", "") or "")
     merchant_name = str(details.get("merchant") or "Bank transaction")
-    pattern_firefly = _get_firefly_mapping(details, statement_config)
+    # resolve pattern-specific firefly mapping: details.firefly -> details.firefly_mapping -> statement_config.firefly
+    pattern_firefly = (details.get("firefly") or {}) if isinstance(details.get("firefly"), dict) else {}
+    if not pattern_firefly:
+        pattern_firefly = (details.get("firefly_mapping") or {}) if isinstance(details.get("firefly_mapping"), dict) else {}
+    if not pattern_firefly:
+        pattern_firefly = (statement_config or {}).get("firefly") or {}
+    logger.debug("resolved pattern_firefly: %s", pattern_firefly)
 
-    pattern_source_field = str(
-        _resolve_mapping_value(
-            pattern_firefly.get("source_field", statement_firefly.get("source_field", "source_id")),
-            details,
-            statement_config,
-        )
-        or "source_id"
-    )
-    pattern_destination_field = str(
-        _resolve_mapping_value(
-            pattern_firefly.get("destination_field", statement_firefly.get("destination_field", "destination_name")),
-            details,
-            statement_config,
-        )
-        or "destination_name"
-    )
+    
+    
     pattern_source_value = _resolve_mapping_value(pattern_firefly.get("source_value"), details, statement_config)
     pattern_destination_value = _resolve_mapping_value(pattern_firefly.get("destination_value"), details, statement_config)
-    transaction_type = pattern_firefly.get("transaction_type")
+    logger.debug("pattern_source_value=%s pattern_destination_value=%s", pattern_source_value, pattern_destination_value)
+    transaction_type = str(details.get("transaction_type") or details.get("type") or "").strip().lower() or "withdrawal"
     if not isinstance(transaction_type, str) or not transaction_type.strip():
-        transaction_type = str(details.get("transaction_type") or "").strip().lower() or "withdrawal"
-
-    return {
-        "type": transaction_type.strip(),
-        pattern_source_field: merchant_name if pattern_source_value is None else pattern_source_value,
-        pattern_destination_field: (
-            configured_account_id if pattern_destination_value is None else pattern_destination_value
-        ),
-    }
+        transaction_type = "withdrawal"
+    payload = {} 
+    # Add any explicit Firefly fields present in details to the payload (single source list)
+    try:
+        ff_fields = _load_firefly_fields()
+        for f in ff_fields:
+            key = f.get("key")
+            if not key:
+                continue
+            # don't overwrite fields already set (pattern fields)
+            if key in payload:
+                continue
+            if key in details and details.get(key) is not None:
+                v = details.get(key)
+                # stringify datetime-like objects to avoid JSON serialization errors
+                try:
+                    if not isinstance(v, str) and hasattr(v, "strftime"):
+                        v = v.strftime("%Y-%m-%d %H:%M:%S%z")  # type: ignore
+                except Exception:
+                    pass
+                payload[key] = v
+    except Exception:
+        logger.debug("failed to apply explicit firefly fields from shared list", exc_info=True)
+    logger.debug("final firefly payload: %s", payload)
+    return payload
 
 
 def _build_firefly_transaction(
     details: dict | TransactionDetails,
     message_date: object | None = None,
     statement_config: dict | None = None,
+    message: object | None = None,
 ) -> dict:
     details = _coerce_details(details)
     amount = float(details.get("amount", 0))
@@ -95,7 +126,7 @@ def _build_firefly_transaction(
     if hasattr(transaction_date, "strftime"):
         transaction_date = transaction_date.strftime("%Y-%m-%d %H:%M:%S%z")  # type: ignore
 
-    payload = _build_firefly_payload(details, statement_config)
+    payload = _build_firefly_payload(details, statement_config, message)
 
     return {
         "error_if_duplicate_hash": False,
@@ -103,34 +134,11 @@ def _build_firefly_transaction(
         "fire_webhooks": True,
         "transactions": [
             {
-                "date": transaction_date if transaction_date else "",
-                "amount": str(abs(amount)),
-                "description": description_value,
-                "order": 0,
-                "currency_code": details.get("currency") or "INR",
                 **payload,
                 "notes": (
                     f"channel={details.get('channel', '')}; ref={details.get('reference_no', '')}".strip("; ")
                 ),
-                "reconciled": False,
-                "tags": None,
-                "internal_reference": "",
-                "external_id": details.get("vpa") or "",
-                "external_url": "",
-                "sepa_cc": "",
-                "sepa_ct_op": "",
-                "sepa_ct_id": "",
-                "sepa_db": "",
-                "sepa_country": "",
-                "sepa_ep": "",
-                "sepa_ci": "",
-                "sepa_batch_id": "",
-                "interest_date": "",
-                "book_date": "",
-                "process_date": "",
-                "due_date": "",
-                "payment_date": "",
-                "invoice_date": "",
+                
             }
         ],
     }
