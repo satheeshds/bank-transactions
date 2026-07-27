@@ -61,9 +61,8 @@ def build_query(query_filter: dict | list, processed_tag: str | None = None):
                 else:
                     search_key = None
 
-                if neg:
+                if neg and search_key:
                     search_key = f"NOT {search_key}"
-            else:
                 # AND -> continue accumulating
                 pass
 
