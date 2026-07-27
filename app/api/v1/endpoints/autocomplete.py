@@ -57,8 +57,9 @@ def autocomplete(kind: str, query: str = Query('', alias='query'), limit: int = 
         logger.exception('failed to build Firefly client: %s', e)
         return []
 
-    # create path with query string; Firefly autocomplete path is /v1/autocomplete/{endpoint}
-    qs = '&'.join([f"{k}={str(v)}" for k,v in params.items()])
+    from urllib.parse import urlencode
+
+    qs = urlencode(params, doseq=True)
     path = f"/api/v1/autocomplete/{endpoint}"
     if qs:
         path = f"{path}?{qs}"
