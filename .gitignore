@@ -22,5 +22,5 @@ sample-data/
 .db.env
 .env
 categorizer-data/
-data/
+data/*.db
 rclone-config/rclone.conf
