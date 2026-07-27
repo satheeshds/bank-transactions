@@ -53,7 +53,7 @@ def start_sync_background() -> int:
     except Exception as e:
         # Release lock if database or startup actions failed
         _sync_lock.release()
-        raise e
+        raise
 
 
 def _run_sync_worker(run_id: int) -> None:
