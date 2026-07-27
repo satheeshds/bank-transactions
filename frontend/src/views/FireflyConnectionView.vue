@@ -133,7 +133,7 @@ onUnmounted(() => { if (interval) clearInterval(interval) })
                         <label class="font-body-sm">Base URL</label>
                         <input v-model="form.base_url" class="w-full p-sm border rounded" />
                         <label class="font-body-sm">API Token</label>
-                        <input v-model="form.token" class="w-full p-sm border rounded" />
+                        <input v-model="form.token" type="password" autocomplete="off" class="w-full p-sm border rounded" />
                         <label class="font-body-sm">Timeout (s)</label>
                         <input v-model="form.timeout" class="w-24 p-sm border rounded" />
                         <div class="mt-sm">
