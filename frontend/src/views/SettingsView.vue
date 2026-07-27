@@ -3,15 +3,10 @@ import { ref, onMounted } from 'vue'
 const apiKey = ref('')
 const saved = ref(false)
 
-onMounted(async () => {
-    try {
-        const res = await fetch('/api/v1/settings/gemini_api_key')
-        if (res.ok) {
-            const j = await res.json()
-            apiKey.value = j.value || ''
-        }
-    } catch (e) { }
-})
+// Don't fetch and display the stored API key in the browser.
+// If needed, the backend can expose a boolean "configured" flag instead.
+
+onMounted(() => {})
 
 async function save() {
     try {
