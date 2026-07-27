@@ -65,7 +65,7 @@ onMounted(load)
                 <p>{{ tx.source_name || '—' }}</p>
                 <div class="mt-sm">
                     <h4 class="font-body-sm">Rendered Body</h4>
-                    <div class="prose bg-white p-sm rounded-sm" v-if="tx.raw_email" v-html="tx.raw_email"></div>
+                    <pre v-if="tx.raw_email" class="prose bg-white p-sm rounded-sm whitespace-pre-wrap">{{ tx.raw_email }}</pre>
                     <div v-else class="font-label-mono text-label-mono">(no raw email available)</div>
                 </div>
             </div>
