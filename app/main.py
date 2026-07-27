@@ -14,9 +14,11 @@ from app.api.v1.endpoints import regex_preview, ai, settings, autocomplete
 # Create FastAPI app
 app = FastAPI(title="Mail2Firefly Dashboard")
 
-# Configure logging so debug messages from the service are visible under uvicorn
-logging.basicConfig(level=logging.DEBUG)
-logging.getLogger('mail2firefly').setLevel(logging.DEBUG)
+# Configure logging level (default INFO; set MAIL2FIREFLY_LOG_LEVEL=DEBUG for troubleshooting)
+log_level = os.getenv("MAIL2FIREFLY_LOG_LEVEL", "INFO").upper()
+level = getattr(logging, log_level, logging.INFO)
+logging.basicConfig(level=level)
+logging.getLogger("mail2firefly").setLevel(level)
 
 
 def _get_dist_dir() -> str:
