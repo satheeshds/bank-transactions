@@ -170,7 +170,9 @@ class TransactionImportService:
                 continue
             
             mailbox_row = database.get_mailbox_by_id(mailbox_entry['id'])
-            self.log(f"Processing rule '{rule.get('rule_name')}' for mailbox data: {mailbox_row}", "DEBUG")
+            safe_mailbox_row = dict(mailbox_row or {})
+            safe_mailbox_row.pop("password", None)
+            self.log(f"Processing rule '{rule.get('rule_name')}' for mailbox data: {safe_mailbox_row}", "DEBUG")
             # Conditions may be a list or a single mapping
             conditions = rule.get('conditions') or []
             if isinstance(conditions, dict):
