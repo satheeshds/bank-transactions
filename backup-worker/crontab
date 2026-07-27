@@ -1,0 +1,42 @@
+# Environment variables for fcron jobs (preloaded from docker-compose)
+DB_CONNECTION=mysql
+DB_PASSWORD=secret_firefly_password
+DB_DATABASE=firefly
+DB_USERNAME=firefly
+DB_PORT=3306
+DB_HOST=db
+RCLONE_REMOTE=dropbox-firefly-db
+BACKUP_FOLDER=firefly_iii_backup
+BACKUP_AGE=7
+TZ=Asia/Kolkata
+
+# Example fcrontab. Replace this file (or mount your own) to define your jobs.
+# Standard 5-field cron syntax works: minute hour day month weekday command
+#
+# The global "!" line below sets defaults for ALL jobs in this file:
+#   mailto(...)         address to email job output to
+#   erroronlymail(true) only send an email if the job exits non-zero
+# MAILTO is substituted from the $MAILTO environment variable by entrypoint.sh.
+!mailto(__MAILTO__),erroronlymail(true)
+
+# fcron jobs run with a minimal PATH that doesn't include /usr/local/bin
+# (where run-logged lives), so make sure it's on PATH explicitly.
+PATH=/usr/local/bin:/usr/bin:/bin
+
+# Wrap each job with `run-logged` so its output is (a) still captured by
+# fcron for the error email above, and (b) appended to a file that
+# entrypoint.sh tails to stdout, so it also shows up in `docker logs`.
+# Plain output redirection (`>>`) or piping through `tee` would NOT work
+# here: see /usr/local/bin/run-logged for why.
+
+# Run every 5 minutes
+# */5 * * * * run-logged sh -c 'echo "fcron is running: $(date)"'
+
+# Run once a day at 02:00
+# 0 2 * * * run-logged sh -c 'echo "daily job ran at $(date)"'
+
+# Example of a job whose failure will trigger an error email
+# */2 * * * * run-logged sh -c "exit 1"
+
+# backup script run daily (source /etc/backup_env so job sees container env)
+%daily * * run-logged sh /app/backup.sh

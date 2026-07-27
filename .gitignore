@@ -23,3 +23,4 @@ sample-data/
 .env
 categorizer-data/
 data/
+rclone-config/rclone.conf
