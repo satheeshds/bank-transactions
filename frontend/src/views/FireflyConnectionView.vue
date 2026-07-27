@@ -1,7 +1,6 @@
 <script setup>
 import { ref, reactive, onMounted, onUnmounted, watch } from 'vue'
 import store from '../store.js'
-import { reactive as r } from 'vue'
 
 const conn = reactive({ connected: false, latency: null, baseUrl: '-', error: null })
 const loading = ref(true)
