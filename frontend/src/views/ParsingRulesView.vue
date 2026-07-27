@@ -56,14 +56,15 @@ onUnmounted(() => { if (interval) clearInterval(interval) })
                         <th class="px-lg py-sm font-label-mono text-label-mono text-on-surface-variant uppercase">Regex Pattern</th>
                         <th class="px-lg py-sm font-label-mono text-label-mono text-on-surface-variant uppercase">Type</th>
                         <th class="px-lg py-sm font-label-mono text-label-mono text-on-surface-variant uppercase">Card</th>
+                        <th class="px-lg py-sm font-label-mono text-label-mono text-on-surface-variant uppercase text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-if="loading && rules.length === 0">
-                        <td colspan="5" class="px-lg py-md text-center text-on-surface-variant">Loading rules...</td>
+                        <td colspan="6" class="px-lg py-md text-center text-on-surface-variant">Loading rules...</td>
                     </tr>
                     <tr v-else-if="rules.length === 0">
-                        <td colspan="5" class="px-lg py-xl text-center text-on-surface-variant">
+                        <td colspan="6" class="px-lg py-xl text-center text-on-surface-variant">
                             <div class="flex flex-col items-center gap-sm">
                                 <span class="material-symbols-outlined text-[40px]">rule</span>
                                 <p>No parsing rules found in config.toml</p>
