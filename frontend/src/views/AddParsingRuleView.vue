@@ -268,10 +268,27 @@ async function loadExistingRule(id) {
         form.conditions = j.conditions || []
         form.condition_mode = j.condition_mode || 'AND'
         form.mappings = j.mappings || []
-        // restore firefly_selected if rule stored an id/name
+        // restore firefly_selected for mappings saved with a Firefly value
         for (const m of form.mappings) {
-            if (m && m.firefly_id) {
+            if (!m) continue
+            // legacy: if backend stored explicit firefly_id/firefly_name fields
+            if (m.firefly_id) {
                 m.firefly_selected = { id: m.firefly_id, name: m.firefly_name || m.firefly_selected || null, label: m.firefly_name || m.firefly_selected || String(m.firefly_id) }
+                m.firefly_query = m.firefly_selected.label || (m.firefly_selected.name || m.firefly_selected.id)
+                m.source_type = 'firefly'
+                continue
+            }
+            // current format: frontend stores Firefly selections in `value`
+            if (m.source_type === 'firefly' && (m.value || m.value === 0)) {
+                // if the mapping key ends with _id we stored an id, otherwise a name/label
+                if (String(m.fieldKey || '').endsWith('_id')) {
+                    m.firefly_selected = { id: m.value, name: null, label: String(m.value) }
+                } else {
+                    m.firefly_selected = { id: null, name: m.value, label: m.value }
+                }
+                // populate the visible search input so the selected value appears in UI
+                m.firefly_query = m.firefly_selected.label || (m.firefly_selected.name || m.firefly_selected.id)
+                m.source_type = 'firefly'
             }
         }
         // preserve any mapping.group values so they remain selectable even without a sample
