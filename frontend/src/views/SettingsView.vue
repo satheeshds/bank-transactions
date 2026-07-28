@@ -31,7 +31,7 @@ async function save() {
                     <input v-model="apiKey" type="password" autocomplete="off" class="px-sm py-xs border rounded" placeholder="Enter Gemini API key" />
                     <div class="flex items-center gap-sm">
                         <button @click="save" class="px-sm py-xs bg-secondary text-white rounded">Save</button>
-                        <span v-if="saved" class="text-success">Saved</span>
+                        <span v-if="saved" class="text-on-tertiary-container">Saved</span
                     </div>
                 </label>
             </div>
