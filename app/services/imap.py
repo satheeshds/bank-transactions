@@ -56,7 +56,7 @@ def build_query(query_filter: dict | list, processed_tag: str | None = None):
                     search_key = f"SUBJECT \"{value}\""
                 elif fld in ("text", "body"):
                     search_key = f"TEXT \"{value}\""
-                elif fld in ("sent_date",) and op in (">=", "<"):
+                elif fld in ("sent_date", "date") and op in (">=", "<"):
                     parsed_date = None
                     if isinstance(value, date):
                         parsed_date = value
