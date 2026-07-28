@@ -1,11 +1,53 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { formatRelativeTime } from '../utils.js'
 
 const route = useRoute()
 const tx = ref(null)
 const loading = ref(true)
+
+function sanitizeHtml(dirty) {
+    if (!dirty || typeof dirty !== 'string') return ''
+    try {
+        const parser = new DOMParser()
+        const doc = parser.parseFromString(dirty, 'text/html')
+
+        // Remove dangerous elements
+        const forbidden = ['script', 'style', 'iframe', 'object', 'embed', 'link', 'form', 'input', 'button']
+        forbidden.forEach(tag => {
+            const els = doc.getElementsByTagName(tag)
+            // Collect first because live HTMLCollection updates
+            const toRemove = Array.from(els)
+            toRemove.forEach(e => e.remove())
+        })
+
+        // Remove event handler attributes and javascript: hrefs
+        const all = doc.getElementsByTagName('*')
+        for (let i = 0; i < all.length; i++) {
+            const el = all[i]
+            // remove on* attributes
+            Array.from(el.attributes).forEach(attr => {
+                const name = attr.name.toLowerCase()
+                const val = attr.value || ''
+                if (name.startsWith('on')) el.removeAttribute(attr.name)
+                if ((name === 'href' || name === 'src') && val.trim().toLowerCase().startsWith('javascript:')) el.removeAttribute(attr.name)
+                if (name === 'style') {
+                    // strip expressions and url(javascript:...)
+                    const cleaned = val.replace(/expression\s*\(|javascript:/gi, '')
+                    el.setAttribute('style', cleaned)
+                }
+            })
+        }
+
+        return doc.body.innerHTML
+    } catch (e) {
+        console.error('sanitizeHtml error', e)
+        return ''
+    }
+}
+
+const cleanedRawEmail = computed(() => sanitizeHtml(tx.value?.raw_email))
 
 async function load() {
     loading.value = true
@@ -65,7 +107,7 @@ onMounted(load)
                 <p>{{ tx.source_name || '—' }}</p>
                 <div class="mt-sm">
                     <h4 class="font-body-sm">Rendered Body</h4>
-                    <pre v-if="tx.raw_email" class="prose bg-white p-sm rounded-sm whitespace-pre-wrap">{{ tx.raw_email }}</pre>
+                    <div v-if="tx.raw_email" class="prose bg-white p-sm rounded-sm" v-html="cleanedRawEmail"></div>
                     <div v-else class="font-label-mono text-label-mono">(no raw email available)</div>
                 </div>
             </div>
