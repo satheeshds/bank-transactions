@@ -216,7 +216,7 @@ async function deleteMailbox(id) {
                     <button class="px-md py-2 border rounded-md" @click="() => (showForm = false)" :disabled="adding">Cancel</button>
                 </div>
                 <div v-if="testResult" class="mt-sm">
-                    <p :class="testResult.ok ? 'text-success' : 'text-error'">{{ testResult.msg }}</p>
+                    <p :class="testResult.ok ? 'text-on-tertiary-container' : 'text-error'">{{ testResult.msg }}</p>
                 </div>
             </div>
 
