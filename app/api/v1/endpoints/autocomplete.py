@@ -73,7 +73,7 @@ def autocomplete(kind: str, query: str = Query('', alias='query'), limit: int = 
     except Exception as e:
         logger.exception('unexpected error calling firefly: %s', e)
         return []
-# Firefly responses vary; normalize into [{id,label}, ...]
+    # Firefly responses vary; normalize into [{id,label}, ...]
     if isinstance(data, dict) and 'data' in data:
         items = data['data']
     elif isinstance(data, list):
