@@ -4,9 +4,9 @@ from pathlib import Path
 import re
 import tomllib
 
-from models import SourceDefinition
+from app.models import SourceDefinition
 
-CONFIG_PATH = Path(__file__).with_name("config.toml")
+CONFIG_PATH = Path(__file__).parent.parent / "config.toml"
 DEFAULT_TRANSACTION_PATTERNS = [
     {
         "name": "sbi_card",
@@ -144,15 +144,27 @@ def build_firefly_config(config: dict | None = None) -> dict:
     if not config:
         return {}
 
-    firefly_config = config.get("firefly")
-    if not isinstance(firefly_config, dict):
-        return {}
+    # Prefer runtime overrides stored in the database (settings table) when available.
+    try:
+        from app.db import session as database
 
-    return {
-        "base_url": firefly_config.get("base_url", ""),
-        "token": firefly_config.get("token", ""),
-        "timeout": firefly_config.get("timeout", 15),
-    }
+        db_base = database.get_setting("firefly.base_url")
+        db_token = database.get_setting("firefly.token")
+        db_timeout = database.get_setting("firefly.timeout")
+    except Exception:
+        db_base = db_token = db_timeout = None
+
+
+    # db_timeout stored as string; coerce to int when possible, else fallback
+    if db_timeout is not None:
+        try:
+            timeout = int(db_timeout)
+        except Exception:
+            timeout = 15
+    else:
+        timeout = 15
+
+    return {"base_url": db_base or "", "token": db_token or "", "timeout": timeout}
 
 
 def _coerce_firefly_mapping(pattern_config: dict | None) -> dict:
@@ -186,35 +198,31 @@ def build_transaction_patterns(config: dict | None = None) -> list[dict]:
         raise TypeError("transaction_patterns must be a mapping or a list of mappings")
 
     compiled_patterns: list[dict] = []
-    for index, pattern_config in enumerate(raw_patterns):
-        if isinstance(pattern_config, str):
-            pattern_name = f"pattern_{index + 1}"
-            regex = pattern_config
-            flags = []
-            pattern_transaction_type = ""
-        elif isinstance(pattern_config, dict):
-            pattern_name = pattern_config.get("name", f"pattern_{index + 1}")
-            regex = pattern_config.get("regex") or pattern_config.get("pattern")
-            if not regex:
-                raise ValueError("each transaction pattern requires a regex or pattern value")
-            flags = pattern_config.get("flags", [])
-            pattern_transaction_type = str(pattern_config.get("transaction_type", "") or "").strip().lower()
-            defaults = pattern_config.get("defaults", {}) if isinstance(pattern_config.get("defaults"), dict) else {}
-            if not pattern_transaction_type:
-                pattern_transaction_type = str(defaults.get("transaction_type", "") or "").strip().lower()
-        else:
-            raise TypeError("transaction patterns must be strings or mappings")
+    for pattern_config in raw_patterns:
+        if not isinstance(pattern_config, dict):
+            raise TypeError("each transaction pattern must be a mapping")
 
-        firefly_mapping = _coerce_firefly_mapping(pattern_config if isinstance(pattern_config, dict) else None)
+        regex_str = pattern_config.get("regex")
+        if not regex_str:
+            continue
+
+        flags = _coerce_flags(pattern_config.get("flags"))
+        compiled_regex = re.compile(regex_str, flags)
+
+        field_mapping = pattern_config.get("field_mapping", {})
+        if not isinstance(field_mapping, dict):
+            field_mapping = {}
+
+        firefly_mapping = _coerce_firefly_mapping(pattern_config)
+
         compiled_patterns.append(
             {
-                "name": pattern_name,
-                "regex": regex,
-                "field_mapping": pattern_config.get("field_mapping", {}) if isinstance(pattern_config, dict) else {},
-                "defaults": pattern_config.get("defaults", {}) if isinstance(pattern_config, dict) else {},
-                "transaction_type": pattern_transaction_type,
+                "name": pattern_config.get("name"),
+                "compiled": compiled_regex,
+                "field_mapping": field_mapping,
+                "defaults": pattern_config.get("defaults", {}),
                 "firefly_mapping": firefly_mapping,
-                "compiled": re.compile(regex, _coerce_flags(flags)),
+                "firefly": pattern_config.get("firefly", {}),
             }
         )
 
