@@ -10,8 +10,6 @@ from datetime import datetime, date
 from app.services import imap as imap_service
 
 from app.db import session as database
-from app import config as app_config
-from app.config import load_config
 
 router = APIRouter(prefix="/api/v1", tags=["mailboxes"])
 
@@ -24,26 +22,9 @@ def list_mailboxes() -> dict[str, Any]:
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    # If no mailboxes are stored in DB, fall back to config.toml definitions
+    # If no mailboxes are stored in DB, return empty list (do not fall back to config.toml)
     if not boxes:
-        try:
-            cfg = load_config()
-            defs = app_config.build_source_definitions(cfg)
-            boxes = []
-            for d in defs:
-                mb = d.get('mailbox') or {}
-                boxes.append({
-                    'id': None,
-                    'name': d.get('name') or 'config',
-                    'host': mb.get('host'),
-                    'port': mb.get('port'),
-                    'username': mb.get('username'),
-                    'encryption': mb.get('encryption'),
-                    'processed_tag': d.get('processed_tag') or mb.get('processed_tag'),
-                })
-        except Exception:
-            # ignore config load errors and proceed with empty list
-            boxes = []
+        boxes = []
 
     # Attach a quick connectivity check per mailbox (socket-level)
     enhanced = []
@@ -187,17 +168,9 @@ def mailbox_sample(mailbox_id: int) -> dict:
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    # If not in DB, try config sources
+    # Require mailbox to be present in DB; do not fallback to config.toml
     if mb is None:
-        try:
-            cfg = load_config()
-            defs = app_config.build_source_definitions(cfg)
-            for d in defs:
-                if d.get("id") == mailbox_id or d.get("name") == mailbox_id:
-                    mb = d.get("mailbox") or {}
-                    break
-        except Exception:
-            mb = None
+        mb = None
 
     if mb is None:
         raise HTTPException(status_code=404, detail="Mailbox not found")
@@ -263,16 +236,9 @@ def mailbox_sample_with_filter(mailbox_id: int, payload: dict) -> dict:
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+    # Require mailbox to be present in DB; do not fallback to config.toml
     if mb is None:
-        try:
-            cfg = load_config()
-            defs = app_config.build_source_definitions(cfg)
-            for d in defs:
-                if d.get("id") == mailbox_id or d.get("name") == mailbox_id:
-                    mb = d.get("mailbox") or {}
-                    break
-        except Exception:
-            mb = None
+        mb = None
 
     if mb is None:
         raise HTTPException(status_code=404, detail="Mailbox not found")
@@ -289,56 +255,6 @@ def mailbox_sample_with_filter(mailbox_id: int, payload: dict) -> dict:
         mb_conf = {"host": mb.get("host"), "username": mb.get("username"), "password": mb.get("password")}
         client = imap_service.get_mailbox_client(mb_conf)
         try:
-            # Build imap_tools query kwargs from conditions: simple mapping
-            query_filter = {}
-            for c in conditions:
-                field = c.get('field')
-                value = c.get('value')
-                neg = c.get('not')
-                if neg is True:
-                    query_filter["not"] = True
-                if field and value:
-                    # map our fields to imap_tools keywords
-                    if field == 'from':
-                        query_filter['from_'] = value
-                    elif field == 'to':
-                        query_filter['to'] = value
-                    elif field == 'subject':
-                        query_filter['subject'] = value
-                    elif field == 'text':
-                        query_filter['text'] = value
-                    elif field == 'sent_date':
-                        # imap_tools expects datetime.date for date filters.
-                        # Determine operator and map to imap keywords: equals -> date, >= -> since, <= -> before
-                        op = (c.get('operator') or '').strip()
-                        parsed_date = None
-                        if isinstance(value, date):
-                            parsed_date = value
-                        else:
-                            try:
-                                parsed_date = datetime.fromisoformat(str(value)).date()
-                            except Exception:
-                                for fmt in ("%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y", "%m/%d/%Y"):
-                                    try:
-                                        parsed_date = datetime.strptime(str(value), fmt).date()
-                                        break
-                                    except Exception:
-                                        parsed_date = None
-                        if not parsed_date:
-                            continue
-
-                        if op in ("equals", "=", "=="):
-                            query_filter['sent_date'] = parsed_date
-                        elif op in (">=", "greater than or equal", ">"):
-                            # use sent_date_gte for on-or-after
-                            query_filter['sent_date_gte'] = parsed_date
-                        elif op in ("<=", "less than or equal", "<"):
-                            # use sent_date_lt for strictly before; caller can adjust to make inclusive if desired
-                            query_filter['sent_date_lt'] = parsed_date
-                        else:
-                            # unknown operator: default to exact date
-                            query_filter['sent_date'] = parsed_date
-
             # build_query will add processed_tag if configured
             logger.debug("building query")
             q = imap_service.build_query(conditions, processed_tag=mb.get('processed_tag'))

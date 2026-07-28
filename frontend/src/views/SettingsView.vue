@@ -1,5 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import MailboxesView from './MailboxesView.vue'
+import FireflyConnectionView from './FireflyConnectionView.vue'
+
 const apiKey = ref('')
 const saved = ref(false)
 
@@ -19,16 +22,28 @@ async function save() {
 </script>
 
 <template>
-    <div>
-        <h2 class="font-headline-md text-headline-md text-primary mb-md">Settings</h2>
-        <div class="bg-white border rounded p-md">
-            <label class="flex flex-col mb-md">
-                <span class="font-label-mono mb-xs">Gemini API Key</span>
-                <input v-model="apiKey" type="password" autocomplete="off" class="px-sm py-xs border rounded" placeholder="Enter Gemini API key" />
-            <div class="flex items-center gap-sm">
-                <button @click="save" class="px-sm py-xs bg-secondary text-white rounded">Save</button>
-                <span v-if="saved" class="text-success">Saved</span>
+    <div class="space-y-lg">
+        <div>
+            <h2 class="font-headline-md text-headline-md text-primary mb-md">Settings</h2>
+            <div class="bg-white border rounded p-md">
+                <label class="flex flex-col mb-md">
+                    <span class="font-label-mono mb-xs">Gemini API Key</span>
+                    <input v-model="apiKey" type="password" autocomplete="off" class="px-sm py-xs border rounded" placeholder="Enter Gemini API key" />
+                    <div class="flex items-center gap-sm">
+                        <button @click="save" class="px-sm py-xs bg-secondary text-white rounded">Save</button>
+                        <span v-if="saved" class="text-success">Saved</span>
+                    </div>
+                </label>
             </div>
+        </div>
+
+        <!-- Embedded Mailboxes and Firefly sections -->
+        <div>
+            <MailboxesView />
+        </div>
+
+        <div>
+            <FireflyConnectionView />
         </div>
     </div>
 </template>

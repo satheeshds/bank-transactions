@@ -45,6 +45,5 @@ limit = 15
 enable_processed_tagging = true
 
 [firefly]
-base_url = "http://localhost:8080"
-token = "your-firefly-token"
-timeout = 15
+# Firefly connection is managed via the application Settings (database).
+# Use the web UI Settings page or the Settings API to set `firefly.base_url`, `firefly.token`, and `firefly.timeout`.

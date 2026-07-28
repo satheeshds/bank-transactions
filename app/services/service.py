@@ -191,6 +191,7 @@ class TransactionImportService:
                     # configured default in `config.toml`, or the hardcoded
                     # "processed" fallback if not present in config.
                     if processed_tag is None or (isinstance(processed_tag, str) and processed_tag.strip() == ""):
+                        # Prefer processed_tag from config.toml as a fallback when DB mailbox row doesn't set one.
                         processed_tag = self.config.get("processed_tag") or "processed"
 
                     fetch_query = build_imap_query(conditions, processed_tag=processed_tag)

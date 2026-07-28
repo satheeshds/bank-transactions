@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from ast import And
 import logging
+from datetime import datetime, date
 
-from imap_tools.query import LogicOperator
 
 try:
     from imap_tools import AND, MailBox, NOT
@@ -57,7 +57,22 @@ def build_query(query_filter: dict | list, processed_tag: str | None = None):
                 elif fld in ("text", "body"):
                     search_key = f"TEXT \"{value}\""
                 elif fld in ("sent_date",) and op in (">=", "<"):
-                    search_key = f"SENTSINCE \"{value}\"" if op == ">=" else f"SENTBEFORE \"{value}\""
+                    parsed_date = None
+                    if isinstance(value, date):
+                        parsed_date = value
+                    else:
+                        try:
+                            parsed_date = datetime.fromisoformat(str(value)).date()
+                        except Exception:
+                            for fmt in ("%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y", "%m/%d/%Y"):
+                                try:
+                                    parsed_date = datetime.strptime(str(value), fmt).date()
+                                    break
+                                except Exception:
+                                    parsed_date = None
+                    if not parsed_date:
+                            continue
+                    search_key = f"SENTSINCE \"{parsed_date}\"" if op == ">=" else f"SENTBEFORE \"{parsed_date}\""
                 else:
                     search_key = None
 

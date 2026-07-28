@@ -67,7 +67,7 @@ onUnmounted(() => { if (interval) clearInterval(interval) })
                         <td colspan="6" class="px-lg py-xl text-center text-on-surface-variant">
                             <div class="flex flex-col items-center gap-sm">
                                 <span class="material-symbols-outlined text-[40px]">rule</span>
-                                <p>No parsing rules found in config.toml</p>
+                                <p>No parsing rules found in the database. Use the 'Add Rule' button to create parsing rules via the UI.</p>
                             </div>
                         </td>
                     </tr>

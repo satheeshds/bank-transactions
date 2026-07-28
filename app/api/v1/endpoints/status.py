@@ -5,7 +5,7 @@ import time
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
-from app.config import load_config, build_firefly_config, build_source_definitions
+from app.config import build_firefly_config
 from app.db import session as database
 from app.services.firefly_client import build_firefly_client
 from cli import sync_worker
@@ -16,13 +16,7 @@ router = APIRouter(prefix="/api/v1", tags=["status"])
 @router.get("/status")
 def get_status():
     """Returns connectivity and stats for the Mail2Firefly dashboard."""
-    try:
-        config = load_config()
-    except Exception as e:
-        return JSONResponse(
-            status_code=500,
-            content={"error": f"Failed to load config.toml: {e}"}
-        )
+    # Do not load config.toml here; prefer runtime DB settings for overrides
 
     # 1. Check IMAP Connectivity using configured mailboxes from DB
     imap_connected = False
@@ -61,7 +55,7 @@ def get_status():
     firefly_latency_ms = None
     firefly_error = None
 
-    # Prefer settings stored in DB (saved via UI). Fall back to config.toml.
+    # Use settings stored in DB (saved via UI). Do not fall back to config.toml.
     db_base = database.get_setting('firefly.base_url')
     db_token = database.get_setting('firefly.token')
     db_timeout = database.get_setting('firefly.timeout')
@@ -73,7 +67,7 @@ def get_status():
             'timeout': int(db_timeout) if db_timeout and db_timeout.isdigit() else 15,
         }
     else:
-        firefly_cfg = build_firefly_config(config)
+        firefly_cfg = {}
 
     if firefly_cfg.get("base_url") and firefly_cfg.get("token"):
         try:

@@ -72,37 +72,11 @@ web.py                    # FastAPI app, serves static/dist/ and /api routes
 
 ## Configuration
 
-The script reads mailbox, query, and transaction-pattern settings from `config.toml` in the project root.
+Most runtime configuration (mailboxes, parsing rules, and runtime overrides) is stored in the application's SQLite database and managed via the web UI. Key points:
 
-Use `config.example.toml` as the starting point:
-
-```toml
-[mailbox]
-host = "imap.gmail.com"
-username = "you@example.com"
-password = "app-password"
-
-[[queries]]
-name = "sbi_statements"
-from_ = "ELITE.card@sbicard.com"
-subject = "Your SBI Card ELITE Monthly Statement"
-gmail_label = "Statement"
-
-[[transaction_patterns]]
-name = "sbi_card"
-regex = "(?P<currency>Rs\\.|₹)\\s*(?P<amount>[\\d,]+(?:\\.\\d+)?)\\s*spent on your\\s+SBI Credit Card\\s+ending with\\s+(?P<card_last4>\\d{4})\\s+at\\s+(?P<merchant>.+?)\\s+on\\s+(?P<date>\\d{1,2}-\\d{1,2}-\\d{2,4})\\s+via\\s+(?P<channel>.+?)\\s*\\(Ref No\\.\\s*(?P<reference_no>\\d+)\\)"
-flags = ["IGNORECASE"]
-
-[fetch]
-reverse = true
-limit = 15
-```
-
-You can now:
-- define multiple mailbox queries using `[[queries]]`
-- add multiple transaction parsers with `[[transaction_patterns]]`
-- keep the old single-query format working via `query` as a fallback
-- set a `processed_tag` to mark emails after a successful Firefly import so they are skipped on later runs
+- Firefly connection details (`firefly.base_url`, `firefly.token`, `firefly.timeout`) are configured via the Settings page or the Settings API (`/api/v1/firefly` or `/api/v1/settings`). These values override any static config and are preferred at runtime.
+- Mailbox definitions and parsing rules are stored in the database and can be managed from the dashboard (Email Sources, Parsing Rules). The API and UI read from the DB; the application no longer falls back to `config.toml` for these values.
+- `config.example.toml` remains as a reference and can be used for initial CLI-based setup, but production/runtime overrides should be applied via the UI or Settings API.
 
 Run the sync worker with:
 

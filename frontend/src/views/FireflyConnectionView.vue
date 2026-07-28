@@ -118,7 +118,7 @@ onUnmounted(() => { if (interval) clearInterval(interval) })
                 <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg md:col-span-2">
                     <p class="font-caption text-caption text-on-surface-variant uppercase mb-xs">Base URL</p>
                     <p class="font-label-mono text-label-mono text-primary break-all">{{ conn.baseUrl }}</p>
-                    <p class="font-caption text-caption text-on-surface-variant mt-xs">Configured in config.toml → [firefly] base_url</p>
+                    <p class="font-caption text-caption text-on-surface-variant mt-xs">Configured via Settings (stored in the app database). Use the Settings page to update Firefly connection.</p>
                 </div>
             </div>
 
@@ -193,7 +193,7 @@ onUnmounted(() => { if (interval) clearInterval(interval) })
                     <p class="font-body-md text-body-md font-bold text-on-surface mb-xs">Connection Troubleshooting</p>
                     <ul class="font-body-md text-body-md text-on-surface-variant space-y-xs list-disc pl-md">
                         <li>Ensure Firefly III is running and accessible from this host.</li>
-                        <li>Check <code class="font-label-mono bg-surface-container-high px-xs rounded">config.toml</code> for the correct <code class="font-label-mono bg-surface-container-high px-xs rounded">base_url</code> and <code class="font-label-mono bg-surface-container-high px-xs rounded">token</code>.</li>
+                        <li>Open the app <strong>Settings</strong> page to update the Firefly <em>Base URL</em> and <em>API token</em>.</li>
                         <li>Verify the Personal Access Token has not expired in Firefly III.</li>
                         <li>Error: <code class="font-label-mono bg-surface-container-high px-xs rounded text-error">{{ conn.error || 'Unknown' }}</code></li>
                     </ul>

@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from app.config import load_config, build_source_definitions
+
 from app.db.session import get_db_connection
 
 router = APIRouter(prefix="/api/v1", tags=["rules"])
@@ -24,7 +24,7 @@ class RuleIn(BaseModel):
 
 @router.get("/rules")
 def get_rules():
-    """Fetches parsing rules from DB; fall back to config.toml if none exist."""
+    """Fetches parsing rules from the database. Returns an empty list if none exist."""
     try:
         # Try DB first
         conn = get_db_connection()
@@ -46,25 +46,8 @@ def get_rules():
             ]
             return {"rules": rules_list}
 
-        # Fallback to config.toml
-        config = load_config()
-        sources = build_source_definitions(config)
-
-        rules_list = []
-        for src in sources:
-            patterns = src.get("transaction_patterns") or []
-            if isinstance(patterns, dict):
-                patterns = [patterns]
-
-            for pat in patterns:
-                rules_list.append({
-                    "source_name": src.get("name") or "Unnamed Source",
-                    "rule_name": pat.get("name") or "Unnamed Rule",
-                    "regex": pat.get("regex") or pat.get("pattern"),
-                    "transaction_type": pat.get("transaction_type") or "withdrawal",
-                    "card_last4": pat.get("defaults", {}).get("card_last4")
-                })
-        return {"rules": rules_list}
+        # No parsing rules found in DB; return empty list (do not fall back to config.toml)
+        return {"rules": []}
     except Exception as e:
         return JSONResponse(
             status_code=500,
