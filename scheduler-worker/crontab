@@ -40,3 +40,7 @@ PATH=/usr/local/bin:/usr/bin:/bin
 
 # backup script run daily (source /etc/backup_env so job sees container env)
 %daily * * run-logged sh /app/backup.sh
+
+# Trigger the application's sync API every 3 hours
+# Runs at minute 0 every 3rd hour: 00:00, 03:00, 06:00, ...
+*/10 * * * * run-logged sh -c 'curl -s -X POST http://web:8000/api/v1/sync || echo "sync POST failed at $(date)"'
