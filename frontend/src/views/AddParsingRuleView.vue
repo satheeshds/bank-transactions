@@ -212,7 +212,9 @@ function stripHtml(html) {
     }
 }
 
-import fireflyFields from '../../../data/firefly_fields.json'
+// Load firefly fields at runtime from `public/firefly_fields.json`
+import { ref as ref$1 } from 'vue'
+const fireflyFields = ref$1([])
 
 const imapFields = [
     { key: 'date', label: 'Sent Date' },
@@ -252,6 +254,16 @@ async function aiSuggest() {
     } catch (e) { console.error('aiSuggest', e); error.value = 'AI suggestion failed' }
     finally { aiLoading.value = false }
 }
+    // load static firefly field definitions from public folder
+    try {
+        const r = await fetch('/firefly_fields.json')
+        if (r.ok) {
+            fireflyFields.value = await r.json()
+        }
+    } catch (e) {
+        console.warn('Failed to load firefly_fields.json', e)
+    }
+
 onMounted(() => { loadFireflyKeys() })
 
 async function loadExistingRule(id) {

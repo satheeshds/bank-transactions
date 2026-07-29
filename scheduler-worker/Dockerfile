@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rclone \
     gzip \
     mariadb-client \
+    curl \
  && rm -rf /var/lib/apt/lists/*
 
 # create the app directory
