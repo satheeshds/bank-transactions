@@ -9,83 +9,76 @@ DB_DIR = Path(__file__).parent.parent.parent / "data"
 DB_PATH = DB_DIR / "mail2firefly.db"
 
 
-def _using_mysql() -> bool:
-    return True
-
-
 def get_db_connection():
-    """Return a DB connection. Uses SQLite by default or MariaDB when configured.
+    """Return a MySQL/MariaDB connection using `pymysql` with `DictCursor`.
 
-    For MariaDB we use `pymysql` with `DictCursor` so rows are accessible by column name.
+    This application only supports MySQL/MariaDB.
     """
-    if _using_mysql():
-        try:
-            import pymysql
-            from pymysql.cursors import DictCursor
-        except Exception as e:
-            raise RuntimeError("pymysql is required for MySQL/MariaDB connections") from e
+    try:
+        import pymysql
+        from pymysql.cursors import DictCursor
+    except Exception as e:
+        raise RuntimeError("pymysql is required for MySQL/MariaDB connections") from e
 
-        raw_conn = pymysql.connect(
-            host=os.environ.get("DB_HOST", "127.0.0.1"),
-            port=int(os.environ.get("DB_PORT", 3306)),
-            user=os.environ.get("WEB_DB_USER", ""),
-            password=os.environ.get("WEB_DB_PASSWORD", ""),
-            database=os.environ.get("WEB_DB_NAME", ""),
-            cursorclass=DictCursor,
-            autocommit=False,
-        )
+    raw_conn = pymysql.connect(
+        host=os.environ.get("DB_HOST", "127.0.0.1"),
+        port=int(os.environ.get("DB_PORT", 3306)),
+        user=os.environ.get("WEB_DB_USER", ""),
+        password=os.environ.get("WEB_DB_PASSWORD", ""),
+        database=os.environ.get("WEB_DB_NAME", ""),
+        cursorclass=DictCursor,
+        autocommit=False,
+    )
 
-        # Provide a thin wrapper that adapts qmark-style '?' to MySQL '%s' and
-        # exposes a context-manager-compatible connection interface.
-        class _WrappedCursor:
-            def __init__(self, cur):
-                self._cur = cur
+    # Thin wrapper that exposes a context-manager-compatible connection
+    # and normalizes parameter placeholders in case older code uses '?'.
+    class _WrappedCursor:
+        def __init__(self, cur):
+            self._cur = cur
 
-            def execute(self, q, params=None):
-                if params is None:
-                    return self._cur.execute(q.replace('?', '%s'))
-                return self._cur.execute(q.replace('?', '%s'), params)
+        def execute(self, q, params=None):
+            if params is None:
+                return self._cur.execute(q.replace('?', '%s'))
+            return self._cur.execute(q.replace('?', '%s'), params)
 
-            def executemany(self, q, seq):
-                return self._cur.executemany(q.replace('?', '%s'), seq)
+        def executemany(self, q, seq):
+            return self._cur.executemany(q.replace('?', '%s'), seq)
 
-            def fetchone(self):
-                return self._cur.fetchone()
+        def fetchone(self):
+            return self._cur.fetchone()
 
-            def fetchall(self):
-                return self._cur.fetchall()
+        def fetchall(self):
+            return self._cur.fetchall()
 
-            def __getattr__(self, name):
-                return getattr(self._cur, name)
+        def __getattr__(self, name):
+            return getattr(self._cur, name)
 
-        class _ConnWrapper:
-            def __init__(self, raw):
-                self._raw = raw
+    class _ConnWrapper:
+        def __init__(self, raw):
+            self._raw = raw
 
-            def cursor(self):
-                return _WrappedCursor(self._raw.cursor())
+        def cursor(self):
+            return _WrappedCursor(self._raw.cursor())
 
-            def commit(self):
-                return self._raw.commit()
+        def commit(self):
+            return self._raw.commit()
 
-            def close(self):
-                return self._raw.close()
+        def close(self):
+            return self._raw.close()
 
-            def __enter__(self):
-                return self
+        def __enter__(self):
+            return self
 
-            def __exit__(self, exc_type, exc, tb):
-                try:
-                    if exc_type is None:
-                        self._raw.commit()
-                    else:
-                        self._raw.rollback()
-                finally:
-                    self._raw.close()
+        def __exit__(self, exc_type, exc, tb):
+            try:
+                if exc_type is None:
+                    self._raw.commit()
+                else:
+                    self._raw.rollback()
+            finally:
+                self._raw.close()
 
-        return _ConnWrapper(raw_conn)
-
-    # Only MySQL/MariaDB supported in this application.
+    return _ConnWrapper(raw_conn)
 
 
 def init_db() -> None:
@@ -195,19 +188,11 @@ def log_transaction(
     """Logs a parsed transaction attempt to the database."""
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        # adapt paramstyle for mysql (pymysql uses %s while sqlite uses ?)
-        def _exec(q, params=None):
-            if _using_mysql():
-                q = q.replace('?', '%s')
-            if params is None:
-                return cursor.execute(q)
-            return cursor.execute(q, params)
-
-        _exec(
+        cursor.execute(
             """
             INSERT INTO transactions (
                 timestamp, transaction_date, merchant, amount, currency, status, error_message, rule_name, rule_id, source_name, email_subject, reference_no, raw_email, firefly_payload
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             (
                 datetime.now().isoformat(),
@@ -234,16 +219,7 @@ def start_sync_run(unprocessed_emails: int = 0) -> int:
     """Records the start of a synchronization run."""
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        if _using_mysql():
-            cursor.execute("INSERT INTO sync_runs (start_time, status, unprocessed_emails) VALUES (%s, 'running', %s)", (datetime.now().isoformat(), unprocessed_emails))
-        else:
-            cursor.execute(
-                """
-                INSERT INTO sync_runs (start_time, status, unprocessed_emails)
-                VALUES (?, 'running', ?)
-                """,
-                (datetime.now().isoformat(), unprocessed_emails),
-            )
+        cursor.execute("INSERT INTO sync_runs (start_time, status, unprocessed_emails) VALUES (%s, 'running', %s)", (datetime.now().isoformat(), unprocessed_emails))
         conn.commit()
         return cursor.lastrowid or 0
 
@@ -252,20 +228,10 @@ def end_sync_run(run_id: int, status: str, parsed_count: int = 0, error_count: i
     """Records the completion and results of a synchronization run."""
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        if _using_mysql():
-            cursor.execute(
-                "UPDATE sync_runs SET end_time = %s, status = %s, parsed_count = %s, error_count = %s WHERE id = %s",
-                (datetime.now().isoformat(), status, parsed_count, error_count, run_id),
-            )
-        else:
-            cursor.execute(
-                """
-                UPDATE sync_runs
-                SET end_time = ?, status = ?, parsed_count = ?, error_count = ?
-                WHERE id = ?
-                """,
-                (datetime.now().isoformat(), status, parsed_count, error_count, run_id),
-            )
+        cursor.execute(
+            "UPDATE sync_runs SET end_time = %s, status = %s, parsed_count = %s, error_count = %s WHERE id = %s",
+            (datetime.now().isoformat(), status, parsed_count, error_count, run_id),
+        )
         conn.commit()
 
 
@@ -273,19 +239,10 @@ def log_sync_message(run_id: int | None, level: str, message: str) -> None:
     """Logs a detailed execution message associated with a sync run."""
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        if _using_mysql():
-            cursor.execute(
-                "INSERT INTO sync_logs (run_id, timestamp, level, message) VALUES (%s, %s, %s, %s)",
-                (run_id, datetime.now().isoformat(), level.upper(), message),
-            )
-        else:
-            cursor.execute(
-                """
-                INSERT INTO sync_logs (run_id, timestamp, level, message)
-                VALUES (?, ?, ?, ?)
-                """,
-                (run_id, datetime.now().isoformat(), level.upper(), message),
-            )
+        cursor.execute(
+            "INSERT INTO sync_logs (run_id, timestamp, level, message) VALUES (%s, %s, %s, %s)",
+            (run_id, datetime.now().isoformat(), level.upper(), message),
+        )
         conn.commit()
 
 
@@ -293,10 +250,7 @@ def get_recent_transactions(limit: int = 50) -> list[dict[str, Any]]:
     """Retrieves recent logged transactions."""
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        if _using_mysql():
-            cursor.execute("SELECT * FROM transactions ORDER BY id DESC LIMIT %s", (limit,))
-        else:
-            cursor.execute("SELECT * FROM transactions ORDER BY id DESC LIMIT ?", (limit,))
+        cursor.execute("SELECT * FROM transactions ORDER BY id DESC LIMIT %s", (limit,))
         return [dict(row) for row in cursor.fetchall()]
 
 
@@ -304,10 +258,7 @@ def get_transaction_by_id(tx_id: int) -> dict[str, Any] | None:
     """Retrieve a single transaction row by id."""
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        if _using_mysql():
-            cursor.execute("SELECT * FROM transactions WHERE id = %s", (tx_id,))
-        else:
-            cursor.execute("SELECT * FROM transactions WHERE id = ?", (tx_id,))
+        cursor.execute("SELECT * FROM transactions WHERE id = %s", (tx_id,))
         row = cursor.fetchone()
         return dict(row) if row else None
 
@@ -360,10 +311,7 @@ def get_recent_logs(limit: int = 100) -> list[dict[str, Any]]:
     """Retrieves recent execution logs."""
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        if _using_mysql():
-            cursor.execute("SELECT * FROM sync_logs ORDER BY id DESC LIMIT %s", (limit,))
-        else:
-            cursor.execute("SELECT * FROM sync_logs ORDER BY id DESC LIMIT ?", (limit,))
+        cursor.execute("SELECT * FROM sync_logs ORDER BY id DESC LIMIT %s", (limit,))
         # Return logs in chronological order
         rows = cursor.fetchall()
         return [dict(row) for row in reversed(rows)]
@@ -373,11 +321,7 @@ def get_latest_sync_run() -> dict[str, Any] | None:
     """Gets the metadata of the latest sync run."""
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        # Use LIMIT placeholder style appropriate for the backend
-        if _using_mysql():
-            cursor.execute("SELECT * FROM sync_runs ORDER BY id DESC LIMIT 1")
-        else:
-            cursor.execute("SELECT * FROM sync_runs ORDER BY id DESC LIMIT 1")
+        cursor.execute("SELECT * FROM sync_runs ORDER BY id DESC LIMIT 1")
         row = cursor.fetchone()
         return dict(row) if row else None
 
@@ -389,49 +333,22 @@ def get_stats_today() -> dict[str, Any]:
         cursor = conn.cursor()
         
         # Parsed today (status is 'synced' or 'pending')
-        if _using_mysql():
-            cursor.execute(
-                "SELECT COUNT(*) AS cnt FROM transactions WHERE DATE(timestamp) = DATE(%s) AND status IN ('synced', 'pending')",
-                (today_str,),
-            )
-            parsed_today = cursor.fetchone()["cnt"]
-        else:
-            cursor.execute(
-                """
-                SELECT COUNT(*) FROM transactions 
-                WHERE DATE(timestamp) = DATE(?) AND status IN ('synced', 'pending')
-                """,
-                (today_str,),
-            )
-            parsed_today = cursor.fetchone()[0]
+        cursor.execute(
+            "SELECT COUNT(*) AS cnt FROM transactions WHERE DATE(timestamp) = DATE(%s) AND status IN ('synced', 'pending')",
+            (today_str,),
+        )
+        parsed_today = cursor.fetchone()["cnt"]
 
         # Errors today
-        if _using_mysql():
-            cursor.execute("SELECT COUNT(*) AS cnt FROM transactions WHERE DATE(timestamp) = DATE(%s) AND status = 'error'", (today_str,))
-            errors_today = cursor.fetchone()["cnt"]
-        else:
-            cursor.execute(
-                """
-                SELECT COUNT(*) FROM transactions 
-                WHERE DATE(timestamp) = DATE(?) AND status = 'error'
-                """,
-                (today_str,),
-            )
-            errors_today = cursor.fetchone()[0]
+        cursor.execute(
+            "SELECT COUNT(*) AS cnt FROM transactions WHERE DATE(timestamp) = DATE(%s) AND status = 'error'",
+            (today_str,),
+        )
+        errors_today = cursor.fetchone()["cnt"]
 
         # Total runs today
-        if _using_mysql():
-            cursor.execute("SELECT COUNT(*) AS cnt FROM sync_runs WHERE DATE(start_time) = DATE(%s)", (today_str,))
-            total_runs_today = cursor.fetchone()["cnt"]
-        else:
-            cursor.execute(
-                """
-                SELECT COUNT(*) FROM sync_runs 
-                WHERE DATE(start_time) = DATE(?)
-                """,
-                (today_str,),
-            )
-            total_runs_today = cursor.fetchone()[0]
+        cursor.execute("SELECT COUNT(*) AS cnt FROM sync_runs WHERE DATE(start_time) = DATE(%s)", (today_str,))
+        total_runs_today = cursor.fetchone()["cnt"]
 
         latest_run = get_latest_sync_run()
 
@@ -458,7 +375,7 @@ def get_mailbox_by_id(mailbox_id: int) -> dict[str, Any] | None:
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT id, name, host, port, username, password, encryption, smtp_host, smtp_port, processed_tag FROM mailboxes WHERE id = ?",
+            "SELECT id, name, host, port, username, password, encryption, smtp_host, smtp_port, processed_tag FROM mailboxes WHERE id = %s",
             (mailbox_id,),
         )
         row = cursor.fetchone()
@@ -484,7 +401,7 @@ def add_mailbox(
             """
             INSERT INTO mailboxes (
                 name, host, port, username, password, encryption, smtp_host, smtp_port, processed_tag
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             (name, host, port, username, password, encryption, smtp_host, smtp_port, processed_tag),
         )
@@ -510,34 +427,34 @@ def update_mailbox(
         fields = []
         values = []
         if name is not None:
-            fields.append('name = ?')
+            fields.append('name = %s')
             values.append(name)
         if host is not None:
-            fields.append('host = ?')
+            fields.append('host = %s')
             values.append(host)
         if port is not None:
-            fields.append('port = ?')
+            fields.append('port = %s')
             values.append(port)
         if username is not None:
-            fields.append('username = ?')
+            fields.append('username = %s')
             values.append(username)
         if password is not None:
-            fields.append('password = ?')
+            fields.append('password = %s')
             values.append(password)
         if encryption is not None:
-            fields.append('encryption = ?')
+            fields.append('encryption = %s')
             values.append(encryption)
         if smtp_host is not None:
-            fields.append('smtp_host = ?')
+            fields.append('smtp_host = %s')
             values.append(smtp_host)
         if smtp_port is not None:
-            fields.append('smtp_port = ?')
+            fields.append('smtp_port = %s')
             values.append(smtp_port)
 
         if not fields:
             return
 
-        sql = f"UPDATE mailboxes SET {', '.join(fields)} WHERE id = ?"
+        sql = f"UPDATE mailboxes SET {', '.join(fields)} WHERE id = %s"
         values.append(mailbox_id)
         cursor.execute(sql, tuple(values))
         conn.commit()
@@ -546,5 +463,5 @@ def update_mailbox(
 def delete_mailbox(mailbox_id: int) -> None:
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM mailboxes WHERE id = ?", (mailbox_id,))
+        cursor.execute("DELETE FROM mailboxes WHERE id = %s", (mailbox_id,))
         conn.commit()
