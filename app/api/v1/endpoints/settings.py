@@ -16,7 +16,7 @@ class SettingsIn(BaseModel):
 def get_setting(key: str):
     with get_db_connection() as conn:
         c = conn.cursor()
-        c.execute('SELECT value FROM settings WHERE key = ?', (key,))
+        c.execute('SELECT value FROM settings WHERE `key` = ?', (key,))
         row = c.fetchone()
 
     # Avoid returning secrets to the client
