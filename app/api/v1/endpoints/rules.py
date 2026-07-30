@@ -27,27 +27,27 @@ def get_rules():
     """Fetches parsing rules from the database. Returns an empty list if none exist."""
     try:
         # Try DB first
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute("SELECT id, source_name, rule_name, regex, description, transaction_type, card_last4 FROM parsing_rules ORDER BY id")
-        rows = cursor.fetchall()
-        if rows:
-            rules_list = [
-                {
-                    "id": row["id"],
-                    "source_name": row["source_name"],
-                    "rule_name": row["rule_name"],
-                    "regex": row["regex"],
-                    "description": row["description"],
-                    "transaction_type": row["transaction_type"],
-                    "card_last4": row["card_last4"],
-                }
-                for row in rows
-            ]
-            return {"rules": rules_list}
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, source_name, rule_name, regex, description, transaction_type, card_last4 FROM parsing_rules ORDER BY id")
+            rows = cursor.fetchall()
+            if rows:
+                rules_list = [
+                    {
+                        "id": row["id"],
+                        "source_name": row["source_name"],
+                        "rule_name": row["rule_name"],
+                        "regex": row["regex"],
+                        "description": row["description"],
+                        "transaction_type": row["transaction_type"],
+                        "card_last4": row["card_last4"],
+                    }
+                    for row in rows
+                ]
+                return {"rules": rules_list}
 
-        # No parsing rules found in DB; return empty list (do not fall back to config.toml)
-        return {"rules": []}
+            # No parsing rules found in DB; return empty list (do not fall back to config.toml)
+            return {"rules": []}
     except Exception as e:
         return JSONResponse(
             status_code=500,
@@ -84,24 +84,24 @@ def add_rule(rule: RuleIn):
 @router.get('/rules/{rule_id}')
 def get_rule(rule_id: int):
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute("SELECT id, source_name, rule_name, regex, description, transaction_type, card_last4, conditions_json, mappings_json, condition_mode FROM parsing_rules WHERE id = ?", (rule_id,))
-        row = cursor.fetchone()
-        if not row:
-            raise HTTPException(status_code=404, detail='Rule not found')
-        return {
-            'id': row['id'],
-            'source_name': row['source_name'],
-            'rule_name': row['rule_name'],
-            'regex': row['regex'],
-            'description': row['description'],
-            'transaction_type': row['transaction_type'],
-            'card_last4': row['card_last4'],
-            'conditions': __import__('json').loads(row.get('conditions_json')) if row.get('conditions_json') else None,
-            'mappings': __import__('json').loads(row.get('mappings_json')) if row.get('mappings_json') else None,
-            'condition_mode': row.get('condition_mode')
-        }
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, source_name, rule_name, regex, description, transaction_type, card_last4, conditions_json, mappings_json, condition_mode FROM parsing_rules WHERE id = ?", (rule_id,))
+            row = cursor.fetchone()
+            if not row:
+                raise HTTPException(status_code=404, detail='Rule not found')
+            return {
+                'id': row['id'],
+                'source_name': row['source_name'],
+                'rule_name': row['rule_name'],
+                'regex': row['regex'],
+                'description': row['description'],
+                'transaction_type': row['transaction_type'],
+                'card_last4': row['card_last4'],
+                'conditions': __import__('json').loads(row.get('conditions_json')) if row.get('conditions_json') else None,
+                'mappings': __import__('json').loads(row.get('mappings_json')) if row.get('mappings_json') else None,
+                'condition_mode': row.get('condition_mode')
+            }
     except HTTPException:
         raise
     except Exception as e:
