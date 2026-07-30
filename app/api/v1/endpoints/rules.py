@@ -34,13 +34,13 @@ def get_rules():
         if rows:
             rules_list = [
                 {
-                    "id": row[0],
-                    "source_name": row[1],
-                    "rule_name": row[2],
-                    "regex": row[3],
-                    "description": row[4],
-                    "transaction_type": row[5],
-                    "card_last4": row[6],
+                    "id": row["id"],
+                    "source_name": row["source_name"],
+                    "rule_name": row["rule_name"],
+                    "regex": row["regex"],
+                    "description": row["description"],
+                    "transaction_type": row["transaction_type"],
+                    "card_last4": row["card_last4"],
                 }
                 for row in rows
             ]
@@ -91,16 +91,16 @@ def get_rule(rule_id: int):
         if not row:
             raise HTTPException(status_code=404, detail='Rule not found')
         return {
-            'id': row[0],
-            'source_name': row[1],
-            'rule_name': row[2],
-            'regex': row[3],
-            'description': row[4],
-            'transaction_type': row[5],
-            'card_last4': row[6],
-            'conditions': __import__('json').loads(row[7]) if row[7] else None,
-            'mappings': __import__('json').loads(row[8]) if row[8] else None,
-            'condition_mode': row[9]
+            'id': row['id'],
+            'source_name': row['source_name'],
+            'rule_name': row['rule_name'],
+            'regex': row['regex'],
+            'description': row['description'],
+            'transaction_type': row['transaction_type'],
+            'card_last4': row['card_last4'],
+            'conditions': __import__('json').loads(row.get('conditions_json')) if row.get('conditions_json') else None,
+            'mappings': __import__('json').loads(row.get('mappings_json')) if row.get('mappings_json') else None,
+            'condition_mode': row.get('condition_mode')
         }
     except HTTPException:
         raise
