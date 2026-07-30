@@ -78,6 +78,8 @@ def get_db_connection():
                 try:
                     if exc_type is None:
                         self._raw.commit()
+                    else:
+                        self._raw.rollback()
                 finally:
                     self._raw.close()
 
