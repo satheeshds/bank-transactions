@@ -80,6 +80,7 @@ onUnmounted(() => { if (interval) clearInterval(interval) })
                                 <div class="min-w-0">
                                     <p class="font-body-md text-body-md font-bold truncate" :title="tx.merchant">{{ tx.merchant || 'Unknown Merchant' }}</p>
                                     <p class="font-caption text-caption text-on-surface-variant truncate">{{ tx.ref }}</p>
+                                    <p class="font-caption text-caption text-on-surface-variant truncate">Matched rule: {{ (tx.rule_name && tx.rule_name.trim() && tx.rule_name.trim().toLowerCase() !== 'unnamed rule') ? tx.rule_name.trim() : (tx.rule_id ? 'Unnamed Rule' : 'Unknown') }}</p>
                                 </div>
                             </div>
                         </td>
