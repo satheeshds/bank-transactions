@@ -93,8 +93,8 @@ onMounted(load)
 
                     <p class="mt-sm font-label-mono text-label-mono">Matched Rule</p>
                     <p class="font-body-md">
-                        <router-link v-if="tx.rule_id" :to="`/parsing-rules/add?id=${tx.rule_id}`">{{ tx.rule_name || 'Unnamed rule' }}</router-link>
-                        <span v-else>{{ tx.rule_name || 'Unknown / Not recorded' }}</span>
+                        <router-link v-if="tx.rule_id" :to="`/parsing-rules/add?id=${tx.rule_id}`">{{ (tx.rule_name && tx.rule_name.trim() && tx.rule_name.trim().toLowerCase() !== 'unnamed rule') ? tx.rule_name : 'Unnamed Rule' }}</router-link>
+                        <span v-else>{{ (tx.rule_name && tx.rule_name.trim() && tx.rule_name.trim().toLowerCase() !== 'unnamed rule') ? tx.rule_name : 'Unknown / Not recorded' }}</span>
                     </p>
                 </div>
             </div>

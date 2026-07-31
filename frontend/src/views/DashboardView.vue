@@ -1,5 +1,6 @@
 <script setup>
 import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import store from '../store.js'
 import { formatRelativeTime, getMerchantIcon } from '../utils.js'
 
@@ -18,6 +19,14 @@ const ff = reactive({ badge: 'Checking...', ok: null, detail: '-' })
 const syncBtn = reactive({ disabled: false, label: 'Sync Now', spinning: false })
 
 const transactions = ref([])
+const router = useRouter()
+
+function onRowClick(tx) {
+    if (!tx) return
+    if (tx.status === 'error') {
+        router.push(`/failed-parses/${tx.id || tx.timestamp}`)
+    }
+}
 const rules = ref([])
 const logs = ref('System console initialized. Click "Sync Now" to trigger a run.')
 
@@ -268,7 +277,7 @@ onUnmounted(() => {
                         <tr v-if="transactions.length === 0">
                             <td colspan="4" class="px-lg py-md text-center text-on-surface-variant">No recent transactions recorded.</td>
                         </tr>
-                        <tr v-for="tx in transactions" :key="tx.id || tx.timestamp" class="hover:bg-surface-container-low transition-colors">
+                        <tr v-for="tx in transactions" :key="tx.id || tx.timestamp" class="hover:bg-surface-container-low transition-colors" @click="onRowClick(tx)" style="cursor: pointer;">
                             <td class="px-lg py-md">
                                 <div class="flex items-center gap-md">
                                     <div :class="['w-8 h-8 rounded flex items-center justify-center', tx.rowIconClass]">
