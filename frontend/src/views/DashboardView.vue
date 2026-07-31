@@ -277,7 +277,7 @@ onUnmounted(() => {
                         <tr v-if="transactions.length === 0">
                             <td colspan="4" class="px-lg py-md text-center text-on-surface-variant">No recent transactions recorded.</td>
                         </tr>
-                        <tr v-for="tx in transactions" :key="tx.id || tx.timestamp" class="hover:bg-surface-container-low transition-colors" @click="onRowClick(tx)" style="cursor: pointer;">
+                        <tr v-for="tx in transactions" :key="tx.id || tx.timestamp" :class="['hover:bg-surface-container-low transition-colors', tx.status === 'error' ? 'cursor-pointer' : '']" :role="tx.status === 'error' ? 'link' : null" :tabindex="tx.status === 'error' ? 0 : -1" @click="tx.status === 'error' && onRowClick(tx)" @keydown.enter.prevent="tx.status === 'error' && onRowClick(tx)" @keydown.space.prevent="tx.status === 'error' && onRowClick(tx)">
                             <td class="px-lg py-md">
                                 <div class="flex items-center gap-md">
                                     <div :class="['w-8 h-8 rounded flex items-center justify-center', tx.rowIconClass]">
