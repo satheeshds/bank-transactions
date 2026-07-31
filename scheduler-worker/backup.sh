@@ -2,7 +2,8 @@
 
 set -e
 
-BACKUP_FILE="$(date +%Y-%m-%d_%H-%M-%S).sql.gz"
+BACKUP_FILE="firefly-$(date +%Y-%m-%d_%H-%M-%S).sql.gz"
+WEB_BACKUP_FILE="web-$(date +%Y-%m-%d_%H-%M-%S).sql.gz"
 echo "DB debug: DB_CONNECTION='${DB_CONNECTION}' DB_HOST='${DB_HOST}' DB_PORT='${DB_PORT}' DB_DATABASE='${DB_DATABASE}' DB_USERNAME='${DB_USERNAME}' DB_FILE='${DB_FILE}'"
 echo "exporting database ${DB_CONNECTION}"
 
@@ -11,8 +12,12 @@ case "${DB_CONNECTION}" in
   mysql)
     BACKUP_FILE_RAW="${BACKUP_FILE%.gz}"
     mysqldump --host="${DB_HOST}" --port="${DB_PORT}" --user="${DB_USERNAME}" --password="${DB_PASSWORD}" "${DB_DATABASE}" > "${BACKUP_FILE_RAW}"
+    WEB_BACKUP_FILE_RAW="${WEB_BACKUP_FILE%.gz}"
+    mysqldump --host="${DB_HOST}" --port="${DB_PORT}" --user="${WEB_DB_USER}" --password="${WEB_DB_PASSWORD}" "${WEB_DB_NAME}" > "${WEB_BACKUP_FILE_RAW}"
     gzip -c "${BACKUP_FILE_RAW}" > "${BACKUP_FILE}"
     rm -f "${BACKUP_FILE_RAW}"
+    gzip -c "${WEB_BACKUP_FILE_RAW}" > "${WEB_BACKUP_FILE}"
+    rm -f "${WEB_BACKUP_FILE_RAW}"
     ;;
 
   postgres)

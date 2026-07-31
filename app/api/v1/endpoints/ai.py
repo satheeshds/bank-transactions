@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException
 import logging
 from pydantic import BaseModel
 
-from app.db.session import get_db_connection
+from app.db.session import get_setting
 
 router = APIRouter(prefix="/api/v1", tags=["ai"])
 logger = logging.getLogger(__name__)
@@ -12,15 +12,6 @@ logger = logging.getLogger(__name__)
 
 class AIGenIn(BaseModel):
     sample_text: str
-
-
-def get_setting(key: str):
-    conn = get_db_connection()
-    c = conn.cursor()
-    c.execute("SELECT value FROM settings WHERE key = ?", (key,))
-    row = c.fetchone()
-    return row[0] if row else None
-
 
 @router.post('/ai/regex')
 def generate_regex(req: AIGenIn):
