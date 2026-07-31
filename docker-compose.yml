@@ -26,25 +26,8 @@ services:
       - ./docker/db-init:/docker-entrypoint-initdb.d:ro
     ports:
       - 3306:3306
-  cron:
-    #
-    # To make this work, set STATIC_CRON_TOKEN in your .env file or as an environment variable
-    # The STATIC_CRON_TOKEN must be *exactly* 32 characters long
-    # Use this URL for inspiration: https://www.random.org/strings/?num=1&len=32&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new
-    #
-    image: alpine
-    restart: always
-    container_name: firefly_iii_cron
-    env_file: .env
-    command: ["sh", "-c", "apk add tzdata && \
-      (ln -s /usr/share/zoneinfo/$$TZ /etc/localtime || true) && \
-      echo \"0 3 * * * wget -qO- http://app:8080/api/v1/cron/$$STATIC_CRON_TOKEN;echo\" \
-      | crontab - && \
-      crond -f -L /dev/stdout"]
-    networks:
-      - firefly_iii
-    depends_on:
-      - app
+  # The separate lightweight `cron` service has been removed.
+  # Cron-like tasks are handled by the `scheduler` service (fcron).
   categorizer:
     image: ghcr.io/ejagombar/fireflyiii-ai-categorizer:latest
     restart: unless-stopped
@@ -59,7 +42,9 @@ services:
     build:
       context: ./scheduler-worker
       dockerfile: Dockerfile
-    env_file: ./scheduler-worker/.env
+    env_file:
+      - ./scheduler-worker/.env
+      - .env
     networks:
       - firefly_iii
     environment:
