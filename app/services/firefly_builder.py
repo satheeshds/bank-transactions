@@ -4,6 +4,7 @@ from app.models import TransactionDetails
 from app.services.mapping_resolvers import apply_mappings
 from pathlib import Path
 import json
+import re
 
 # cached firefly fields loaded from shared data file
 _FIREFLY_FIELDS: list[dict] | None = None
@@ -102,6 +103,17 @@ def _build_firefly_payload(details: dict, statement_config: dict | None = None, 
                 try:
                     if not isinstance(v, str) and hasattr(v, "strftime"):
                         v = v.strftime("%Y-%m-%d %H:%M:%S%z")  # type: ignore
+                except Exception:
+                    pass
+                # coerce numeric amount strings (e.g. "1,455.00" or "₹1,455.00") to a float
+                try:
+                    if key == "amount":
+                        if isinstance(v, str):
+                            cleaned = v.replace(",", "").strip()
+                            cleaned = re.sub(r"[^0-9.\-]", "", cleaned)
+                            v = float(cleaned) if cleaned != "" else 0.0
+                        else:
+                            v = float(v)
                 except Exception:
                     pass
                 payload[key] = v
