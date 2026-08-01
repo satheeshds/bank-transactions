@@ -15,7 +15,7 @@ def _load_firefly_fields() -> list[dict]:
         return _FIREFLY_FIELDS
     try:
         base = Path(__file__).resolve().parents[2]
-        p = base / "data" / "firefly_fields.json"
+        p = base / "static"/ "dist" / "firefly_fields.json"
         if p.exists():
             with p.open("r", encoding="utf-8") as fh:
                 _FIREFLY_FIELDS = json.load(fh)
