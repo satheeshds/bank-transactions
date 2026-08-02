@@ -3,6 +3,29 @@ from __future__ import annotations
 from ast import And
 import logging
 from datetime import datetime, date
+from typing import Union
+
+# IMAP expects dates in the format Dd-Mon-YYYY (e.g. 01-Feb-2020)
+_IMAP_MONTHS = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+]
+
+
+def _format_imap_date(d: Union[date, datetime]) -> str:
+    if hasattr(d, "date") and isinstance(d, datetime):
+        d = d.date()  # type: ignore
+    return f"{d.day:02d}-{_IMAP_MONTHS[d.month - 1]}-{d.year}"
 
 
 try:
@@ -71,8 +94,9 @@ def build_query(query_filter: dict | list, processed_tag: str | None = None):
                                 except Exception:
                                     parsed_date = None
                     if not parsed_date:
-                            continue
-                    search_key = f"SENTSINCE \"{parsed_date}\"" if op == ">=" else f"SENTBEFORE \"{parsed_date}\""
+                        continue
+                    imap_date = _format_imap_date(parsed_date)
+                    search_key = f"SENTSINCE \"{imap_date}\"" if op == ">=" else f"SENTBEFORE \"{imap_date}\""
                 else:
                     search_key = None
 
