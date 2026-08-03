@@ -3,6 +3,8 @@ from __future__ import annotations
 import threading
 from typing import Any
 
+import logging
+
 from app.config import load_config
 from app.db import session as database
 from app.services.service import TransactionImportService
@@ -11,6 +13,7 @@ from app.services.service import TransactionImportService
 _sync_lock = threading.Lock()
 _current_run_id: int | None = None
 
+logger = logging.getLogger(__name__)
 
 def is_sync_running() -> bool:
     """Checks if a sync process is currently running."""
@@ -67,6 +70,7 @@ def _run_sync_worker(run_id: int) -> None:
     try:
         # Load config dynamically
         config = load_config()
+        logger.debug("Starting sync worker with run_id=%s and config=%s", run_id, config)
         
         # Instantiate and run service
         service = TransactionImportService.from_config(config, run_id=run_id)

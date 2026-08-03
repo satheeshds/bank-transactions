@@ -5,6 +5,7 @@ from app.services.mapping_resolvers import apply_mappings
 from pathlib import Path
 import json
 import re
+import logging
 
 # cached firefly fields loaded from shared data file
 _FIREFLY_FIELDS: list[dict] | None = None
@@ -25,7 +26,6 @@ def _load_firefly_fields() -> list[dict]:
     except Exception:
         _FIREFLY_FIELDS = []
     return _FIREFLY_FIELDS
-import logging
 
 logger = logging.getLogger(__name__)
 

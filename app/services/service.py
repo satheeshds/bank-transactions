@@ -186,13 +186,15 @@ class TransactionImportService:
             try:
                 with get_mailbox_client(mailbox_row) as mailbox:
                     processed_tag = mailbox_row.get('processed_tag')
+                    self.log(f"Mailbox '{mailbox_name}' processed_tag from DB: {processed_tag}", "DEBUG")
 
                     # If the DB mailbox has no processed_tag set, fall back to the
                     # configured default in `config.toml`, or the hardcoded
                     # "processed" fallback if not present in config.
                     if processed_tag is None or (isinstance(processed_tag, str) and processed_tag.strip() == ""):
                         # Prefer processed_tag from config.toml as a fallback when DB mailbox row doesn't set one.
-                        processed_tag = self.config.get("processed_tag") or "processed"
+                        processed_tag = self.config.get('mailbox', {}).get('processed_tag') or "processed"
+                        self.log(f"Mailbox '{mailbox_name}' has no processed_tag in DB; using fallback: {processed_tag}, config.processed_tag={self.config.get('processed_tag')}, config.mailbox.processed_tag={self.config.get('mailbox', {}).get('processed_tag')}", "DEBUG")
 
                     fetch_query = build_imap_query(conditions, processed_tag=processed_tag)
                     self.log(f"Built combined IMAP query for rule '{rule.get('rule_name')}': {fetch_query}", "DEBUG")
