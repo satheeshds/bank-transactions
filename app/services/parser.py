@@ -4,13 +4,17 @@ from datetime import datetime, timezone
 from email import policy
 from email.parser import BytesParser
 from html import unescape
+import logging
 from pathlib import Path
 import re
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
+
 from app.config import build_transaction_patterns
 from app.models import TransactionDetails
 
+
+logger = logging.getLogger(__name__)
 
 def _extract_text_from_message(message) -> str:
     parts: list[str] = []
@@ -124,15 +128,21 @@ def extract_transaction(source: str | Path | bytes | object, config: dict | None
         if getattr(source, "html", None):
             body_parts.append(_coerce_text_content(str(source.html))) # type: ignore
         body_text = "\n".join(part for part in body_parts if part)
+        logger.debug("extract_transaction: extracted body_text from mailbox-like message object")
     else:
         raise TypeError("source must be a path, string, bytes, or mailbox-like message")
+
+    logger.debug("extract_transaction: body_text extracted: %s", body_text)
 
     patterns = build_transaction_patterns(config)
     if not patterns:
         raise ValueError("No transaction patterns were configured")
 
+    logger.debug("extract_transaction: built %d transaction patterns: %s", len(patterns), [p.get("name") for p in patterns])
+
     for pattern in patterns:
         match = pattern["compiled"].search(body_text)
+        logger.debug("extract_transaction: trying pattern %s, match=%s, groups=%s, groupdict=%s", pattern.get("name"), match, match.groups() if match else None, match.groupdict() if match else None)
         if not match:
             continue
 
