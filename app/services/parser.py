@@ -5,6 +5,7 @@ from email import policy
 from email.parser import BytesParser
 from html import unescape
 import logging
+import os
 from pathlib import Path
 import re
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
@@ -15,6 +16,10 @@ from app.models import TransactionDetails
 
 
 logger = logging.getLogger(__name__)
+log_level = os.getenv("MAIL2FIREFLY_LOG_LEVEL", "INFO").upper()
+level = getattr(logging, log_level, logging.INFO)
+logging.basicConfig(level=level)
+logging.getLogger("app.services.parser").setLevel(level)
 
 def _extract_text_from_message(message) -> str:
     parts: list[str] = []
