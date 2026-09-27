@@ -5,6 +5,8 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 import logging
+import logging.config
+import sys
 
 from app.db import session as database
 from app.api.v1.endpoints import status, sync, logs, transactions, rules, mailboxes
@@ -17,8 +19,32 @@ app = FastAPI(title="Mail2Firefly Dashboard")
 # Configure logging level (default INFO; set MAIL2FIREFLY_LOG_LEVEL=DEBUG for troubleshooting)
 log_level = os.getenv("MAIL2FIREFLY_LOG_LEVEL", "INFO").upper()
 level = getattr(logging, log_level, logging.INFO)
-logging.basicConfig(level=level)
-logging.getLogger("mail2firefly").setLevel(level)
+
+# Structured logging configuration so we can enable DEBUG for specific modules
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "default": {"format": "%(asctime)s %(name)s %(levelname)s %(message)s"},
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "default",
+            "level": "DEBUG",
+            "stream": "ext://sys.stdout",
+        }
+    },
+    "loggers": {
+        # Keep the existing mail2firefly logger at configured level
+        "mail2firefly": {"level": log_level, "handlers": ["console"], "propagate": False},
+        # Enable DEBUG for the parser module to capture detailed extraction logs
+        "app.services.parser": {"level": log_level, "handlers": ["console"], "propagate": False},
+    },
+    "root": {"level": log_level, "handlers": ["console"]},
+}
+
+logging.config.dictConfig(LOGGING)
 
 
 def _get_dist_dir() -> str:

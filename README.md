@@ -83,3 +83,7 @@ Run the sync worker with:
 ```bash
 uv run python main.py
 ```
+
+Scheduling recurrence
+
+- When using the `backup-worker` scheduler sidecar to trigger `/api/v1/sync`, the recurrence (cron schedule) can be adjusted in the scheduler's crontab. Operators may change the crontab inside the scheduler container or via the scheduler's configuration to tweak timing; the sidecar will read schedules from the API and write crontab entries accordingly.
