@@ -5,13 +5,13 @@ description: The four-step Vue wizard that creates a parsing rule — basic info
 tags: [frontend, vue, wizard, regex, rules, mappings]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-25T04:51:17.394Z
+    at: 2026-11-25T06:25:34.695Z
 sources:
   - id: openwiki-source-9b3495cfcfdaa7e2c3574164
     resource: repo://frontend/src/views/AddParsingRuleView.vue
   - id: openwiki-source-da933dd51a05f90fc1ff1c55
     resource: repo://frontend/src/views/ParsingRulesView.vue
-generated: { by: "omp", at: "2026-11-25T04:51:17.394Z" }
+generated: { by: "omp", at: "2026-11-25T06:25:34.695Z" }
 ---
 
 # Rule authoring wizard
@@ -54,6 +54,8 @@ These same `conditions` are what the sample loader POSTs when entering step 3, s
 ## Step 3 — pattern matching
 
 Entering the step triggers `loadSample()`, which POSTs `{conditions, condition_mode}` to `/api/v1/mailboxes/{source_id}/sample` and assigns `data.sample_text` **verbatim** — the server already returns the parser-visible body (plain part plus stripped HTML), so the browser must not strip it again. The response also provides `sample_meta` (for the IMAP-field preview column) and `sample_parts`, which is rendered as a hint: "Loaded from MIME part(s): text + html — identical to the text the parser will match against", plus a note when the email has no HTML part. A fetch error is shown inline under the textarea instead of being written into the sample.
+
+A second hint appears when the loaded body contains keyed table rows (`hasSampleTables`, i.e. the text contains `table: `): it explains that table rows are appended as `table: Header=value | Header=value` lines and shows an example column-name regex such as `Withdrawals=(?P<amount>[\d.,]+)`. This is how an operator discovers that a transaction table can be matched by header rather than by column position.
 
 The textarea remains editable, which is how an operator can paste a different email or trim a long statement.
 

@@ -5,7 +5,7 @@ description: How to verify a change and debug a bad import in Mail2Firefly — w
 tags: [testing, diagnostics, logging, troubleshooting, failed-parses]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-25T04:51:17.394Z
+    at: 2026-11-25T06:25:34.695Z
 sources:
   - id: openwiki-source-ea70eb6c045047448e446296
     resource: repo://.gitignore
@@ -19,6 +19,8 @@ sources:
     resource: repo://app/db/session.py
   - id: openwiki-source-21c0a295e6c6f5529dc70d5f
     resource: repo://app/main.py
+  - id: openwiki-source-a8047a190df69a0969f10e04
+    resource: repo://app/services/email_body.py
   - id: openwiki-source-d85e29b90d810449d653534a
     resource: repo://app/services/firefly_builder.py
   - id: openwiki-source-cafc76c8a8dfb7bafb137d8a
@@ -33,7 +35,7 @@ sources:
     resource: repo://tests/test_email_body.py
   - id: openwiki-source-8bb0b8f087c8e236af369473
     resource: repo://tests/test_parser.py
-generated: { by: "omp", at: "2026-11-25T04:51:17.394Z" }
+generated: { by: "omp", at: "2026-11-25T06:25:34.695Z" }
 ---
 
 # Tests, logging and diagnosing failed parses
@@ -42,13 +44,14 @@ generated: { by: "omp", at: "2026-11-25T04:51:17.394Z" }
 
 Two `unittest` modules live under `tests/`, with `tests/conftest.py` only inserting the repository root on `sys.path` so `app.*` imports resolve.
 
-`tests/test_email_body.py` is the suite that currently runs. It is stdlib-only (no FastAPI, no IMAP, no database) and pins the email body contract:
+`tests/test_email_body.py` is the suite that currently runs — 24 stdlib-only tests (no FastAPI, no IMAP, no database) pinning the email body contract:
 
 * `StripHtmlTests` — markup removal, `<style>`/`<script>` removal, empty input;
 * `ExtractTextFromMessageTests` — a synthetic `multipart/alternative` message whose plain part is the "please use an HTML enabled email client" notice and whose HTML part holds the transaction, asserting the parsed text contains both and no literal `<p>`;
-* `CoerceTextContentTests` — plain text passthrough, HTML document stripping, raw MIME detection;
+* `CoerceTextContentTests` — plain text passthrough, HTML document stripping, raw MIME detection, plus two regressions: a cell reading `Date: 25-11-2026` inside HTML must not be mistaken for a MIME header (it used to leak the whole document, tags included), and HTML comments must be stripped;
+* `TableExtractionTests` — header-keyed table rendering: one `table: key=value | key=value` line per data row, layout tables whose first row is prose are skipped, nested tables emit only the innermost data table, tables without a header row are ignored, and the keyed block is appended after the flattened text rather than replacing it;
 * `BodyTextFromMessageTests` — the regression that motivated the module: the HTML content must be present even when the plain part is only boilerplate, and `body_text_from_message(msg)` must equal the parser's body for the equivalent MIME message;
-* `ParserStillMatchesTests` — end-to-end assertion that `extract_transaction_details()` on that fake message yields amount `78.0`, merchant `SUBEESHW`, card `4465`, date `2026-06-26`, reference `309259409044`.
+* `ParserStillMatchesTests` — end-to-end assertions that `extract_transaction_details()` yields amount `78.0`, merchant `SUBEESHW`, card `4465`, date `2026-06-26`, reference `309259409044` for the SBI-style alert, and that a column-name regex against a keyed table row yields amount `100.0`, date `2026-11-25` and reference `S16449515` for a Federal Bank-style table alert.
 
 Run it with:
 
@@ -89,5 +92,6 @@ The variable is read at import time, so a restart is required. `docker-compose.y
 ## Behavioural traps worth remembering
 
 * `raw_email` used to store raw HTML (`html or text`); it now stores the parsed body, so old rows and new rows are not directly comparable. The detail view sanitises and renders either.
+* Table alerts show their data twice in `raw_email`: once flattened inside the prose, then again as `table: …` keyed rows at the end. When a rule matches the wrong row, read the keyed block rather than the flattened prose.
 * The Failed Parse view sanitises HTML with a `DOMParser` pass that strips `script`/`style`/`iframe`/`form`/`input`/`button`, removes `on*` attributes and `javascript:` URLs before injecting with `v-html` — safe for the plain-text bodies stored today, and still the correct guard for legacy rows.
 * A run that fails after posting to Firefly but before tagging leaves the message retryable. Nothing in this codebase deduplicates on import: the payload sets `error_if_duplicate_hash: false`, so Firefly's own duplicate-hash rule (disabled) will not reject the retry either — the only guard is the processed keyword flag.

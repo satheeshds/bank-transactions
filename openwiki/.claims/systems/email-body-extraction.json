@@ -1,34 +1,34 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:6ae013db84eb58b8975360bdb6271c9485b863ad037b72c5717814f14a22fbbd",
+  "pageVersion": "sha256:3afba19ed8240ff57bc311150e6be13f5c2a44717f5d86335b3dbf11b3f3369a",
   "claims": [
     {
       "id": "claim_75c3bb91842f4b7f86f13a47a86323c8",
-      "statement": "body_text_from_message concatenates the coerced text part and the coerced HTML part with a newline, returning an empty string when the message has neither.",
+      "statement": "body_text_from_message concatenates the coerced text part and the coerced HTML part with a newline, returns an empty string when the message has neither, and appends the keyed table block when the HTML part contains a data table.",
       "evidence": [
         {
-          "resource": "repo://app/services/email_body.py#L75-L94",
-          "version": "repo-lines-v1:sha256:d1773f1aef9cac49b8713c624a9575f97d30f44f3243b0fd181367b4f04efb64:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkMjllNzFmYWFkZDU2ZGZlMDgzOTZlMzdkMGEyOGI5ZmU3YTVkOGI4MjExOTI5YjI0NGYwMWI2N2EyNTczNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNDEwMTk1MzUxMDM3M2UxNzE0ZjFiYjEyNzFjNDJjNTRiZTc4N2FmOTkxMTBlN2YxYmM2MDEwODQwMmZiY2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg3MzdhYzU4MTUwMjM3N2M4YjE5OGEzNzY4ZjZiNmU1MjFmMmY2Y2YyYzVkNzVmZmE3NDI5OWU5NzFmZTk4OWQifQ"
+          "resource": "repo://app/services/email_body.py#L160-L189",
+          "version": "repo-lines-v1:sha256:2111110821c8b5037160f9110c1465d93b313a6ab48f7fa211b76868d03f8c8e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkMjllNzFmYWFkZDU2ZGZlMDgzOTZlMzdkMGEyOGI5ZmU3YTVkOGI4MjExOTI5YjI0NGYwMWI2N2EyNTczNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNDEwMTk1MzUxMDM3M2UxNzE0ZjFiYjEyNzFjNDJjNTRiZTc4N2FmOTkxMTBlN2YxYmM2MDEwODQwMmZiY2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg3MzdhYzU4MTUwMjM3N2M4YjE5OGEzNzY4ZjZiNmU1MjFmMmY2Y2YyYzVkNzVmZmE3NDI5OWU5NzFmZTk4OWQifQ"
         }
       ]
     },
     {
       "id": "claim_e6080f59fb454a3fa8b2002b4d413716",
-      "statement": "strip_html removes style and script blocks, strips tags, collapses all whitespace to single spaces, and returns an empty string for falsy input.",
+      "statement": "strip_html removes HTML comments, style and script blocks, strips remaining tags, collapses whitespace to single spaces, and returns an empty string for falsy input.",
       "evidence": [
         {
-          "resource": "repo://app/services/email_body.py#L21-L31",
-          "version": "repo-lines-v1:sha256:eaa6d9590322540449c403e85bcf25b522dce4c4da33e2bcad453351eb2978c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2ZDRkMmZhMWRlMGNkYzQyODQ1NWQyMzNhZWNhNDI1MGY4MDU1ZjBhOGJhZjI2MTM3OWI2ZmI5ODNjMWJhNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjZGI0MjYzMTc1ZDkzMTk1NDY0Nzc1ZDViYzg4MTQ4MzIwZWU5MTkyZjdlZWE5MzNjYWRiZTQzYzhiNzRmMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBjMTNjYTE5ZmIwOTNjN2ViZDg1ODdiOTY0NzY0MzcxYjQ2N2UzMDI4OTNiMGJmZDU0OGMzY2U1OWM5MDk1OWMifQ"
+          "resource": "repo://app/services/email_body.py#L21-L33",
+          "version": "repo-lines-v1:sha256:bdab39f72ec715d6c4ca7860fe6d1e2e8590707ffc8e55e375e05dda96fb946c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2ZDRkMmZhMWRlMGNkYzQyODQ1NWQyMzNhZWNhNDI1MGY4MDU1ZjBhOGJhZjI2MTM3OWI2ZmI5ODNjMWJhNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmYzIyZjM4Y2JjZmQ1ZDg5NzYyM2VkYzZjNzRhNDg5YWFjZjUzZTdhZmE4ZWM4NzkwZjk3ZDI4Y2RkZmY0ODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjZGI0MjYzMTc1ZDkzMTk1NDY0Nzc1ZDViYzg4MTQ4MzIwZWU5MTkyZjdlZWE5MzNjYWRiZTQzYzhiNzRmMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyNWEzNzNlYjI5Njk0MTJhOGRiZGI3MGZmYzcyYmMwMDJhZmVmYjZjMDk0M2Q4MjQ4ZWU5MTFmYmU1NDNlMWQifQ"
         }
       ]
     },
     {
       "id": "claim_c7765af69dd641b38621986405f94bc6",
-      "statement": "coerce_text_content re-parses content that looks like a full MIME message, strips content containing html or body tags, and otherwise returns the input unchanged.",
+      "statement": "coerce_text_content checks for an HTML document first, only then treats a string as raw MIME when a header appears at the very start of the string, and otherwise returns the input unchanged.",
       "evidence": [
         {
-          "resource": "repo://app/services/email_body.py#L60-L73",
-          "version": "repo-lines-v1:sha256:cbb6aa33125fac44bf29d6951fc3ce3b1f5bdff04c15df5ae5af5a9bb3a89dc3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1ODdlZjBjOGZiYjJiNGY4MDZlYzE5ZThlOTVlNTFhMTY4NDk1MzllZGEyYWRmYjI1Y2UxZDE5ZGUxZmJjZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkZWYzNDM0MTQyMjhlNzhkNTNhNzFjNzc1ZjQxYTQxMDIyZWVlNzVlYTk2OWI1MGZjMDNlNDIzOTg2NzA0NzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjYmYxNmI2OTkyMDgzYzIxZmI1YmFmNGI4MDgyMzgyOGIyZTNlNzlkMmJlYTRkZjM2ZjUzM2Q5YTEzMDEyNzgifQ"
+          "resource": "repo://app/services/email_body.py#L141-L158",
+          "version": "repo-lines-v1:sha256:bc37e1e3a7c8eb3579aa436406ede5597a8c67604aecaa32414e052545ed3c3d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1ODdlZjBjOGZiYjJiNGY4MDZlYzE5ZThlOTVlNTFhMTY4NDk1MzllZGEyYWRmYjI1Y2UxZDE5ZGUxZmJjZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxMWQ3YjQ3ODQ0NjA2YTI0OGYzOWE1Y2EwNzg4YTIzOTcyNmJhMzQ1ZTJlMWE1ZTUxYTBhYjllNWZmYjMyNDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjYmYxNmI2OTkyMDgzYzIxZmI1YmFmNGI4MDgyMzgyOGIyZTNlNzlkMmJlYTRkZjM2ZjUzM2Q5YTEzMDEyNzgifQ"
         }
       ]
     },
@@ -55,7 +55,7 @@
       "statement": "The wizard assigns data.sample_text verbatim and only falls back to the browser stripHtml helper when the response carries sample_html alone.",
       "evidence": [
         {
-          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L160-L200",
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L162-L202",
           "version": "repo-lines-v1:sha256:83286d00084b71cab81c40a20c422596a65d5acd6677bf03d87f1e9987d09910:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0NTI2YWZkNzhlMmJiZGM0N2QwODZmNjliOTdhZjYwZTQ5MjAzZDNjNDlhMTAwMDNmNTQxNzEyODlmOTYxZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1YjgwNmZmM2Q1MjQxYmU3YjRmMjc4ZWQ2ZDM2NTcxZGMwNWE4NjQwODkzOGQ5NDlhOTkwMjc4NTNjZTAwOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5Yjk2YWM4MDRlY2IzMjFkZGI0ZTVkZjI1MzMyOGJlMWUzMTFkODRjMWY3NTY4NmRlOTFjMjhhYzUwMGEyNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4NWI1Njc2NDVkNTQ3OWU1NjkxNGE3OGMwYWVlMWUxZjg4NjRkNDVjNmMwMTdjNzA3ODU1MzJmMzVjMTkwMDEifQ"
         }
       ]
@@ -83,7 +83,7 @@
           "version": "repo-lines-v1:sha256:a0628fd6cf877195d83135a339bb975b4267664469b5b3ea7304fca1db7d436d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyNjExYzBjNDgwYTAxYTViMzEwNjA0MzlmYjUxYzA4YTY3YWZjMzMyNWUwMTQwMGI3NzQ5N2YxOTJmODE0YmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyMDA5N2U0YWE1MDA2OGJhMTU3ZjlhMjczOWZhZDg2OTk1ZTFlMGNkY2NkYWRjNTg5N2MyMDM0Yzc0ZDNlZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyMjc4ZDM3YjliYzA2Yzg2ZTQ4ZTU2MDZkZDY3Y2Q4OWJkYzI0ZjExNzVlMzM5ZWUzMDNhYmFhOThmZDY5MWYifQ"
         },
         {
-          "resource": "repo://app/services/email_body.py#L96-L103",
+          "resource": "repo://app/services/email_body.py#L191-L198",
           "version": "repo-lines-v1:sha256:8f6567ae07fa352efe9e872ef45647f955a3280c583d37f54f84bab1129006cf:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWMxOGNhYzcxYjcxMWM1NzFkOWZmMTIxOWU5NTNiZTgzODJlYTJjNzAwYTFkODBlZWU5YWM5YWM0ODJiNzJhYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzMwYzZmMjk1MjFjZWYwNDFjZTA3OTdiMWM0YjRkMjU0ZmJiMjBiNTI1MTNhYTFiZjEwODA0MGFlYzMxNTQ3OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTBlZDhjNjMxOTRkNmU5MjdmNTZkZTk3ZWQwZThjM2UzOGEzZWQwODQ0YzVlMDc2NjFkZjAwNDU0NTBjYzIzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         }
       ]
@@ -103,14 +103,76 @@
       "statement": "tests/test_email_body.py asserts the boilerplate-plus-HTML regression and equality between the fake message body and the equivalent raw MIME parse.",
       "evidence": [
         {
-          "resource": "repo://tests/test_email_body.py#L92-L127",
+          "resource": "repo://tests/test_email_body.py#L189-L224",
           "version": "repo-lines-v1:sha256:8b6b9a666f50b4c18b4a1c3da608921241e21104df5b2eb44af550f9967a2d19:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhZmQ1N2ZkMjM4NzVkNDIxYjNhNWJlYTlhMjMxNjE5YzEzODlmYzZlMzdhNDJiNGQyM2M0YWU3ODc3YzYxNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1YTAzNjc1ZjA1YTllYmYwZWQxM2FlNWIwNzIxZWVkNDZjZWZhZDlhNzNhMDViZGE0YmRkNzBkYTJmZjY0YjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4NzY4MTU5MzljMmM0NDFmNmE1ODIxNzE2ZWM1ZTgzYzM0Zjc0NmU0NDk5ODMwZjZhMDk5ODVmNDk0M2EwZjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_89a22c50e59e458c9d414d42b6d5b0b9",
+      "statement": "tables_to_keyed_rows emits one 'table: key=value | key=value' line per data row for innermost tables whose first row looks like a header, skipping layout tables and de-duplicating identical lines.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/email_body.py#L104-L139",
+          "version": "repo-lines-v1:sha256:6631ae7acd1d6bde371d5a9d17e068c207db1773441885d7089cda157a391c6a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4N2M1MDIwZjI3OGIxOTdjOWIwY2E0NDJjZWZhZDVkMjE1MzAwMTZjZGUzMzQ3YjRkZWViMjA3MzgwY2VjMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVmM2FkMjJhNzcyMjg2NTFkOTkwYmZmN2I3NTRkNzUzYThmMjUzYjc4ZWIwMGI3NWRjNjcyNmUxZGM3OTczNDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2ZTEzMTg0NjcxNzI2YjlmY2M0M2ViZWQ4NGMxNGRmYmEyOGI2MzQ1ODcwMmEyMDFkMDIwOTYzNzg0ODlmNzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6252c1f16f72482298cc8ad02289de61",
+      "statement": "A table is treated as having a header row only when it has at least two non-empty cells, none longer than 40 characters, none ending in a full stop, and at least one containing a letter.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/email_body.py#L83-L101",
+          "version": "repo-lines-v1:sha256:a06dc29df15eb5f766917ae3186f2f11330c12884268795136942cb0318ae9f0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2ZjY2MTE0Y2I0MzMzMzAzNWJkNmI5Mjk0MmNiNjA2YjFkZWVhMzViNTg1YTRhNzFhZjJiY2NiY2RkNmZiZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkMGVmMDc1NzgzMWJjMTk2YzQ5Yjk2Y2E0MTRjYmU4MDhlZGIyMDFlODM3ZjM5YmQzZDk1MDA4MDQwOWY4MTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5NWM3ZmViZGYxYzA2MTQxZmI4M2ZlODllN2ZmNWUzMzg5ZWU2ODQ5MDE4NWJkNmRhNWQwOWY4N2JkNDQwYjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllNDMxNWVkNzcxMDExNjI1NGUzMmEwNWE0M2Q0Yjc0NjNmN2MwNTExYmRmMjdmNGFiM2RmOGE5ODJhMmVlN2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7588875c28c043189f4566fb2560ca9d",
+      "statement": "The table block is appended after the flattened text rather than replacing it, so patterns written before the feature keep matching.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/email_body.py#L180-L189",
+          "version": "repo-lines-v1:sha256:b3525c00f39f223696d4fc982397720ca6281a27b44b57f1959512a36a177e1c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwOGZkMTg4YzNmMjFiYjE2ZjBkOTI3MTNkMTVhNDAwODQxMzE1YzU5YWYzM2FhOTMyMDkxMmNhZjQ5YWZiMmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxNGIzODhmZWQ5YjdhYjBjNmNlNTcyMzcxN2Q1NWFmMGI0Y2MzMDAwYjM5N2I1MmE4NTg1OWQzYzY2YjcyYTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg3MzdhYzU4MTUwMjM3N2M4YjE5OGEzNzY4ZjZiNmU1MjFmMmY2Y2YyYzVkNzVmZmE3NDI5OWU5NzFmZTk4OWQifQ"
+        },
+        {
+          "resource": "repo://tests/test_email_body.py#L180-L187",
+          "version": "repo-lines-v1:sha256:6c90ef5dc1cbc3eab042b518d333a0bb6b163b7d044acf724fc677c213785d70:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWQ5Y2VkNzZkOGQyMWNkNDZhYjFmNjRkMzllMmJiMDQxYmM2ZGNiMjA4Nzg3ZmU4YzQwNDU1MmYwZDgwNTUzNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzUyNzVkZGZmOTI5M2IwNmY0NTQwNWNjNzRiNWM1NWZlOWIyMmViZWY2YjEzNWQxYWNhMmNkMTIzZjY0NTQ4YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTg5ZDM3MjU1MzRmODc5ZjIwNTUxZGJjYjMxY2E4NDdjZTI1NTY4NzM0OTNiYTU0NTRmNTI3MDYwMWZjZTMwNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_fdeb1743f5e84870b8566f363a592b8c",
+      "statement": "Only innermost tables are examined, so a layout wrapper containing a data table does not swallow the data table's rows.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/email_body.py#L69-L72",
+          "version": "repo-lines-v1:sha256:2f2a9fbb636a2c88c0b3c8be414bb7decc05d6cd21400e1ac0e4a54037eb4ed6:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTc5MzkxY2QyMTUwMzBkZmI0YWFkMzBhOTdjZjE2NTMzNDMwOTE5ZDQ1ODQzYmVhMDdlZDlmYWY4YzYxM2VmZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDViYjEzMjVlZDlmMTgzNGViY2MwMTUwZDFiNjc4NzkyMjdkNmU5NjZjMWYyYWZkYjQ2YTNkZjdjM2M4ZjU2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2MyYjQzMzA3Yjg3NzI4MmRkZDgyNDlmZWZiN2VlODQyYzIzN2VjYmQzN2RmN2NiYmNkY2Y4OGYyNzE0MWM3ZiJ9"
+        },
+        {
+          "resource": "repo://tests/test_email_body.py#L171-L178",
+          "version": "repo-lines-v1:sha256:b9aa5c1043874c800fc5f8fd60240cdf5b020dda3fc8e0671815821ad21baffd:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmJlNjVkYmJhYTFiMjNkOWVjMjRlZTNhOTU3NTZmODczMjg5MDAzYWU2MzczNTI2NThlNDY1NjhhNTQ1ZmM1ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODE1YTdlZDFhOGM4M2NmY2U2NzhjOWIwY2RmZjRkZDJhYzdmNjAwN2E1M2JlZjdjMTdlN2M1YjMzNDU2ZGU0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmI4NzkyMzJhOGU4Y2UzZDRhMWE5ZjZhMWVlMDQ4M2Q3MGE2NDAxNjExMWVlNTlmNDk4ZWRlMjIxOGI0NzAwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTNlZmMyMTFmNjcxYTk2NTQxNDg1MmYwNGM4NWE3ZjUzM2U0ZjFmOGEzMjYzZjI3ZTRjZjkxY2U4N2E4OGZlZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5587abb36f52408e8c45c4298744409c",
+      "statement": "The rule wizard shows an explanatory hint when the loaded sample contains keyed table rows, including an example column-name regex.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L66-L72",
+          "version": "repo-lines-v1:sha256:a6a92bda6febe90c46ecc819bfed0d759c556ef42cb0328b519ef2c9bdd9a8bf:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU1MjYwOTVlOGExNjcwMjA1NzY1OTY1NTM4MzFhODVkMGU1NzMwZWY5ODZmZDc5YjU5YmUxNDI4MjllNjk0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTM2ZDA4ZjUwY2QyNmM5NjUyYjgxYjBlMzMyMzdkZmZkYmU0YTk0ZmJjNjg2MDdmMGJlNGZlZTg0ZTI1NTVkYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzQ5NDgwNWQzYmUxYjhmYjZmZjFlZGIxNjdkOWExN2RhZWYxNzJiOWE0ZTJmMzgyOGFiOTQ3MDkxOGI5YjFhYyJ9"
+        },
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L668-L684",
+          "version": "repo-lines-v1:sha256:290f65b97d0b45b80924080171c4b5f75c649bfb16d6e3c591b35666ea8660b9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0MGQ1NzMzYjM5YzcwMzVhNmNiNWEzYWY0Zjk1M2E2M2Q0ZjY4NDE3MjhjYzE5NjEyZDdiZTQyN2JiYTA3ZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4ZWY2NzBlNzJmZjZhZGQ2OWJjNDhmN2E0ZmI5YmE3OTdiYmFhMTk2NmMxOTVhNTk3NWY3ZDMzYjljMzliODkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkZGRmNzgyMTAxZTRhMDE1OWRjZmQ3ZDRiNjQ5YzJhMTZiZmRkNTBlYTI1MDliMjkyNDA4ZmE5M2M5ZGY1OGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczYjBlMDYxYmFmNjBlYjYwNmI3NmI0YzIxZGM1OWJhODFiNzRhY2M1MDA3YzA2OTJhMjkzZWMyMTlkMDQ2M2EifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-25T04:51:17.394Z"
+    "at": "2026-11-25T06:25:34.695Z"
   }
 }

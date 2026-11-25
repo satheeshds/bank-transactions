@@ -5,17 +5,21 @@ description: How Mail2Firefly compiles configured regex patterns into matchable 
 tags: [parser, regex, patterns, transaction-details, timezone]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-25T04:51:17.394Z
+    at: 2026-11-25T06:25:34.695Z
 sources:
   - id: openwiki-source-27968b0140d9f4dbf73030e5
     resource: repo://app/config.py
   - id: openwiki-source-fcfa7a2f6773406c3c537551
     resource: repo://app/models/__init__.py
+  - id: openwiki-source-a8047a190df69a0969f10e04
+    resource: repo://app/services/email_body.py
   - id: openwiki-source-dd4e9388d1ad0a8dafd32128
     resource: repo://app/services/parser.py
   - id: openwiki-source-08628abdfe83c50c2702a735
     resource: repo://app/services/service.py
-generated: { by: "omp", at: "2026-11-25T04:51:17.394Z" }
+  - id: openwiki-source-7b05dab96e231da3a0584fc2
+    resource: repo://tests/test_email_body.py
+generated: { by: "omp", at: "2026-11-25T06:25:34.695Z" }
 ---
 
 # Regex transaction parsing and field mapping
@@ -36,6 +40,18 @@ The worker builds patterns per source: for database rules it passes `[{"name": r
 ## Matching and field extraction
 
 `extract_transaction(source, config)` iterates the compiled patterns and applies `re.search` (not `match`), so the pattern can start anywhere in the body. The first pattern whose **amount group** yields a value wins; a pattern that matches but has no amount is skipped and the next pattern is tried.
+
+### Table alerts: match by column name
+
+The body contains the flattened prose plus, for table-based alerts, one `table: Header=value | Header=value` line per data row (see `/openwiki/systems/email-body-extraction.md`). Because each row is a single line, a pattern can anchor on the `table: ` prefix and then walk only the columns it needs, in any order:
+
+```
+table: Date=(?P<date>\d{2}-\d{2}-\d{4}).*?Particulars=(?P<merchant>[^|]+).*?Tran Type=(?P<channel>[A-Za-z]+).*?Tran ID=(?P<reference_no>[A-Za-z0-9]+).*?Withdrawals=(?P<amount>[\d.,]+)
+```
+
+Applied to a Federal Bank debit alert this yields `amount=100.0`, `merchant=UPIOUT/221312989137/…`, `transaction_date=2026-11-25` (normalised from `25-11-2026`), `reference_no=S16449515` and `channel=Debit`. Two habits make such patterns robust: anchor on `table: ` so the flattened prose earlier in the body cannot match first, and capture only up to `[^|]+` when taking a cell value, because the ` | ` separator is what delimits columns.
+
+Note that `.*?` does not cross the newline between rows unless the pattern opts into DOTALL, which is usually what you want: one row, one match.
 
 Group names are resolved through `field_mapping`, with these defaults:
 
@@ -80,4 +96,4 @@ Re-running the search means the body is extracted twice per message; for large H
 
 ## What the tests cover
 
-`tests/test_parser.py` describes the intended behaviour (SBI card parsing, HDFC VPA parsing, comma-separated amounts, timezone conversion, Firefly payload shape, processed-tag handling) but no longer imports after the `app/` refactor. The executable coverage for parsing today is `tests/test_email_body.py::ParserStillMatchesTests`, which asserts amount, currency, merchant, card, date, reference and the `amount` groupdict entry for a synthetic SBI alert.
+`tests/test_parser.py` describes the intended behaviour (SBI card parsing, HDFC VPA parsing, comma-separated amounts, timezone conversion, Firefly payload shape, processed-tag handling) but no longer imports after the `app/` refactor. The executable coverage for parsing today is `tests/test_email_body.py::ParserStillMatchesTests`, which asserts amount, currency, merchant, card, date, reference and the `amount` groupdict entry for a synthetic SBI alert, and that a column-name regex against a keyed table row extracts the Federal Bank transaction fields.

@@ -5,7 +5,7 @@ description: Entry point to the Mail2Firefly wiki — a five-line mental model o
 tags: [quickstart, navigation, orientation]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-25T04:51:17.394Z
+    at: 2026-11-25T06:25:34.695Z
 sources:
   - id: openwiki-source-833fc642bfe0c1d5bb06b763
     resource: repo://app/api/v1/endpoints/mailboxes.py
@@ -29,7 +29,7 @@ sources:
     resource: repo://frontend/vite.config.js
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
-generated: { by: "omp", at: "2026-11-25T04:51:17.394Z" }
+generated: { by: "omp", at: "2026-11-25T06:25:34.695Z" }
 ---
 
 # Mail2Firefly wiki quickstart
@@ -41,7 +41,7 @@ Mail2Firefly imports bank alert emails into [Firefly III](https://www.firefly-ii
 1. A **mailbox** row stores IMAP credentials and an optional processed-tag keyword.
 2. A **parsing rule** row stores IMAP conditions, one regex, and optional Firefly field mappings.
 3. A sync run fetches unprocessed messages that match each rule's conditions.
-4. The email body (plain part **plus** stripped HTML part) is matched against the rule regex, producing amount, merchant, card, date, channel and reference.
+4. The email body (plain part **plus** stripped HTML part, with table rows appended as `key=value` lines) is matched against the rule regex, producing amount, merchant, card, date, channel and reference.
 5. A matching message is posted to Firefly III, the message is tagged processed, and a row is written to the `transactions` log either way.
 
 ## Task routing
@@ -63,7 +63,7 @@ Mail2Firefly imports bank alert emails into [Firefly III](https://www.firefly-ii
 
 ## Three facts worth knowing before changing anything
 
-* **The sample box and the parser see the same text.** `body_text_from_message()` in `app/services/email_body.py` produces the body for both the parse and the wizard's "Sample Text"; changing one without the other breaks the guarantee that a rule previewed in the UI behaves the same at sync time.
+* **The sample box and the parser see the same text.** `body_text_from_message()` in `app/services/email_body.py` produces the body for both the parse and the wizard's "Sample Text"; changing one without the other breaks the guarantee that a rule previewed in the UI behaves the same at sync time. Table-based alerts also get header-keyed `table: …` rows at the end of that body, so columns can be matched by name instead of position.
 * **Rules come from the database, never from `config.toml`.** `config.toml` still drives the CLI worker and fallback values like the processed tag, but the running service ignores it for mailboxes and rules.
 * **Deduplication lives in IMAP, not the database.** A processed keyword on the message prevents re-import; Firefly's duplicate protection is disabled in the payload.
 

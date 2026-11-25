@@ -67,6 +67,8 @@ const sampleLoading = ref(false)
 // which MIME parts contributed to the loaded sample text (e.g. ['text','html'])
 const sampleParts = ref([])
 const sampleError = ref('')
+// true when the loaded body contains keyed table rows (see email_body.tables_to_keyed_rows)
+const hasSampleTables = computed(() => form.sample_text.includes('table: '))
 
 // Debounced call to server preview
 async function fetchServerPreview() {
@@ -674,6 +676,11 @@ async function submitRule() {
                                         <span class="font-label-mono">{{ sampleParts.join(' + ') }}</span>
                                         — identical to the text the parser will match against.
                                         <span v-if="!sampleParts.includes('html')">This email has no HTML part.</span>
+                                    </div>
+                                    <div v-if="hasSampleTables" class="text-xs text-on-surface-variant mt-xs">
+                                        Table rows are appended at the end as
+                                        <span class="font-label-mono">table: Header=value | Header=value</span> lines, so you can
+                                        match by column name (e.g. <span class="font-label-mono">Withdrawals=(?P&lt;amount&gt;[\d.,]+)</span>).
                                     </div>
                                 </label>
 

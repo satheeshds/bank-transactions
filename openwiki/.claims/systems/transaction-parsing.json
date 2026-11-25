@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:e583424940832caaa1163ee7c307cd8e9bc5281c4acdcabae25659b3c94f32f5",
+  "pageVersion": "sha256:4350c3c4f20d8b36ac9e10ff139e323b70194369bc0c2a201d7283622497c148",
   "claims": [
     {
       "id": "claim_635316f6ab5d4d1f8b5dc9e0e6114e3c",
@@ -145,10 +145,34 @@
           "version": "repo-lines-v1:sha256:99907b9d5d1a4b2c1982b6f8214d000821ea2e3e6982dc79587c97558244e638:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMzdlOTc3MjZiYTBiYzFjMzhiYThlYmQxOGRkYTgxMjRkNDMxMTkxYTVmNjJjMzE5NzU1N2MzNzdiN2MwYjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1OWFjMjIwMmU1MzEyN2RiYThiNzgxZjJiODk5NWIxNzQyMGU5ZDk4ZjE1MjFhYmY1MjU4MmI1NDcwZTI4YjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjMzlhZTFlMDY3ZDA1OTU2NDQ0NzVlODM3NDQwNWVjNGM1MzlhMGQ0YTUzZGNmOGYxMDU3MGU2ZDQ2ZjNjZDAifQ"
         }
       ]
+    },
+    {
+      "id": "claim_f69f8097889741aa99d7116a057f1274",
+      "statement": "A pattern can anchor on the 'table: ' prefix and capture table columns by name in any order, because each keyed data row is a single line.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/email_body.py#L104-L139",
+          "version": "repo-lines-v1:sha256:6631ae7acd1d6bde371d5a9d17e068c207db1773441885d7089cda157a391c6a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4N2M1MDIwZjI3OGIxOTdjOWIwY2E0NDJjZWZhZDVkMjE1MzAwMTZjZGUzMzQ3YjRkZWViMjA3MzgwY2VjMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVmM2FkMjJhNzcyMjg2NTFkOTkwYmZmN2I3NTRkNzUzYThmMjUzYjc4ZWIwMGI3NWRjNjcyNmUxZGM3OTczNDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2ZTEzMTg0NjcxNzI2YjlmY2M0M2ViZWQ4NGMxNGRmYmEyOGI2MzQ1ODcwMmEyMDFkMDIwOTYzNzg0ODlmNzgifQ"
+        },
+        {
+          "resource": "repo://tests/test_email_body.py#L225-L264",
+          "version": "repo-lines-v1:sha256:8af9a6d8d1934fd55763aea2f6306a8213c058a731fc8ef8fe934a3373141109:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyODU0Yzk3OTMzZWJkOTE0NWVmNTY1MDJlN2ViNjc2ZWRiOGI5YzZjM2UwNGI0ZjBlNjYwYjkwZDlkNGViZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlOTNkODkzOTA2ZWVhZjJjYWRjYzY1NTg1OTdiZDkzMzBlMmViNjlkZmI2MGE5YzgxNzUyMTg1MjdlNzI2ODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4YzE1YjU4Y2U3YThlMmMxYWU5Y2ZkYzczNjUwZmRjMWFiNDIwM2I1MDA3YTEwN2I0YmUyMjRjN2VjOGViOTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b22461d544474de1b70c7b0e16d7fd1b",
+      "statement": "The executable parser coverage asserts both a paragraph-style SBI alert and a column-name regex against a keyed Federal Bank table row.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_email_body.py#L225-L264",
+          "version": "repo-lines-v1:sha256:8af9a6d8d1934fd55763aea2f6306a8213c058a731fc8ef8fe934a3373141109:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyODU0Yzk3OTMzZWJkOTE0NWVmNTY1MDJlN2ViNjc2ZWRiOGI5YzZjM2UwNGI0ZjBlNjYwYjkwZDlkNGViZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlOTNkODkzOTA2ZWVhZjJjYWRjYzY1NTg1OTdiZDkzMzBlMmViNjlkZmI2MGE5YzgxNzUyMTg1MjdlNzI2ODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4YzE1YjU4Y2U3YThlMmMxYWU5Y2ZkYzczNjUwZmRjMWFiNDIwM2I1MDA3YTEwN2I0YmUyMjRjN2VjOGViOTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-25T04:51:17.394Z"
+    "at": "2026-11-25T06:25:34.695Z"
   }
 }
