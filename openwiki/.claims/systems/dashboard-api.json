@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:26140f7797423e1c9d7a665b8e080e219bbb477e8892772cbeaa7ec7acb3db81",
+  "claims": [
+    {
+      "id": "claim_32d8ee52cacb4d7fab9a55f5c4efc158",
+      "statement": "GET /api/v1/status probes each mailbox with a raw TCP socket (2s timeout, port default 993), reports overall imap.connected when any mailbox is reachable, and probes Firefly /api/v1/about only when base URL and token are configured.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/status.py#L16-L110",
+          "version": "repo-lines-v1:sha256:386179dba7714aaa669fed1cdacd812b263aa07b652f047b951121b039840c83:eyJzZWxlY3RlZExpbmVDb3VudCI6OTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4NzI5Y2RjZTIxZTZiNGY2OTM1OGNlMDI1MjEyMmVmZDc0MTAxOGUyYzRhNTBhZGMzZjM4YzgwNGY1ZTU4MzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzMWE0NjRjNWY4ZTAxZTJmMDZhZTM2YjFhNjY0YmRmMGIwMTI4NzZlODg0ODE4YWYwNzVhNjQyZTdjNWQ3YzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f27465a48b4440e9726c954f952b481",
+      "statement": "Both mailbox sample endpoints return sample_text, sample_html, sample_meta and sample_parts, where sample_text is body_text_from_message(msg) so it equals the parser-visible body.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/mailboxes.py#L159-L284",
+          "version": "repo-lines-v1:sha256:e64cdf9ef4a642802441eb569e7703935ee13388e0c9e1ade32a15ab231f8fdc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhNjJkYjVkMWMxYTdhMWM1ODU2N2U5NTg5ZDM0ZGEwMTg3M2FkYTY3ZmViYTUyNDY3YTJhNzRhYjkxNjU1YTdmIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJlZjgzM2FlODkyYzY1ZjVlM2VlMGU5ZDE5MWFlODNhZDg4Y2E2NzM1NTUxOWUxM2Y5Y2U0YzVjZGFiZjMzN2MwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzMjVjZjcyZmFiYjhhNmFiNzRkMTU0MWZhMWMwOTM4MzMzMGIyOTI2MTJkOWQ1MmM2MmRkZDlmMGUxNTZlYWFmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://app/api/v1/endpoints/mailboxes.py#L20-L41",
+          "version": "repo-lines-v1:sha256:a0628fd6cf877195d83135a339bb975b4267664469b5b3ea7304fca1db7d436d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyNjExYzBjNDgwYTAxYTViMzEwNjA0MzlmYjUxYzA4YTY3YWZjMzMyNWUwMTQwMGI3NzQ5N2YxOTJmODE0YmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyMDA5N2U0YWE1MDA2OGJhMTU3ZjlhMjczOWZhZDg2OTk1ZTFlMGNkY2NkYWRjNTg5N2MyMDM0Yzc0ZDNlZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyMjc4ZDM3YjliYzA2Yzg2ZTQ4ZTU2MDZkZDY3Y2Q4OWJkYzI0ZjExNzVlMzM5ZWUzMDNhYmFhOThmZDY5MWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e2a95d35f68a48d89f5ae03e5a626f1f",
+      "statement": "POST /api/v1/mailboxes/test performs a 3 second socket check then an IMAP login when credentials and imap_tools are available, always responding 200 with connected/error/warning fields.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/mailboxes.py#L73-L119",
+          "version": "repo-lines-v1:sha256:912d0085e0e4e96b3261ac79d0fbbbdc3ffdd294d211c13f26816474d962c932:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmN2RjOWFjOGM2ZTFkOGYxMTRiNTY2ZmZmZjdkYjY4YjFjZjFmMjhkNGIyNmUwMzkyNzhkMTg3OWVjMjQ1ODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0MTg5OWJhZTQ1YWYwOWU1M2ZiMWI5M2E4MmEyYjhkZjIyNTQwZThlNzNmZjJhZTM5ZTEwMTI1MmE2NDdmYmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmMmE3ZGEwNjNjMDdjMDVmNjI3ZDIxNzViNTQxNGNhZDM1NmExMmU3NTBlMDU0MTVlNjFmODE1OTQzMjY0ZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5ZjRmZjA1NjUwN2I5ZDM2NjIzODAzMjBiZTE4NmZhZTczMDg2YzMzZjc2ZTAyNzdkZWNhZmM2NWE2ZDAzOTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_27b082308c72478caf64ec02be62f210",
+      "statement": "Rules are stored with conditions_json and mappings_json text columns and condition_mode; the single-rule GET parses those JSON columns back into objects while the list endpoint returns only scalar columns.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/rules.py#L14-L84",
+          "version": "repo-lines-v1:sha256:f509abf1e64cd1207d9935016b5b528e1883137d8913d6cb4c5b3e831ee9986d:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhNTFhOWFmMWQ3NWY1OGJjMjlhMmRhMDJjOTc5NzJkYTkwMjMxYjE4ZTNiMjFkYTI2NjQ5ZDZmZjZhNGEwZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2ZDBlMmVhNTIzNzk3NTJiMzUxM2NlNTk5YWY1N2NlNjYyN2FhZjQwMGM3YzQzMTAwMzc5YjU5ZGEwMjQ3YmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcwZDAyOTEyYTU1NzNkNGU0MTg4ODUyZGI0YTE0N2E0NzMwMjFiMGRjNTRmMjY1YWQ4YjRkMDRkODA5MWFkODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmYmNlODE4MTIyYWYyMTFlODE4ZTc4ZWRmNjU0ZjM0YWQ2NmM0N2Q4ZWMzMjI1ZDEzZjhiMDM3NDdmMjUzNDEifQ"
+        },
+        {
+          "resource": "repo://app/api/v1/endpoints/rules.py#L84-L110",
+          "version": "repo-lines-v1:sha256:29ecfc1a6b85423e7c1b38eb99d019e91f66a4cfb57e5a4436bc2c5840cffdea:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2ZDBlMmVhNTIzNzk3NTJiMzUxM2NlNTk5YWY1N2NlNjYyN2FhZjQwMGM3YzQzMTAwMzc5YjU5ZGEwMjQ3YmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxZTEzNDgzYWE0ZDcwN2Q0MzE1Yzg1NmJlY2Q0NThkZWUxMTc4N2Y2OGJlMDE5Yzg1YTcxN2UwMjJjOGU2MTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlMThjYTZmZTBlZjg1NTEzM2M2YTdiNGY5NDkzODRiY2NjN2I0YWY1YWUzZmVkNTc4M2I1NGY3NWY0MmI0YTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4cc387b963564754be74c1837c0b0f5a",
+      "statement": "POST /api/v1/regex_preview runs Python re in a single-thread executor with a 0.5 second timeout, returning groups/named/groupindex, an empty groups list on no match, or compile_error/timeout error objects.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/regex_preview.py#L14-L49",
+          "version": "repo-lines-v1:sha256:ec8c7a5361f54ab9e91d2023b76b214163589accce084b4c31654d4337143a03:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyZjIxYzYyMGJlMDljYjk2NTMzMWM4Yjk3NDA2NmVkYTY5NTFiYjAyOTE0YjgzZjlhMjRjNzdmMDJkODg3YTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhMTFjMDU2N2QwYTVmOWU5YjEzNWY2NWNkMjUzNzJkZmQ2Mjg3NzVmN2MxZWQyNTNmOGJhZDQyZGQyZDY2NjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyOGFjMDZjMjYwZWIxMjg5NWQwOWE1MzkxNmE0OTBmY2IxNGExNTA1NDlmODIyNDQ2ZWNlZmMzZmMxNjg5OGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8a8d7aa7200944cab5fa8b1b6561b173",
+      "statement": "POST /api/v1/ai/regex requires the gemini_api_key setting, prompts for a single-line regex with canonical group names, and iterates through a fixed model list retrying only on quota or rate-limit errors.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/ai.py#L16-L110",
+          "version": "repo-lines-v1:sha256:fea38a212913ccccc58c0548f8b3ebf73ebc0e23bc19ccb1edad45ea563bc284:eyJzZWxlY3RlZExpbmVDb3VudCI6OTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5ZjM4Y2FhNmZkOTc2MGQ4NDQzYmY2ZjJmN2Y0NzExNTg2ODU4MzFkNTYxZDhiN2M2N2VhNmIxNzA5ZDg0OTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2OGEwMjQ5Njk5M2MxNDQyYzE5NWUxOTBiYjQzODE4ZWQxNTJlYWFlNmEwMGNlNjQxMDdkMTNkMWE0NDMzYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwY2JjYzNlOWYzZTNhMmY0M2RjYTM3YWM3MjY3OTEzODkyMDM0ZmViNDc0YTM3OTRjMDAyN2EwMWMwZDUyODYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aef2fe951be348fa9791a66d1b478ec3",
+      "statement": "GET /api/v1/autocomplete/{kind} accepts only accounts, tags, categories, currencies and transaction_types, returns an empty list when Firefly is unconfigured, and otherwise proxies Firefly's /v1/autocomplete endpoint.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/autocomplete.py#L15-L60",
+          "version": "repo-lines-v1:sha256:fa9571022cdf6efc956f3fa3ec7cfbde5aea6f92df0cc4eda2a997e9d4b93aae:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiZDIzYjI4YjA4MWYxNjU4MzY1MjM4ZGI5YWNjYzIxMWMyNTMyZjMzZjhiNmYwMjc2MDc3YTgwOGUyNzU2NTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlODgyOThhYzdiNWVlMDNiYTQ4M2YzZTA2OWRlMzQwM2QzYjM5ODEwMWU2ZjlkZDkwYzMzODE4MjZhYTI2OTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhOWM3ZWVmMTMzOTZhODY5NDU1YmFhMjA1NjQ3NDExNmU3OWFmYjg4YjkyMDY2NmU0MjU3OTY0ZTJmZWI4YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5NzY5OTM3ODM0Y2NhZGU0MmJkY2ZlNGY2MGRjNWVhYjlkMDY4MGE5ZDE2OTdjOWI1MWFhMTA5MWVjZmYzMmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0c0ae69040ca41d29c5840c79ba001f3",
+      "statement": "Legacy /api/* routes in app/main.py forward to the same handlers and are still used by the frontend, for example FailedParseDetailView fetching /api/transactions/{id}.",
+      "evidence": [
+        {
+          "resource": "repo://app/main.py#L100-L134",
+          "version": "repo-lines-v1:sha256:0b983e26276e03dbb40ae4ba572109bbca4208876bb892934ba1cad17d2ae1e5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyY2I0NTc5YmVkZjE0NmZkZjFjMWNlZDI0MTY2YWM4NmZjN2VlNjYyYjVhYTdjN2QzYzM0MDQ0NjMxMWVmOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMjFhOGIzMjk2ZTI4ODVmODhmYjg4MmFmOGQ5MzM0Yjg5YjNiODYwMjIwMDBiZjBiNmEzNGFjNTE3ZWQ2YjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyMTU2NDBkNmQ5MTM4YzdlMjM0NjYwYzY0MDRkNjU3YmQwMWQ4MWFiOTE4MTE5MGRhMjdmMWIzMTMxYzdkOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://frontend/src/views/FailedParseDetailView.vue#L52-L58",
+          "version": "repo-lines-v1:sha256:2574a4f8930e6be9736d7c0e735c7821dfd592e0a67a1d32aa20990c2cdf42f3:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM3OTExMzUyYjJkODIzYWUyYzkwYjgyM2UzMDYxYWZmZjNkZDE4MzA4ZjM4ZDcyNDlmNDY3ZTU4MTRlZmI2MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODM4MDBkN2RkODhhYWY4ZWRjMTgxYmI4MmFjMjI2NDRjNTczYzFlZmRhNjk0NjQyMzg4OWM0NDM2MWQxYzQxZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWUwYTgzODU0ZTUxMGFmN2JmYjMxNmNiNzY3YTg2ZjA4YzAyMDVmZTI2ZTkxZTUxOWNlZWMwNDY4OGM5YzM2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmYxMDFmNGM4YmMxNjljNWQ0ZWY3Mzk3M2UwMjExNmU4NTI2MmJlZjYzNzQzZjRkZGVhMTY4ODcxZWIwMjQ4ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_662aa5bf555646b092d1fb50513cf311",
+      "statement": "app/api/v1/schemas.py declares shared response models such as StatusResponse, SyncResponse and TransactionsResponse, while most handlers return loosely typed dictionaries.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/schemas.py#L1-L60",
+          "version": "repo-lines-v1:sha256:0385e3f29d218e6c11517f496074141d1f2fd13cc28e5064cc0be7132d7fb490:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODRiZmRiMmRmMzgwYjY1NTdjYzdhNzFkMTY4OTE0MTViY2NhYTg3Njk5NDA2ZTIzNmY3NTJjNjQxNTM4OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3Zjc2NjM1N2Q4NzUyYTEyNTExYWVmNzhlOTZmOWRiODIwYjg4MGU1MTVhMmJkYTlmY2U1MGUzMTk5ZDEwZjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-25T04:51:17.394Z"
+  }
+}

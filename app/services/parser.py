@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from email import policy
 from email.parser import BytesParser
-from html import unescape
 import logging
 import os
 from pathlib import Path
@@ -13,6 +12,12 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from app.config import build_transaction_patterns
 from app.models import TransactionDetails
+from app.services.email_body import (
+    body_text_from_message,
+    coerce_text_content,
+    extract_text_from_message,
+    strip_html,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -21,53 +26,36 @@ level = getattr(logging, log_level, logging.INFO)
 logging.basicConfig(level=level)
 logging.getLogger("app.services.parser").setLevel(level)
 
-def _extract_text_from_message(message) -> str:
-    parts: list[str] = []
-    for part in message.walk():
-        if part.get_content_maintype() == "multipart":
-            continue
-        if part.get_content_maintype() != "text":
-            continue
+# Body extraction lives in app.services.email_body so the parser, the mailbox
+# sample endpoint and the transaction log all agree on what the parser sees.
+# Thin aliases are kept for backwards compatibility with existing imports.
+_strip_html = strip_html
+_extract_text_from_message = extract_text_from_message
+_coerce_text_content = coerce_text_content
 
-        payload = part.get_payload(decode=True)
-        if payload is None:
-            continue
 
-        charset = part.get_content_charset() or "utf-8"
+def _body_text_from_source(source: object) -> str:
+    """Build the body text the patterns are matched against from any source."""
+    if isinstance(source, bytes):
+        message = BytesParser(policy=policy.default).parsebytes(source)
+        return extract_text_from_message(message)
+
+    if isinstance(source, (str, Path)):
+        path = source if isinstance(source, Path) else Path(source)
         try:
-            text = payload.decode(charset, errors="ignore")
-        except LookupError:
-            text = payload.decode("utf-8", errors="ignore")
+            exists = path.exists()
+        except OSError:
+            exists = False
+        if exists:
+            raw_email = path.read_bytes()
+            message = BytesParser(policy=policy.default).parsebytes(raw_email)
+            return extract_text_from_message(message)
+        return coerce_text_content(str(source))
 
-        if part.get_content_type() == "text/html":
-            text = _strip_html(text)
+    if hasattr(source, "text") or hasattr(source, "html"):
+        return body_text_from_message(source)
 
-        parts.append(text)
-
-    return "\n".join(parts)
-
-
-def _strip_html(html_text: str) -> str:
-    html_text = unescape(html_text)
-    html_text = re.sub(r"<style.*?</style>", " ", html_text, flags=re.IGNORECASE | re.DOTALL)
-    html_text = re.sub(r"<script.*?</script>", " ", html_text, flags=re.IGNORECASE | re.DOTALL)
-    html_text = re.sub(r"<[^>]+>", " ", html_text)
-    html_text = re.sub(r"\s+", " ", html_text)
-    return html_text.strip()
-
-
-def _coerce_text_content(raw_text: str) -> str:
-    if not raw_text:
-        return ""
-
-    if re.search(r"(?im)^(from|to|subject|date|message-id|content-type):", raw_text):
-        message = BytesParser(policy=policy.default).parsebytes(raw_text.encode("utf-8", errors="ignore"))
-        return _extract_text_from_message(message)
-
-    if "<html" in raw_text.lower() or "<body" in raw_text.lower():
-        return _strip_html(raw_text)
-
-    return raw_text
+    raise TypeError("source must be a path, string, bytes, or mailbox-like message")
 
 
 def _normalize_date(date_text: str) -> str:
@@ -106,36 +94,7 @@ def convert_to_timezone(value: datetime | None, tz_name: str = "Asia/Kolkata") -
 
 
 def extract_transaction(source: str | Path | bytes | object, config: dict | None = None) -> TransactionDetails:
-    if isinstance(source, bytes):
-        raw_email = source
-        message = BytesParser(policy=policy.default).parsebytes(raw_email)
-        body_text = _extract_text_from_message(message)
-    elif isinstance(source, (str, Path)):
-        path = None
-        if isinstance(source, Path):
-            path = source
-        else:
-            try:
-                path = Path(source)
-            except OSError:
-                path = None
-
-        if path is not None and path.exists():
-            raw_email = path.read_bytes()
-            message = BytesParser(policy=policy.default).parsebytes(raw_email)
-            body_text = _extract_text_from_message(message)
-        else:
-            body_text = _coerce_text_content(str(source))
-    elif hasattr(source, "text") or hasattr(source, "html"):
-        body_parts: list[str] = []
-        if getattr(source, "text", None):
-            body_parts.append(_coerce_text_content(str(source.text))) # type: ignore
-        if getattr(source, "html", None):
-            body_parts.append(_coerce_text_content(str(source.html))) # type: ignore
-        body_text = "\n".join(part for part in body_parts if part)
-        logger.debug("extract_transaction: extracted body_text from mailbox-like message object")
-    else:
-        raise TypeError("source must be a path, string, bytes, or mailbox-like message")
+    body_text = _body_text_from_source(source)
 
     logger.debug("extract_transaction: body_text extracted: %s", body_text)
 
@@ -201,25 +160,10 @@ def extract_transaction_details(source: str | Path | bytes | object, config: dic
     base = tx.as_dict()
 
     # attempt to find the matching pattern again to capture groups
-    body_text = None
-    if isinstance(source, bytes):
-        message = BytesParser(policy=policy.default).parsebytes(source)
-        body_text = _extract_text_from_message(message)
-    elif isinstance(source, (str, Path)):
-        path = Path(source) if isinstance(source, (str, Path)) else None
-        if path is not None and path.exists():
-            raw_email = path.read_bytes()
-            message = BytesParser(policy=policy.default).parsebytes(raw_email)
-            body_text = _extract_text_from_message(message)
-        else:
-            body_text = _coerce_text_content(str(source))
-    elif hasattr(source, "text") or hasattr(source, "html"):
-        body_parts: list[str] = []
-        if getattr(source, "text", None):
-            body_parts.append(_coerce_text_content(str(source.text))) # type: ignore
-        if getattr(source, "html", None):
-            body_parts.append(_coerce_text_content(str(source.html))) # type: ignore
-        body_text = "\n".join(part for part in body_parts if part)
+    try:
+        body_text = _body_text_from_source(source)
+    except TypeError:
+        body_text = None
 
     patterns = build_transaction_patterns(config)
     if body_text is not None and patterns:

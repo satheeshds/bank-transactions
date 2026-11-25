@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c3cb66c34bf46cf721fc1063364a1e0291b113f8d31e3e8b6a89dab7886cdbb4",
+  "claims": [
+    {
+      "id": "claim_58d72db05688413aa6439f9c7c39d7d1",
+      "statement": "imap.py imports AND, NOT and MailBox inside a try/except ImportError and raises RuntimeError from every worker path when imap_tools is unavailable.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/imap.py#L31-L48",
+          "version": "repo-lines-v1:sha256:c453231beeec8f72d9d9064a09ab3ea5e2bb11d8473f85e8cc55ba813ebf3e63:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxYzVhZWI1YmMwNjg0MDRhYTVmNGI1NTAxNzQ0YzMxYmUyMmQ4NWY2NTQ4ZGFmMGJiNzVlNjkxMDgzMjJjNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlY2Q0MWI1N2VmNjJkZjczYzI0MWIxOWNjNDc1YjU2YzZjZThkMWZhZmNmZjFhODJmYTJlZTdiZDE4NDRlMzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyODVmNjEwNGIyNGRhOTFjNjdkMTVlMDZiNjYwMThmYTYxMjM1MDRjODY1YzVlY2EyMmJjNjM2ZGZkMTlkODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY5MTY2YjU5YWU4NWVmNDI2ZjVjOGM5NDlhNTE5MzgyNjQ1MDA4ZTkxZjM0NDE3MzNhZWUxOTljMWMzNjE2NmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e938ff63f9334665843334f6a0162875",
+      "statement": "get_mailbox_client logs in with host, username and password only, relying on imap_tools defaults for port and encryption.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/imap.py#L45-L49",
+          "version": "repo-lines-v1:sha256:35485e7670d70a96acac3f7e2a221df0dae54e34ac8ffc3f568480f65121e132:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWU1ZWI0ZmI5ODNhM2Y3NzRjYzEzM2ViMzBlOWIzZmZiNzM5ZWZkY2I5Njc2ZGU0ZDYzOTRkOTk4ZmMzYzFiMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjMyYjZiNGI1NzI4NzYwMGNjMGYyOGFhODUwODg3ZmEwMTIxZWM0MjFjNmNhOTk0NTlmY2Q0ZmQ3NmZjZTg3ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWQyMzllODEzNDQ5ODY3N2ZkNTJlYjdlOWRlYjI2ODUwNjQ1Nzg1M2UzNzgzZDZjZDliZTE1MzhiMTk2NWI0NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f320910aefdb413a9f2da3aad5628119",
+      "statement": "The list-shaped query path maps from/sender to FROM, to/recipient to TO, subject to SUBJECT, text/body to TEXT, and date conditions to SENTSINCE or SENTBEFORE in D-Mon-YYYY form.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/imap.py#L51-L123",
+          "version": "repo-lines-v1:sha256:860e8d5d6e9521b02dd45acd94490ce89c8eb216961d402a875ba80e3bcf0b8a:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjNTRjYmQ4ZTIyZmI5YWExN2E3NTlkZDQ2MmU3OTQwZjBiNjAxZjMzMGJlOTg1MWE1ZTVmZjdmMzE4NWQxZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdlNzIwZmEyYTUwMmEyNTgzYjRjZjNiYWFmYTcxMGJjMDgxYTQyOTNkMjdkOWE5YTcwOTUwNDQ5Yjc3YjIxMDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b2bc84b6529e4b78815d81cb199ea86d",
+      "statement": "Conditions are folded left to right using each condition's connector, with not=true prefixing NOT, and the processed tag appended as UNKEYWORD before wrapping the whole expression in parentheses.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/imap.py#L110-L131",
+          "version": "repo-lines-v1:sha256:f4fce78f60eed93c70610359483b9d35199c78d303beeedbfa0d0b1ab00479d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1N2QyYmZkYWI1ZjI1ZTc5ZTIzZWI0MjlhMjg1N2EwYTcxOTc3NTM3NDA0N2ZiNjViZGM1MDU0ODkzMzQyMDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiYzUzNWY4ZGNkNDYzZTE5YTAxYWM5YzhiNWZkOTBhZmEzYjc4OGY2Y2ExM2FiZmIzZTgyZDJmMTdmMjcxYTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0YzMzZjhlNjgxNmRjYjBhODUxYWY2Yzk0OWJlYTRlZmVkYTc3ZDAxYjdiMmQxNmEzMDAwYTMzYzFmZjgxZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5MTY3Yjk4ZjRkYzFlZGIxMzQxYzllYjhlMWQzNWRhZmMxMTU3NzU5OWY0YjQyMjg3MDFhNzQxZmQwMzg2ODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_657ce79f4b5f4b99ae87a9f924f216e7",
+      "statement": "The legacy dict query path builds AND(**kwargs) and, when a processed tag is given, adds no_keyword=tag.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/imap.py#L133-L137",
+          "version": "repo-lines-v1:sha256:1c615362489bf3ca346564bb9109808754780db248c3fe6a4254775994f9993c:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWNkNWVhNDY4OTFkYWQ1OTU3OWY5MjA4MzMxOTI4ZGNkMjQ5NGFkNmUyNjAwNjQwYzdlMTQwMTJhOTEwODYxNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTA2Zjc3ZWY0Y2E3OGI5ZmM5MzIzZDQzZjRlOGU5ZTcwZDMxNjdhMDJiYmE4ZDY0N2Q4ZDI2YTU0YjUyYTBmMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzcxOTI2NjlmOTgyMjQxMDg5NGVkZGRmMGFmNmQ3NDc1ODNiZmU4ZmRmMGZiNDA0NDM3MWE4NWJhZjBmZWY5YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2656cbaa4fc14dbaa2d4871b400aa33a",
+      "statement": "build_imap_query adapts the returned query for mailbox.fetch, unwrapping criteria, wrapping dicts in A(**query) and OR-ing lists of dicts, and fetch_messages de-duplicates messages by uid.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L17-L47",
+          "version": "repo-lines-v1:sha256:1c787e13e20256843089deaec9fbfd5cc32c249fa9fcacfc41ca4f1cc7e0b6f0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwYWM4OTI1ZTRiOTRjYjBmNzUwYzg1ZGQ0MGQ0NDlkNTdhOTBlMDgxZDQzYzNiYjVlYzU2ZTQ0ZjI5ZDlkYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4NjQ3MGQ0M2Y2NTQ2ZTJiMDdhYjFiNzg4NjYzNGYyNjJiNTRjNGU1ZGNkYjc5ZWU5MzJkNGFmNjMwNGJjN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxOWY1NTRkZDI3MWZjZmJmMjA3MTJkZWFiNjdjN2VkNDg3NGI3ODY0YjU3YzAxOWFiOWE4MGY3NTg0ODI0MmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bfaa364c685a4e728423af6f96997c4a",
+      "statement": "is_message_processed compares message flags case-insensitively against the tag and mark_message_processed sets the IMAP keyword via mailbox.flag, logging instead of raising on failure.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/imap.py#L138-L181",
+          "version": "repo-lines-v1:sha256:40a12330848a72a8f00a3792b2b9c88565a03552797fa29843b56aed19dcc90f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5MjNlZWU3Yjg3M2JmMjQ4NDAxYWI4OGRlYTBmOGU3M2NmNTk1MGNjMmZhNDM5MGVmYjkxOTYzNWEyMTA3ODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2MGNmNDkyZmMzZGQzZGIwZjY4NWNmNzg0ZDY1OTIzYzQzZGM0NWZjZjQ2MGJkZWMwMDBiNTJkY2Y2OWFlYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_38da5638d67045308264eff60b84a629",
+      "statement": "Processed tagging can be disabled through dev.enable_processed_tagging in config.toml, and the worker skips messages already carrying the tag.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L225-L230",
+          "version": "repo-lines-v1:sha256:0e644805ea016267ec61ff52560d4ebbaecf4dc72583f7654af2b875804586bc:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmRjNTkwODA4ZjJmZWNiNDc2MjdhZDRkNjVjZWQ5NzIwMTQxMWM2MTJjZWNjOGVlOWY1MjU1MmI1YTRlOWUwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTY1MzczYzg1ZWE4Yjg4Yzk5YjAwNGEzYjA1NWY3ODVlNjZiZWZiOWYxMDY2Y2EwOWZjZTliYmFkZThkOThlZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTZjMTBhMzc5YTk5Y2Q2YTJjNDdhN2NjYjI1ZjE3OGEzYWNmNjExYzg4ZjJmYjE5NTI4NjYwNGM5ZjQyZWM5ZiJ9"
+        },
+        {
+          "resource": "repo://app/services/service.py#L60-L67",
+          "version": "repo-lines-v1:sha256:b0ffd2ae6321575ba3c616517c526053cdf3d4190b366791bbd235b3ecd38346:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDRjZWQ5OWIyOWZkZjk0NzhlNWE5OTdmYTk1Y2YxMmViYTZjMWVhNzBiZjc0NTU0MmVmODYyOTBlZTBmNzdkOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTM5NmYwZTIxNTUxMDU0MmJkY2Y1MWZkZjU2ZTU1ODE1OTBmZjcwNzk3ZGY3NjY4ZDY0ZTljMzA0ZTFiNWFlYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTYxMWE3N2E1NjZhODgyZTYwM2UyYTYyYzQ0OWFlZGQ2Mjk0YmRjYmZlNjRhNDI2MDQ1ODMwYWRiMDllMzIxNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjc4ZGYwM2Y5MTZlZDg1NmNlZWQ0YWY5NzAwYmI4OWUwNTJhZDdkMTFjZmI0MzU1YWNiMWJhZjJlMTE2ODI1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5a7faed6cd76407eb52595f8f6532d31",
+      "statement": "A mailbox without a database processed_tag falls back to config.toml's mailbox.processed_tag and then to the literal 'processed'.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L184-L196",
+          "version": "repo-lines-v1:sha256:3ee62746eb2e69241a0fe6a269fe595f4c42dcd26b558042cafa2fa00394b51e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhMzAzNDgwNjYzODM3OGMzZjc0NzJiMTUyY2EyYmUxNDU1YjU5MTJhMjM4M2RkOTY4Njg3ZjQ0MTAyNWMzMzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiYjk3MGFhZGIwYjMwOTI3OGI5OTZmNTRlZWFlMzQwY2ZhZmQzNWQ1ZTk0OTFlYTQ1YmVmMTZhNGI5ODk0NzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjZWFhN2E1Yzc0Y2E3ZDNhZTZmZjg2MWJjNGM2YWMzOWQ0NTU3OGRjYjk3NDIwYjEyMzA1ZTgzMDFmYmVmY2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6c0b6a8ffe5641b391178e7bc641130f",
+      "statement": "Per-rule fetch failures are caught and logged so one failing mailbox does not abort the run, and the worker stops with a log line when no database rules exist instead of using config-file sources.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L137-L224",
+          "version": "repo-lines-v1:sha256:07d6def59a288ecc08589a788b88ce1a41dc85fd16dc7fbfe3aaeb41d1514a92:eyJzZWxlY3RlZExpbmVDb3VudCI6ODgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjNTcwOGM3MjYyZDJmZTVjZWVhNmQ1NzAxNGE3MWI1ZGM2NjJjNDMwYTM5NjI5ZGI1ZjJlYzY2ZTIzZWVmMGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjZjk2MTEwNjY0ODNkMDM4NGU0YjY0ZjYyNjE1NTA2ZDIzOGFiNjIzNDg0Zjg3MTk2MzkyOTFmNmZmOWZhNzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0NjBiN2NiMWY1YjcwOWMyMjdiZDMwNjcwMDRjYWZjYzAyOTRiZjIxOTY5NzY5ZjFjYTZiN2FhYzNhYWJhNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljYjMyNWJhMDRlNzhmMThmNDllNGEwNjhlODdmYzI5YzA2MmU5NGU5MDY5ZWVhYjExNzY2MjBiNjY5M2IxY2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_de3ff966d2774b3984b9fb490e944efa",
+      "statement": "The sample endpoint builds its IMAP query with the mailbox processed tag, so already-imported messages are excluded from sample selection.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/mailboxes.py#L258-L270",
+          "version": "repo-lines-v1:sha256:e1b6633285d9374ed4b1a730ae1c328f238e0d64f4fa3d006fdbae1393290172:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5NzJkYjQ3YjMyNmNjYWQwMzg3OGQ2NzRhMjNiZTJhZTExZDRlNGZlYTQ1YTI4ZGYzYjg1MWQxODllZDkzNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkOTMxMjk2Mzk1Yzc5N2M5YjFhMDM3OWU1OTBlNmE2MjZiODgwODJjYmY0ODA5YjVlOTM1OTZmYjQxMzQwN2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4MjZhNTA2OTU5YmFlMzExMjYyOTM3ZTZjMmYzOWZiYzZkNjliMDMwYThmZDE0YjJjNDU2ZGU0YjI1ZDMwNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkNjZkNGJlMDYzNWMwNmE1YWZkNmQ0Yzc4MjQ5YmIzNWZjMjgzNzA4MmIwYmY5ZDU4ODUxZGZkNGFhODQ2OWUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-25T04:51:17.394Z"
+  }
+}

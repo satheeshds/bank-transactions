@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:1c81e7e497e615b44b201963db597b4fa408812a0b8f52860e53fbaea1a37eac",
+  "claims": [
+    {
+      "id": "claim_62757f3b03c34e34b42a210b1a41eaef",
+      "statement": "_build_firefly_payload applies the rule's saved mappings through apply_mappings before building fields, reading mappings or mappings_json from the details dict.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/firefly_builder.py#L57-L67",
+          "version": "repo-lines-v1:sha256:7462c665c48da27b417fc72566355774830abcd7a6aaca010378688d87827e21:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YTJjMTJmY2ZmNjZiNjQ3ZTU0MmUwMTM2ZDY3MjcwYjVmNmMyODk1MzllODc5N2EyZGNmOTM5YzhiODhjYzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlMzNjM2MwM2U0ZTVhNmE0MWY1NTg1ZmNhM2I3MTg0Y2ExY2I1YjUyNzhhY2M1MDY2NTFlNmQwOTA3YjhiMGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhYzIzMjBmYzM4NzZjMDVmY2UyZTk1ZmM1YzJkMzI4ODk4ZjE4OTM3ZDcwMzE3OWIxZjRlODEwMTk4NzYxZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3MzlhM2Q5ZTRjMmQ4NzY4YmIwMjc5MjZkNmJmNGJiZGFlMzRhZDQ2MWU3ZWVkZjQwMDEwOWY2OGZkNmRlZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_009ab5e7af4e4a8797a9207a24cb5d39",
+      "statement": "mapping_resolvers registers only four source types — fixed, firefly, imap and regex_group — so a custom_key mapping is skipped with a debug log and never reaches the payload.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/mapping_resolvers.py#L68-L112",
+          "version": "repo-lines-v1:sha256:3d51ebfee1289df009a9a20d4b23d3f999c8c3e96a1278e2623aa67ce4fd80a0:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmM2U2YTJhM2MxZDM0MWU3MjI1OTI3NTc1NzRkNDY2MDcyNGI0NjUzYjUzZTg4NjQyYjNhMGY3NDEyZDExMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0NTI2YWZkNzhlMmJiZGM0N2QwODZmNjliOTdhZjYwZTQ5MjAzZDNjNDlhMTAwMDNmNTQxNzEyODlmOTYxZTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcyNjZmYTkyNjIyYjBmYWM3ZWZhYmMwNGNiZjUxMzM5NGM0ZGJlODY3NjQwYzZhZDAyNjJkYzdiZDZiN2E0OWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c45a307f0b554f638efc2bc78fa3348f",
+      "statement": "resolve_regex_group prefers named groups from groupdict and otherwise indexes the positional groups list 1-based, which depends on extract_transaction_details attaching groups and groupdict.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/mapping_resolvers.py#L48-L67",
+          "version": "repo-lines-v1:sha256:714ac5d52a30d47f11dbcb62191eb20201437f2cb3ad1db172df498304816deb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlMzQxZjRmNDMxNzZkNjQ3NjllYzE3YzE4NjRiMjAzM2U3NmJhMDU5YTI5ZmI0OGIwODhkNTA2MTg5MDYwMTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkYWZkOGQwZTE0NmRmMTBhYjYwYzNjYjFkZTdkNzlmZmFjOThkZDQyNGM3NzU4ZTI4YWY2YWJjZmZhNjgzMmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4ZTQ4OTRiNGYzYzYyYjIyYmExNjFlMzFlYTFjODNkYzFlNmE0ODNiYWEzOTUwOWQ0YTUzZGEwODNiZGY0ZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzNDE3MzhhNDhmMTY3ZWRkMDNlYTY3NjE5NWE1NGQyNmY2NWY4N2Q1OTZiZmU0MjU1MzVmMmFjM2UxMmM3NTIifQ"
+        },
+        {
+          "resource": "repo://app/services/parser.py#L156-L176",
+          "version": "repo-lines-v1:sha256:b8d8d3d70508b840d335f34727c0db24d1240a9dcdac10fc776c5a2e6e606a03:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMWYzMjRjNzljY2FhY2ExYWU3NjM2OGRhNjJkZmMzZjk5OTc3MzUyNzU1OTAwYzgwNDEzNmQ2YzgyYTM1MjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwYzJmYzNkYjY1NWNlNTcxYTk2ZmU5NGQyYjgyNGZlNDk2ZTI0YmNkNjQ0YzMyMTAzOWM0MjAwZWU5MGMyMmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjMzlhZTFlMDY3ZDA1OTU2NDQ0NzVlODM3NDQwNWVjNGM1MzlhMGQ0YTUzZGNmOGYxMDU3MGU2ZDQ2ZjNjZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkOTM0MjEzNmM0ODdhZGMzOTAzNmZjY2FhYTFiZjZmOWI3YjcwMTlmODJjOGU4OTdmYzVlYTY5Mzg2ZDZjOWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e84e085efb174f4c878112ab28419915",
+      "statement": "_build_firefly_transaction wraps the field payload in Firefly's envelope with error_if_duplicate_hash false, apply_rules true, fire_webhooks true, a single transaction and a notes string carrying channel and reference.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/firefly_builder.py#L113-L146",
+          "version": "repo-lines-v1:sha256:229d1e83a715dc5b2b04abeddc5cf14f6ec5b507f1854c7ef7daabdea9fc40d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjNmQxOGZiYzM0YjU0ODY0YjJlZGE4ZDRlZDEwOWJjM2E5ZDc2ZjNkMTYyYjE5MTJkZGFhMTY3ODMxNWVhZDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlYmNhYzhiYjE0YWQxYzA0NDBhN2Y5NjAxMzVjZTlkYThkYjMxNWVkNWI4NGVlMTlkNjYzZTg2MzZiOWRkYTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmOGRlNDgxYzQwMGNlNjNlZDhiZTBmMzI3NzkwODA1Mjk1NTkxMDcxYWM2ODQ5NjAzNTI1MWNhMTgyOTQzOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2YzcxMGE0NmYwZWI0MzdhYjQyNmYzMTdmYTkzODI2NzI0YzlkYWM2ZjE1NGM5NmNhNjViYjQ5ODQ0OWNlNmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4adc4d23e2f342c4a1b4913d61e5d776",
+      "statement": "The payload field whitelist is loaded from static/dist/firefly_fields.json, a build artifact copied from frontend/public by the Vite build, so an unbuilt frontend yields an empty payload containing only notes.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/firefly_builder.py#L11-L28",
+          "version": "repo-lines-v1:sha256:1ea62eeb9d76c9a07020408466b730b03e0bd9dc4066776578bb5dba8149b9f6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2NWRhOWFhNjY3ODE2N2UxN2FiN2RjYzEyMWQ3YTI3YzY0OTZjMDc1ZmQwNjg1YWE1ZDRmZjQ5MzM3ZmZhOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5ZGIxZWE3MTBmOTYxMmE0N2VlNDM0OTVmZGViYzE4NzU5YzkyZWQ1NDM2MDEzZWIxNzMwMTEzYTUzMDNjMzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3NTNhZGFlMjY3NDc0Y2MzZWIxYmVjYTFhMzgyMWYxNWNlYTJkMGQxOTQ5NTljYzkyYzk0Y2UyOTAxOGQ1M2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1YzFjNDYyZTJhMzlkNzQ3NTlmNWUxYjEyNmY3NjgzYTJiNzMwMTE4ZTE4ZjUxMjJiMDhjZWRlZWI2NTBlMjMifQ"
+        },
+        {
+          "resource": "repo://frontend/vite.config.js#L5-L8",
+          "version": "repo-lines-v1:sha256:37eb4399282c7efe4880de6423657607936a6a0a5fbce7fff7eb36d18e7786b5:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWFlYzk3Y2ViNzU4OWIxODZmNGY2YTlkZWJmZThmNzQwMThiNTVkNzVkOTY2Mjg1ZjFiYTM1Mzc4ZTk4NGMwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmM3NTBlNmU4ZjZkY2UwZTkzMjI0YjZkN2U5OTJjODA2ZGY3YmIzZjVhMDM4Y2E5ZGEwNzkwMDMwZmQ2YTU1NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDUxNzZlNTI0ZTFkMTQwYmE2OGRmN2E0NzM1MzQ5YTE1MDNlNjJmZTY2ZmMzMTc1MjYyNjgxYzY2NTliNWI1ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjIxNmU4MjIzZDFkN2MyMzYwYTlkOWE3NDQ4NWQ2OTY0OWIwZjc4YTYxMDQyMjkxYmVkNDhhMjE3OWM4OTc4NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5bd94ad534c14f6fa7d9ae570addb33d",
+      "statement": "Pattern-level Firefly configuration is resolved from details.firefly, then details.firefly_mapping, then the statement config, with {key} placeholders substituted from details and {account_id} from the statement firefly block.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/firefly_builder.py#L31-L56",
+          "version": "repo-lines-v1:sha256:917c3acad5c756b966b82bdd630c3bd17d52e8ca0a481edc69d4e77a8bd2f819:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzNzkxNjMwZDYxNmZiYTY4OWRiMzkwYzQwNWIxZTZmOTM2NmQzNDNiYWIyNTg3MzU5ZDE5ZmM5MTI1MWI1YjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiNmY0YjU4MjUyYTgzYzc0NWRiOGY1M2JhNjdmNDJiYTgwNzVjYTA5MTY3MTMxMzJkNzFkNTJmZWZlOWNlMzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxNzkxNWI3ZGFlZDQ0Yjg4ZDhmOTdlYjVjYjk2MDM3ZDE1MzEzODU1MDAyMDcxMTU1OGJiYWU1ODc4YWZiYmIifQ"
+        },
+        {
+          "resource": "repo://app/services/firefly_builder.py#L69-L80",
+          "version": "repo-lines-v1:sha256:20ed0ad81a0f49775f8ee594d3b8ec086f13df6d1324032f6ee6852bf22490c0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjJhMzdhMWUzNTMwZDk2NjQxNjEzZmZkNzdjZWI5MmMwN2JjYzQxOTUzYzg3NzcyODYzZTUyNTdhZWM3YzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwNTJmMWNmZWIzZDMwNmM1OGNhYjBmYmJjNzQyM2MyMmJhMzVlZjk2N2ZjZGI5NDdlZjUxOWI2Mzk2NjNiNTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkN2QzNTZlYWY1NWJhOTE1MmYxMjNlYTgxODY3Zjk5ZTI4NjkzZTM1YTExOGY4ODA0MGMxYjFhM2FjMjM0MjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8bac500aefbe4960aaadfffa482abfc7",
+      "statement": "transaction_type is read from details (transaction_type then type), lower-cased, and defaults to withdrawal when blank, with no automatic deposit inference.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/firefly_builder.py#L82-L85",
+          "version": "repo-lines-v1:sha256:7fd4b59bf24aa72bc4bb8b09a9195e67acd2b727d5690fee40f56167f1e65d37:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjNhZDhlODUzNDlmZTExODE5ODg1OTc2ZWY5NmNiZTNmNmY2NWMyODhiMjkwNzEzYWNhZGJkZjlhOTI4MDM4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmJhYWVlN2ZmMDI5MWVkNzc0ZTRkZjhmY2IyNTAzZThjNzZkYzdiYWZlNjEyZDQ2OWQ4ZTU2YmM3YjVmNDNhZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDdjMjQ4MTBkOWFlMmJhMTVlOTA5NmU1M2YxZWEyYTIxOGMwOTI3YWUzMDY5Yzk3MmE5ZjI3ZTcwNzkwZGVmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTQxYzEwNjlhYjcxNGM1ZTFhMTkzODVlZDc2ZmRmMzZjOWU0OTJhZTY0NWI5NjMzZjdlOWYxZDFmYTIwYmM4YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_636709cc4c4b42df925958d1b61f6e1f",
+      "statement": "FireflyClient posts JSON to /api/v1/transactions with a Bearer token via urllib and raises FireflyClientError carrying the HTTP status and body on failure.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/firefly_client.py#L1-L54",
+          "version": "repo-lines-v1:sha256:cccfa29db56a9c629ad76dc2d663d0c90e87e8551f26c5c1b1ba72d9acd5a296:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODRiZmRiMmRmMzgwYjY1NTdjYzdhNzFkMTY4OTE0MTViY2NhYTg3Njk5NDA2ZTIzNmY3NTJjNjQxNTM4OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5MjY4MmEwNDY3ZTllNzA5ZTI3MmI5YjQxYzE1Yzg0YzlkMDkzNzc1OTY0MWYzYmMxODRiZmNlMThmOGI4NTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2112524a650f4f4eb0b08b3cc51716fa",
+      "statement": "_post_to_firefly strips rule_name and rule_id before building, marks the message processed and sets status synced on success, logs error status on FireflyClientError, and uses pending status when no client is configured.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L362-L395",
+          "version": "repo-lines-v1:sha256:0855e5e80b3f5ef053f85ffe88af1e2854c40aaf70590c7ed97bf6c70f3cd81b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhYTI1NDU1ZDJiNWQ4YjE1MDI5MWJiMTJlNmViY2QxMjg2YThiOWJhY2ZiZmE5MzAxYzA4ODM1YzczNjIyNTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3NGUwOGYxZDlmOTgwNDUyYzIxODkxYzZkZTg2MzQ2ZTQxN2YzY2U1NTk1N2IzOTNlMmIyNWY3ODM5ZDMzNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUzOTgzZGY1YzA2NDEzMzI3OGRkNzE4ZWM1ZDQzOTU1MzQ3NmI5MGY0ZDY4YWE0Mzc4N2U2NGUwN2VkMDI4NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_26e6580a4b8e4bb085656b722587bd1f",
+      "statement": "The rule wizard persists only fieldKey, field, source_type, value, group, custom_key and imap_field per mapping, storing the Firefly selection id for *_id fields and the name otherwise.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L478-L505",
+          "version": "repo-lines-v1:sha256:efacd85c00e4d1c0110f8b55cfa703cf5a60389a1d3d1f115aeaf23942f6d486:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2NmQxNDllMzRiNjZjYTllYzE4MTAyOGQ3ODczNmFlNzc1NmQ2MmVjMzFjNmNlYzhmNDYzOTdkYjMyODM0MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4NGE3YTczMzIyMzY2YzBjM2M2NTVmZjcwYjYyZDM5ODUxYjU5MjdhMTNjYzkzODJhZWY2MDQyNDIxNDZmOGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlMzgzMzBiN2M1MzI1NjVhYWYzY2YxNDAwZWZhYTQyZmQxZWRhZjIwZDRkYTI2N2ZhMzZhYzk0ZTY1ODc4MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0MzI3YWUxNzA5ZDQwMTE0NzZiNWU1ZjE0ODBlMGQ4YTI3YzQ3OWQ5ZjYwNWZjYTk5NWIxMzI3YmNlZjc1NDYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-25T04:51:17.394Z"
+  }
+}

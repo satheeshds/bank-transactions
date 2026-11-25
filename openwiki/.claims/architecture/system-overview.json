@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:907398607e4880112b552fb52d1c37217900b62b5f8ac1f4b067068842f16b0b",
+  "claims": [
+    {
+      "id": "claim_a456ff25a1b048c6934c528e019b8f4a",
+      "statement": "app/main.py serves the built Vue app from static/dist, mounting /assets and /static and returning a 503 instruction page from GET / when the bundle is missing.",
+      "evidence": [
+        {
+          "resource": "repo://app/main.py#L49-L82",
+          "version": "repo-lines-v1:sha256:acd39d266f50f951561fd041423706ed9498de2fabb40ddbee54dcce77010392:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzMWQxMjA4YjdjNWExMDRiZDc5NDJjNjRmMWIwZGIzMTJlYzAzZTYzNmUyMzc4OTdiMjdhYThiNmRkMTBmNDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4Nzk5ZDg1MDNmMmY3YzA3NjI5ZjQzZTVmOWE1NDIzYzBlYTliNjE0NjA4YWE4MmRmYTMyZjFlMTliMjUwMGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_895779addbe349b8a04dc77daf4a20e3",
+      "statement": "The FastAPI app registers eleven routers under /api/v1 and keeps legacy /api/* routes that delegate to the same handlers.",
+      "evidence": [
+        {
+          "resource": "repo://app/main.py#L86-L104",
+          "version": "repo-lines-v1:sha256:19cb5c65266935c5d293aba0e3128183be1d794a1333971383c10631d8c68234:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3NjA2M2Q0MTdmMWI1NmVjMjljODc5ZmJkZjZmZjg5M2Y5OGE0NjA1NzE3OWZlMDcyYTNmZTdiMjI0Zjc4NGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0NTE1MzczMTkzZTU3ODExMjc0MGUwZDg2ZTkwNDRhMTkwMTk3YmFiM2MxZTIyNDk3ZGIxMzU2ZmU2ODYzMTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViYmU5ODEwMjkzODRmNDRlMTU0NGZmMWE0NWNlZTkzOWQxYjk5NDM1ZTcwNTVlYzQ1ZWM3Y2Q1ODMzMzQwM2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0c2d91de81874d3288f0cc523dd3f33b",
+      "statement": "Schema creation runs on FastAPI startup through database.init_db(), so no separate migration step exists.",
+      "evidence": [
+        {
+          "resource": "repo://app/main.py#L65-L70",
+          "version": "repo-lines-v1:sha256:2a89c161fa7e2a8c6f68ccae55c6208d1219f4a00f244cb99a83008483da6866:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTVlZWY1MGU0ZThlOGY2MTVjNDIxMWYyOTMyMjk3NTQxMWU2YzFlNTY5ZTVmZDExZGNhZGVlOGM5OGZjMzE1NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTdhOGQ4NzQzZTRmYjJjYWE4MTJlOGUxYWI3YTdiOTkxOTQwMTA2OTkzNGM5Yzc2OWEzZjVkYmEzYjE0YzY0YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5d95e8c9dbbe4e12aa6c583b482ec1a8",
+      "statement": "The Vite build writes into ../static/dist with emptyOutDir, the exact directory the FastAPI app serves, and proxies /api to 127.0.0.1:8000 in dev.",
+      "evidence": [
+        {
+          "resource": "repo://Dockerfile#L1-L12",
+          "version": "repo-lines-v1:sha256:17bf997ec90fee22db1c470da5f9500171d5700c161dfa172189191e38744271:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhYWIyZDQ1MDZkNGE4YjMzZjBmOWM0ZGMxN2E1NDc4OGRhZjQ0MDZhMjE2YjVjNTAwZjVlYjVkNzA1NzYwN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzZWFhMWFmMDA3NDQwZmQ1MmYwYjk1MmU2N2UyMjNjN2ZjOWU1NjQ0OGMyN2JlOTMwMDMwYjZlMTM0MmFiNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmOGFjNGM2NWFkMDFkNWE5OGU0NzUxOTg3NTIyZWIyNTBiOWFmY2I4ZmZhZjcxNzk1YWZhY2JmMGZmOGQxMzgifQ"
+        },
+        {
+          "resource": "repo://frontend/vite.config.js#L1-L18",
+          "version": "repo-lines-v1:sha256:f554a60cda6796f217e7623b967032dd890691ac1ab51bbb50f5b212af28398f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2OTRiMTEzZWZmMTAxNWRlOTYwYzdkZWFmOTZiNzAxM2FmMjliNGFiZmUwYjlhZjZhODNmZjExOGYxYWYwN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1ODBiNzY1MThkYWU5NzlmYWViZDAyMzY3YTI5MjkyYTUwZDk3NjA5MjI1MWEzOGE2Y2UzMDg4MGJhNDI4MjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0da96d9ab7e04109a8c45992c1ed8d32",
+      "statement": "The frontend uses hash history routing, so all dashboard URLs live under /#/... and need no server rewrite rules.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/main.js#L12-L25",
+          "version": "repo-lines-v1:sha256:e201158c35ba0aa200779efffb0fcbc1ce8b772ca3308a4e599bc60312a86f5c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjYTg3NTQzZTkwMTcxNmU1ZDkxYjA2MGJkNTc4MGViMWMwYjM0MDY0N2MwNWIyNTA0MTAxNWQyOWM3M2JkN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1ODBiNzY1MThkYWU5NzlmYWViZDAyMzY3YTI5MjkyYTUwZDk3NjA5MjI1MWEzOGE2Y2UzMDg4MGJhNDI4MjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkMTdmM2UzYWM5MTQxMzRiMzg2ZjVhNjQ4MzUxOWNjMTNiNzQ5YjQwYTIxMWQ0YjM1NzQ3NDExODM4ZTY4NzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlNDU2YzQwYjE5ZDBhYzBlZjc4MTg4Y2I0YmQyODZiNTViMWEzM2Y5MzFhYjViNTQ2NmNhODczNTQyMTJjYTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c73bfd524d9c46af9d07321d82298f65",
+      "statement": "POST /api/v1/sync starts the run in a background thread guarded by a module-level lock, returning 409 with the active run id when a sync is already in progress.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/sync.py#L11-L27",
+          "version": "repo-lines-v1:sha256:129bf152a39cd392095d93e7e064f2639f484d2bdc958ce84a6971ef4416864c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiMzI3NWE2MDZhMDE4MGJmNzY1YzhhZWZhYmEwZjE1Y2MzYzdmZGViNWI1YjA4ZDUyOTJkMDAzZDU2MjVkOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5M2Q1MjIwOWFkN2E3MzgwZDQxOWQ3MjkyNjE0YWU4MDQwNjQ5N2FkZGU3MmI0MDA4YjQyZGMxMDYyYmU3NTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://cli/sync_worker.py#L13-L60",
+          "version": "repo-lines-v1:sha256:eeec88628dc2545ea8c5438880c5c15e96784a7b15a18681132aa81b89805f0b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyZDYxN2UyZGZmMDJhZDZjNTM1M2YxZjNiOTA5NzZmZjFhNjAxNWZlNjU1YWI3ZmEwMDBhN2FjNGFkNGI3NzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1ZThmMzk4ZjQ1NzBkMGQwY2ExOTAyNjMyNzI3ZDQ0ZDUwZjU0NjkyYTQyOWQyMWJhYWE3YjNkYjBjZTA1Y2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxZTg3NTJhZGEwMDI1ZDM5YjU2MjI4MDgwMDE1OGQxZmM3NjgwNGI0ZjdkYTI5MmUzM2I1Njk0M2ViZDQxYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e59ff4792ea9486989c5122cb4c961e3",
+      "statement": "TransactionImportService.from_config overrides per-source transaction patterns with rules stored in the parsing_rules table, grouped by source_name, and silently keeps config-based patterns when the database read fails.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L69-L104",
+          "version": "repo-lines-v1:sha256:6d34ca01d8a4a9cff68cbcc3877ddeabe2e41081442b00871245ba7915988235:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyMGI0NTNmNWUwYzkyZDVmNmMyNTFhNWVhMTk2MGQ3MmYzYmQwNzk1NmFlODU3ZGEyMGUzMWE4OGM1NTk2OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxMTNmOGJjOWU5MWJkMTdmMzc3MDVmZGRkNGM0ODE0NmE0YTVkNmU2MTkxYjRhMjg3YjNmNTg5MTFiZmMwYTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2Mjg1MTc2YTdmY2I4MDRjMDE0YzkwNGRlN2E1ZDJmOTlkMmE0Zjk2MDY3NjIzMzJjNTE4MDUzYmJiYWMyZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyMjczNWU1NjRlYTk3ZmViZjkyYzgwOGM1NDdkODM1YzQzYjc1N2Y3ODhhMzJiYjk5OTBhZWQ4ZjYzMTdjYTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_260ba691c4f9469396cb7544f19a797f",
+      "statement": "The Firefly client is constructed only when both base_url and token are configured, so the worker can run without Firefly connectivity.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L99-L112",
+          "version": "repo-lines-v1:sha256:2589f425d762a28dd984dbce2528cef74342e0d993c89b4c905ab13bb1fb74e6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1NzgwNWMzZmU3YWM2MzA3NGY2OWNkYjI1YjlhY2Q3YTg2NzkyZGZlNTQwODE4YWM0Zjg3NjRiNDllN2QxNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc1NDdhM2ViZTEzYjUxY2I1MzIxMmM0NjU3YzhiMDMzMjc0ZWI0ZmNhOWMyZWY4Yzc4NDI1NGQyN2EwODYyMTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkOTQyODA5ODg5M2QwNGRhNGRlZTZhNjRiYTk1MDhhZjgwM2E5M2I2MTYzOTk2ODdmZjVkMjQ0NTc5MmMwMjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_04b5ff71dd0b47deb83d37a2cfbd0175",
+      "statement": "web.py is only a compatibility shim that re-exports app from app.main.",
+      "evidence": [
+        {
+          "resource": "repo://web.py#L1-L9",
+          "version": "repo-lines-v1:sha256:fe94bab36247a16782951cce7a6cfe2d6e3bfeaa2924652ac3760f73dd56d916:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTMwM2VjZGQ0YTRkMTBmMTljNzNmZDQyZmQxMjQzN2ZkMzM1NGE4MjY4MTYwNWRhNTI1NWE5N2EzOTA2OGRiYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjUwYTZkMzM4OTE1YzRlM2U0MjM1OGQ3NThhM2QzY2I1NmIwYWUyN2Y3YmNkMTM4YWVlZmIwY2E0ZjAyOGE1NyJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-25T04:51:17.394Z"
+  }
+}

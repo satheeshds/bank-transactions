@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:b69ec624722394a09649d6c0fe51e050544aeb71f6a4f288935ab9f41febfa20",
+  "claims": [
+    {
+      "id": "claim_00bb3fb6e9fe485bb6697483ee3e2493",
+      "statement": "get_db_connection opens a pymysql connection per call using DB_HOST, DB_PORT, WEB_DB_USER, WEB_DB_PASSWORD and WEB_DB_NAME with autocommit disabled.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L12-L31",
+          "version": "repo-lines-v1:sha256:3912ed1830fc1bbc90677e5dd588feba5d9e82169dfbd1443c9af095903c6be1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjMmRhZmM5OGU2NzU3M2U5ZGI5NTA5NTEzZGM1M2U3ZDdiZjZjYTUxMjdlYTU5MDAyMWQ4NjNlZTc1YzU4MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxOTFkNzBlYmE5MjU5ZGQ1NzY3ZmI0ZTk3YWQ1MTU3NmI4ZmVmMmRkNDFmM2NiNTM4NzUxNjNjN2QwMjc1YzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyYjEwMWI0MWRiYTUzNTc1OWY2Nzk3MTkxNGJlZGMzYTM2OGI4NmE5YTYxY2JkOGVjOTUzZTBiOTAxYzg2YmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2397b34e661b49b5b6730deda6e9810f",
+      "statement": "The cursor wrapper rewrites ? placeholders to %s, and the connection wrapper commits on clean exit, rolls back on exception and always closes.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L33-L78",
+          "version": "repo-lines-v1:sha256:e19f6be42eb2956792dd5b0bf4f83dd6d7c810da416b26b70c2bdf45e43ea0cf:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyODcyZjIyNWUzYTFhN2U4NjQzNGQwYjk3OWJiODE2ZDQyN2VhNzE3OTdmNmI0NWE5MTdiZGJmNzZiNjE2MjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxOGFkZjZiNDAyZTQ3MWI1OTA4ZDQ1NjY2YzFmYzU3NmZmMjY0MGQ2NjQ4OTVhNmI3Nzg0OTk3Y2QyMmVmYTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhMGM0MDY2MzRkNDI3MzEyMjYwMTVhN2Y3OWZiODA1NWFjMjFiNmUzNTk5MTk1OTVmM2I1MzFhZTZkYzcxNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3OTIyZGQ5ZDI0MzI5OTVjNGJhOGUzZjdjYTM1ODdhNDg2MGMxMWI2YzZjYzExM2ZmNzM5MzYxOWQ0MDkwMDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_352197547499455c98e7ea16032dfc58",
+      "statement": "init_db creates the transactions, sync_runs, sync_logs, mailboxes, settings and parsing_rules tables idempotently with no foreign keys or migrations.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L84-L171",
+          "version": "repo-lines-v1:sha256:dbb34d453737bf394e576503333f7258a9de99d46d9924048ebd16a50e9e5c0b:eyJzZWxlY3RlZExpbmVDb3VudCI6ODgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0M2IzMzdjMTU4ZGFmNTU2OWUzOGM5Mjc1ZTk4ZjczYmRmMThmMTZhNzRmMTdhNjE0YjNiOTg1ZWQ1ODkxNTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4MjM1ZjZlMDcxYWFhZWE4NGQxMWMxNzA3ZmYwNjU5YTQyODYzODg0ZjY5N2JjNThkN2Q3ZTUwYzgyYzgwZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU3ZTE4ZGE1ZTYzNDIxYWVjOGQwOTYwNjczMDBjZGJjNTYzYmRiYTJkZGNiMmM2MmVmYTI0YzQzNjEyOTFkMDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c1810c7f7e14058961b4909fd91adcd",
+      "statement": "list_mailboxes omits the password column while get_mailbox_by_id includes it for login paths, and the worker removes password before logging a mailbox row.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L363-L384",
+          "version": "repo-lines-v1:sha256:1ec4f4b48479f97289de20349da00f6644bc30bb921d69c3c705cecf98fc4d27:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlODJkMzJiYmQ3NTQwYTY1Y2M3ZjNhNTZkMTFmZjI1ZDViMWFhOGMzOThlMjQzYjQ5MzcyMjY5ZGI3MTM4YmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmOGNmNmU2MjBjMDg2ZDAzMTIyYzIxNThkMTY2ODZkMmIzYzBkZGE3YjY1ZDdkMjc4YjVkNWFlOGE2MDMxMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4MDk3ODczMDBjY2ZhNGViZGYyOWM3ZGIyNzJjZTU0MTZiZjI5NWVlYThmYjRkZTQ2ZTcxNDExNmYzMGQ5OTIifQ"
+        },
+        {
+          "resource": "repo://app/services/service.py#L175-L180",
+          "version": "repo-lines-v1:sha256:b4245d03951c93cfef58ef5e600d7a22c57725fe0c1e135d2ea12b0cb1cc032a:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDdjZGZjZGM4YzE0NjYyMmEzNzUwMjY1OWZkNWNiMDY2MDYwZTVhODc4MzQ5ZGVhOWE1Mzc2NDcxMjZmYjY5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzI0YjIwMzJmMDliZDU1NDkyZDY4NDMzMTY0MWIzYjBmYWEwMjgzOWEwMDUzMmU2ZWFjMmM5NWFlYWVjYmVhMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmNhOWYxMzNhOGY1NzdkMmFjZmMxNTFmYmNkNTRhNWNkNmZkY2Y4YWZjMWMxMzlmZDc4NTI3NDc4Y2JmMTU1MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2JiOTcwYWFkYjBiMzA5Mjc4Yjk5NmY1NGVlYWUzNDBjZmFmZDM1ZDVlOTQ5MWVhNDViZWYxNmE0Yjk4OTQ3NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0c9ff08421614a2ca387fe91c24e85fc",
+      "statement": "set_setting deletes the row when the value is None and otherwise performs REPLACE INTO, so clearing a setting removes it rather than storing an empty string.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L300-L308",
+          "version": "repo-lines-v1:sha256:3d6885bf0ded8b7f91a3bf68e9f2492e2802b5ab14da27a0e58026e39320136f:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzkxOTUxZTJjZWUyYmNhNTg4NjcyMTVkMDI0MTJjZDJmNTUyOGVlOWQ1YzRmOTM3MTZkYWQzMmQ4Nzk2MzBlMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjFjNzYyNzI4NjE3NTIyNzlkMTc2YjU5NjkwMjEyYmJhZTM5OWI1YTU1NzcxNTNkZGJlYmIxMjcwZjA1YTQ2MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWVmY2NmZTczZDdjNzVmNWU0ZWNlMGNkMGM4ZjZhMjVkNjA2NWE4ZDAyZGYyZTQ3YTdlMDM2ZmE2ODY2NjM3ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6e8b719babb848049654e635c720f9b3",
+      "statement": "get_stats_today computes parsed, error and run counts using MySQL DATE() comparisons against the database clock rather than the container timezone.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L329-L361",
+          "version": "repo-lines-v1:sha256:10017feab4ab184a8160a519b7962d11d6c34a668a63bcfa0ce1da7aa9823808:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlNWI4MWZjMGQxYzJmOWEyZDRiMjljODA5NTViYmU1ODI5ZTY4YzhhZDlkOGFjOWVjNjA5NTEzNjc1NTAyZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjZmI1MWIwMDJkZWZiNDJmNTg1ODEwMzJiMDU5YjFmM2IzOTEzMDg1OGRkOTBiNTY0ODAzNGJkYTNhYjZiMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiMzExZjMxZDNmYTI0MzVjZmY1NThmNGEyNWY3ODQwNTkyZDkyYzhlMGY3M2I5MzRmNDczZWU5NTM5ZWFiYmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2896a3fb18524e9e805bb3518a65652e",
+      "statement": "log_transaction writes one transactions row with an ISO timestamp and is the single write path for parsed, pending and error outcomes.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L173-L216",
+          "version": "repo-lines-v1:sha256:f1508f72a8707644614af83c284f963e06670a8744695cc2f10381249de961e4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjNGZhZmNmMTBkMTEzNzBiYzhkNTM1ODA0ODJlZDAyNTk2YTllYjJjZjI3Y2IzN2ViMGFiYWY1YWY3NzQ1ZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzYzRmMzQwZjc3NmVhNjE2ZGYwYWRkZTcxNDJhZDU2ZDc1ODFhNmI5NWVmMjdhZjY1MzNmMzY1NjA5YWI0YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxNTNiOWVjMjZhMDg2MTRhZWQ0ZTkwZTE1NDNmZDE2ZGZkOTEzNjk0ODcxOWIzMjNmMTJjNGIzNWI0MDI0OTEifQ"
+        },
+        {
+          "resource": "repo://app/services/service.py#L236-L325",
+          "version": "repo-lines-v1:sha256:173aeca956ec9ccbddeca1ca5e606740b673034beb1f2cfd8424ac98519dc01a:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MDMyZTk2NGQwOTMyMzUxZTVkMTg1MjY5MjgxYjE3MWEzYTA5YjA4YjI4NmU2NjFlYTQ3MDMyM2M4MmViNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczNTk5MzBiOTAxZDdlOWUyYjEyMmNhNTRjZGNmMjk2ZmFlYTQ4MjRkYzZiY2QxOWU2MDRhNWYxOTFjNDYyYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1NmMyY2ZiZmIzOTY0MDQyZTM2YWE0MjQzMzlhNDk5M2U3Y2FiNWEzNjQ5MmNiYzlhZGI1NTZhMmYzZmQ5NTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe3dd35b31ee43f1a8bf0524a493bce4",
+      "statement": "Sync run bookkeeping inserts a running row in start_sync_run, updates status and counters in end_sync_run, and appends upper-cased levels to sync_logs via log_sync_message.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L218-L247",
+          "version": "repo-lines-v1:sha256:4588e8c967d841cec2ad05fdc336956d1c03b861c64abb5636f4819f8e922ad0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkMmZkMTQ5YWU5M2UwZjViMTZkNTUwZmY0MGY5NjhiZmVjYzMwOWM0Y2NhNmY2MzlkNDY3NmU0YTczMDMxZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxM2VjMzVhNzU3MDU5MmU4YzZhYzlhMzYzYjlhZGQzNDIyMzcxNWFkOGQ4NmExODFjYmNlNGQ5M2FkYzBmMzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExZjM3Njg2NDRkNzVhYTIyNDQ3ZTgwNmE1YWYzNjQzMDhiNmM0MGZlN2QwZGM5NjdiNWNjMDUxMTU1Y2EyNjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9c95c2ee05984a70a4322562bc20195d",
+      "statement": "update_mailbox builds a dynamic SET clause from non-None arguments, so values cannot be cleared to NULL through that helper.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L412-L461",
+          "version": "repo-lines-v1:sha256:22375e10d80ece98d4eadede5cc1232a1016c8280cfc53e89d917ddb4adfbc7e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5ZDcxZGNjMGM0OGE2MjNiZjVmY2JjNjM1ZTI1N2JiNDQ4NDYyMmU0ZmE1YTA1ZTI5YjM0MzcxMTAwY2IyNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxM2VjMzVhNzU3MDU5MmU4YzZhYzlhMzYzYjlhZGQzNDIyMzcxNWFkOGQ4NmExODFjYmNlNGQ5M2FkYzBmMzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1MTE4ZDk0ZmMwYjUyOGE5NjEwYjYxMjhlY2RmNzI5MTYwZjYwNDg3N2NlMTU1Y2U0MWM2ZDU4YTZlN2ZiNWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cfca06657f874702904a4cc7363b0246",
+      "statement": "get_parsing_rules returns scalar rule columns plus conditions_json, mappings_json and condition_mode ordered by id, and is consumed by the worker and by from_config.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L266-L275",
+          "version": "repo-lines-v1:sha256:e428550dbea7cd2510ad1435e3c39831fbc20b8ecd3bfa519ca3bce482389d45:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4ZDI4YzliZDJhNzExYjEwZTRlZTc1ZjZkNDM2NDQ3YjYyYTM3N2JhYzgwODRiZWM0NTQ4YTIxYzk5YzVjNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlMDAxYjc2MzIyMzAxYTViOTg1ODQ5OTlhNTMxNDBkNGFhMGQ5MjYyNDA1NmJjNTUyMjFkOGY3ZDM0NzkwNDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjZmI1MWIwMDJkZWZiNDJmNTg1ODEwMzJiMDU5YjFmM2IzOTEzMDg1OGRkOTBiNTY0ODAzNGJkYTNhYjZiMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3ODg0OGFjMzRmYWVlNTE1ZWExNWI3YmRlZThhZTI0NmJlZWRiODdiOWZmZjE4OTc1ZTgwN2I4MWQ3MzBlNTgifQ"
+        },
+        {
+          "resource": "repo://app/services/service.py#L69-L104",
+          "version": "repo-lines-v1:sha256:6d34ca01d8a4a9cff68cbcc3877ddeabe2e41081442b00871245ba7915988235:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyMGI0NTNmNWUwYzkyZDVmNmMyNTFhNWVhMTk2MGQ3MmYzYmQwNzk1NmFlODU3ZGEyMGUzMWE4OGM1NTk2OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxMTNmOGJjOWU5MWJkMTdmMzc3MDVmZGRkNGM0ODE0NmE0YTVkNmU2MTkxYjRhMjg3YjNmNTg5MTFiZmMwYTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2Mjg1MTc2YTdmY2I4MDRjMDE0YzkwNGRlN2E1ZDJmOTlkMmE0Zjk2MDY3NjIzMzJjNTE4MDUzYmJiYWMyZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyMjczNWU1NjRlYTk3ZmViZjkyYzgwOGM1NDdkODM1YzQzYjc1N2Y3ODhhMzJiYjk5OTBhZWQ4ZjYzMTdjYTQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-25T04:51:17.394Z"
+  }
+}

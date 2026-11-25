@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:20c5539540cfcc064e6af7e22adae9b76c6429c7a343744001f0a5738c0f97ad",
+  "claims": [
+    {
+      "id": "claim_265c65c8561f4a0da64ea85993043c8a",
+      "statement": "Mail2Firefly pairs a FastAPI service that also serves the Vue dashboard with a sync worker, both backed by MySQL/MariaDB.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L12-L30",
+          "version": "repo-lines-v1:sha256:dea9ccb02f9a3c5b3e265d93e69bb93d13506c36c733e2f720d357efc3b62037:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjMmRhZmM5OGU2NzU3M2U5ZGI5NTA5NTEzZGM1M2U3ZDdiZjZjYTUxMjdlYTU5MDAyMWQ4NjNlZTc1YzU4MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhYjcyNzczNTdhNGNjNTA5ZDgwYjkzYzg1MjBhY2IyODU4MTBmMDc5ZjA0M2I1YjNkZTVlMjAxMmEwNGFiNGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxOTFkNzBlYmE5MjU5ZGQ1NzY3ZmI0ZTk3YWQ1MTU3NmI4ZmVmMmRkNDFmM2NiNTM4NzUxNjNjN2QwMjc1YzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4ZWZiMmQxYzBiOGEzMmVjYzc3NjI3OWQ4OTEyMjJkOTg0YTU3M2NlYzgzZjkxZjhmOTZmODE1Njc3MDQyNzQifQ"
+        },
+        {
+          "resource": "repo://app/main.py#L15-L17",
+          "version": "repo-lines-v1:sha256:e07cb2dedc8c6a2a8e167de8f354c15b270115982e848d7aba3b1d6088becac9:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2E5Yzg5ZjUzZDhjOTFjMTA3NWIwYjNlMDhjZjQ3ZTI4YzUwMzZiYWEzMzA1ZDgwNDExYmNiMGYxZGMyNDMxNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWEwYWIzOGQ0NjRjNmVmNGIwYWYxNjU4NTJkYWFjZWZiNDI1YTQxYjViZWExNDI2NTIyOGU3ZTQwMTdlNzRlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDczN2FkMzcwYzM0ZDAyNjk0ZTM0YWVhNmUwZmMwY2M5NGRhZTIyODAxZTkzMmU4OWIyZmE1YmNkZjliOWU3NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d17be79b938e4488bb080aef956ee6c4",
+      "statement": "A sync run fetches unprocessed messages matching a rule's conditions and parses each with the rule regex into amount, merchant, card, date, channel and reference fields.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/parser.py#L96-L153",
+          "version": "repo-lines-v1:sha256:9497cd64df320725c143f64caf2d7df06f1d78f5317a418d0569279bc7cb6690:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxODI3MDZhNmRlYWY1ZTEyYjkxY2I4NjdhY2RjYzc1MzY2YWMyYTc4ODBhOWQxODBlMTk1MzA1MTY2NWJkMTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxMGQ2MTNjNDllZjQ4NjU4OWM1NDgzMzVjMWM5ODhiNWMzOGE3NTM3M2E3Y2I2OGRlZjRkNDc3YzY5NWNhOTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5NWFhNTljNGQyMmFmOThiNDhhZWYwZjgzODJkNTYxOGNkNjA4NGJjMWRmNjkxMmEwMDk5NWFjMzczZGI0ZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg4OTFkZTIwOThmNDlmZjljNjkxYzBhMmQ5OWQ4MTQ1ZjUyZjFhNWFmNGZmNmQ3MTlhNjJiODJhOGQ2MDY4MWUifQ"
+        },
+        {
+          "resource": "repo://app/services/service.py#L147-L223",
+          "version": "repo-lines-v1:sha256:07c1213c673cb1b1a252578336c8e9388908a59c62b55a77d29ed05d8fa1fe8b:eyJzZWxlY3RlZExpbmVDb3VudCI6NzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5MGU4MmJiOGE1YmQwN2I3YTJmNGQ5MWMzM2U5OWE4MDM2YjEyMjQwMzBlOWNmOTIwNjA4YjZiM2VlMDI0NmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyOTM2OWMzYTBjZjMzNmM3YWQ5NmU2NWM4MGY2NmY0MjFiNTk2Zjc0MzFmYTVhZjM4YmU5YTM5OTEwZGJiY2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4f1952eb8c784e9e81f49b12807a12f0",
+      "statement": "The body text used for parsing and the text shown in the rule wizard both come from body_text_from_message in app/services/email_body.py.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/mailboxes.py#L20-L41",
+          "version": "repo-lines-v1:sha256:a0628fd6cf877195d83135a339bb975b4267664469b5b3ea7304fca1db7d436d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyNjExYzBjNDgwYTAxYTViMzEwNjA0MzlmYjUxYzA4YTY3YWZjMzMyNWUwMTQwMGI3NzQ5N2YxOTJmODE0YmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyMDA5N2U0YWE1MDA2OGJhMTU3ZjlhMjczOWZhZDg2OTk1ZTFlMGNkY2NkYWRjNTg5N2MyMDM0Yzc0ZDNlZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyMjc4ZDM3YjliYzA2Yzg2ZTQ4ZTU2MDZkZDY3Y2Q4OWJkYzI0ZjExNzVlMzM5ZWUzMDNhYmFhOThmZDY5MWYifQ"
+        },
+        {
+          "resource": "repo://app/services/email_body.py#L75-L94",
+          "version": "repo-lines-v1:sha256:d1773f1aef9cac49b8713c624a9575f97d30f44f3243b0fd181367b4f04efb64:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkMjllNzFmYWFkZDU2ZGZlMDgzOTZlMzdkMGEyOGI5ZmU3YTVkOGI4MjExOTI5YjI0NGYwMWI2N2EyNTczNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNDEwMTk1MzUxMDM3M2UxNzE0ZjFiYjEyNzFjNDJjNTRiZTc4N2FmOTkxMTBlN2YxYmM2MDEwODQwMmZiY2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg3MzdhYzU4MTUwMjM3N2M4YjE5OGEzNzY4ZjZiNmU1MjFmMmY2Y2YyYzVkNzVmZmE3NDI5OWU5NzFmZTk4OWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_304c13718d454de8ae12d3349bec1198",
+      "statement": "Mailboxes and rules are read from the database at runtime and not from config.toml, which now only drives the CLI worker and fallback defaults.",
+      "evidence": [
+        {
+          "resource": "repo://README.md#L78-L79",
+          "version": "repo-lines-v1:sha256:9bc531d3fb40d26d088d96d450f43ac9f8643d46bf7401c72dd68cf2eab79a86:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDExNGY3N2QwY2QyZTZlZjA4ODAwNzg4NWViNjEwNzRhY2I5MmM4OTlhZjRkYTdhYTQ1MjdhMTgyYjE1NTU3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmEzMGVhMzIxNjczYmVjNzY2MWM1NWUzZDk1NTNmMGIyMDcyZjljNDQ3MGYyNGU2NjNmNmI2ODUyMjIwYmJhNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjI2Yjk4YWM0Yjg2OTdmMWVhZGRjZWU3OThjNzdjNjI0NmQzYzkzMDE3NzI4ZmI1Nzg1MzFhZGQ1MWUwZDVhNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGYzZTg5ZThhMjlmNDNkNzRmMzZhNzYyODlkYzM2MjI1NDQ1MWU2ZTY1MDFjNDViZDhiNjk0NzA4YTc0MzQ2ZiJ9"
+        },
+        {
+          "resource": "repo://app/services/service.py#L137-L144",
+          "version": "repo-lines-v1:sha256:54fc7d135b5265f81288d9927010c1acce9b25f3006867012a0ccf00b69e34ae:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM1NzA4YzcyNjJkMmZlNWNlZWE2ZDU3MDE0YTcxYjVkYzY2MmM0MzBhMzk2MjlkYjVmMmVjNjZlMjNlZWYwYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDM5ODI4MDdhN2RjMzdmMTkyMjM1ODVhMDQ3OTMwYzM2YzZhZDA2NzYzZDE5ODUxYWQ4ZjZkMjAyYTNhZjJkNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTQ2MGI3Y2IxZjViNzA5YzIyN2JkMzA2NzAwNGNhZmNjMDI5NGJmMjE5Njk3NjlmMWNhNmI3YWFjM2FhYmE2YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzBlMjI3NGU4NzMwYWEzNzUwOGRiZDUzYzYyMzQ5MWFkMzljOWRiMWNlYTI3YWVhYmE2NmUxNjQzMmFiNjZlNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_83dbe3858f3f446ebab24d464617f48a",
+      "statement": "Deduplication relies on an IMAP processed keyword, and the Firefly payload disables duplicate-hash protection.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/firefly_builder.py#L136-L146",
+          "version": "repo-lines-v1:sha256:7d3bfde8adb0ab7ee8950f6c35a4a53de0d8f95c8d6604740de18adb6676d450:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4YmJmNDU2NWQ5MzQxNWVjMmZmN2I3OTVkZmFkN2JmNjQ2ODU0ODY2NjQ5M2MwMWRlMTBiZmIyYzcxOTE5MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlYmNhYzhiYjE0YWQxYzA0NDBhN2Y5NjAxMzVjZTlkYThkYjMxNWVkNWI4NGVlMTlkNjYzZTg2MzZiOWRkYTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllOTUxMDI1NmIzOWE2MzZmN2FlMjZjY2E0MDdhY2E4MzQ1ODI4ODQxMmU3N2JjMWMzMGE4MjEyNWRhMGViNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2YzcxMGE0NmYwZWI0MzdhYjQyNmYzMTdmYTkzODI2NzI0YzlkYWM2ZjE1NGM5NmNhNjViYjQ5ODQ0OWNlNmQifQ"
+        },
+        {
+          "resource": "repo://app/services/imap.py#L138-L181",
+          "version": "repo-lines-v1:sha256:40a12330848a72a8f00a3792b2b9c88565a03552797fa29843b56aed19dcc90f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5MjNlZWU3Yjg3M2JmMjQ4NDAxYWI4OGRlYTBmOGU3M2NmNTk1MGNjMmZhNDM5MGVmYjkxOTYzNWEyMTA3ODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2MGNmNDkyZmMzZGQzZGIwZjY4NWNmNzg0ZDY1OTIzYzQzZGM0NWZjZjQ2MGJkZWMwMDBiNTJkY2Y2OWFlYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_82ad356ee6ef439ba88342aebbf9e946",
+      "statement": "The repository separates API endpoints, services, the pymysql data layer, CLI workers, a Vue frontend built into static/dist, a scheduler sidecar and unittest suites.",
+      "evidence": [
+        {
+          "resource": "repo://Dockerfile#L30-L47",
+          "version": "repo-lines-v1:sha256:33bc13da94086f965f4dfebd1f0df2ebe2364ba01e91418c6b4bab14b78471d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzNzBjYzFhMTU4NDk2Y2M5Njc2ZWUzYTViMzY4NmU2NzgwZTE2Yjk2NzViOTZhZDljNDQ2MzJkNzc3ZDZiYTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzY2JmYTNlOWViMTIzNzkzNDExOTVmMmFjMWQ5MDhhMWNiNTU4ZjAyZDQ2MmQ2MWMxODYwZTQ0MWRlZWNhYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE4ZDljZDA2ZDU0OTJmODFjMzAwNTk4NTUwYTc5YTc4NWY1NWM3ZGQ0OGIwZjdlYTNiNjU4ZjJjMjVlZDAxMGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://frontend/vite.config.js#L1-L18",
+          "version": "repo-lines-v1:sha256:f554a60cda6796f217e7623b967032dd890691ac1ab51bbb50f5b212af28398f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2OTRiMTEzZWZmMTAxNWRlOTYwYzdkZWFmOTZiNzAxM2FmMjliNGFiZmUwYjlhZjZhODNmZjExOGYxYWYwN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1ODBiNzY1MThkYWU5NzlmYWViZDAyMzY3YTI5MjkyYTUwZDk3NjA5MjI1MWEzOGE2Y2UzMDg4MGJhNDI4MjUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-25T04:51:17.394Z"
+  }
+}

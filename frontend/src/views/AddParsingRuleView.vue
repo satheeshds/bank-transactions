@@ -64,6 +64,9 @@ const serverGroupIndex = ref({})
 let previewTimer = null
 const extraGroups = ref([])
 const sampleLoading = ref(false)
+// which MIME parts contributed to the loaded sample text (e.g. ['text','html'])
+const sampleParts = ref([])
+const sampleError = ref('')
 
 // Debounced call to server preview
 async function fetchServerPreview() {
@@ -161,6 +164,7 @@ function loadSample() {
     // If a mailbox is selected (form.source_id), request a sample from the server
     if (form.source_id) {
         sampleLoading.value = true
+        sampleError.value = ''
         // send conditions and mode so server can fetch a matching message
         fetch(`/api/v1/mailboxes/${form.source_id}/sample`, {
             method: 'POST',
@@ -169,22 +173,30 @@ function loadSample() {
         })
             .then(r => r.json())
             .then(data => {
-                if (data && data.sample_text) form.sample_text = stripHtml(data.sample_text)
-                else if (data && data.sample_html) form.sample_text = stripHtml(data.sample_html)
-                else if (data && data.error) form.sample_text = `Error: ${data.error}`
+                // Server returns the exact text the parser matches against (plain part +
+                // stripped HTML part), so use it as-is instead of stripping it again.
+                if (data && data.sample_text) form.sample_text = data.sample_text
+                else if (data && data.sample_html) form.sample_text = stripHtml(data.sample_html) // legacy payload
+                else if (data && data.error) {
+                    form.sample_text = `Error: ${data.error}`
+                    sampleError.value = data.error
+                }
                 else form.sample_text = ''
+                sampleParts.value = (data && Array.isArray(data.sample_parts)) ? data.sample_parts : []
                 // capture optional metadata (subject, from, date, etc.) for IMAP field preview
                 if (data && data.sample_meta) form.sample_meta = data.sample_meta
                 else form.sample_meta = {}
             })
             .catch(() => {
                 form.sample_text = ''
+                sampleParts.value = []
             })
             .finally(() => { sampleLoading.value = false })
         return
     }
 
     // fallback placeholder sample
+    sampleParts.value = []
     form.sample_text = "Total: Rs. 1,234.56 spent on your SBI Credit Card ending with 1234 at Amazon on 02-07-2026"
 }
 
@@ -656,6 +668,13 @@ async function submitRule() {
                                 <label class="flex flex-col"><span class="font-label-mono mb-xs">Sample Text</span>
                                     <textarea v-model="form.sample_text" rows="6" class="px-sm py-xs border rounded" placeholder="Paste email content here to test your regex..."></textarea>
                                     <div v-if="sampleLoading" class="text-xs text-on-surface-variant mt-xs">Loading sample email…</div>
+                                    <div v-else-if="sampleError" class="text-xs text-error mt-xs">Could not load sample: {{ sampleError }}</div>
+                                    <div v-else-if="sampleParts.length" class="text-xs text-on-surface-variant mt-xs">
+                                        Loaded from MIME part{{ sampleParts.length > 1 ? 's' : '' }}:
+                                        <span class="font-label-mono">{{ sampleParts.join(' + ') }}</span>
+                                        — identical to the text the parser will match against.
+                                        <span v-if="!sampleParts.includes('html')">This email has no HTML part.</span>
+                                    </div>
                                 </label>
 
                                 <div class="grid grid-cols-3 gap-md">

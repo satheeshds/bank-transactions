@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e583424940832caaa1163ee7c307cd8e9bc5281c4acdcabae25659b3c94f32f5",
+  "claims": [
+    {
+      "id": "claim_635316f6ab5d4d1f8b5dc9e0e6114e3c",
+      "statement": "build_transaction_patterns normalises the transaction_patterns config into compiled patterns and falls back to DEFAULT_TRANSACTION_PATTERNS when the key is absent.",
+      "evidence": [
+        {
+          "resource": "repo://app/config.py#L190-L229",
+          "version": "repo-lines-v1:sha256:50845015d7494cee310707b9ea5d3722016ac9624c915bf5ee2d3784332a16f2:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhNzRlYjhhZDZkYzMwMjc4YTkxZjljNDJmYTc1OTEwZDlkMjU0YzAwOTE3NGViNzgzMmU4MTUzMjAwZGI1MDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyYmVlYWU4Yzk1Yzk0MjNlZmZjMzM1M2ZlNmE0OWI3MGIxNWU4Njc0MzU0Y2M3MTEwZDkxNGQwZjMyYWIwNDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1MmIzYjg2N2RhN2E3NzMwY2ViZmE5OTlhYWYyOTU3MDE4OGUzN2IyNWZlM2Q4N2RkMTM0NDIyNTRiM2JkNGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://app/config.py#L9-L22",
+          "version": "repo-lines-v1:sha256:59c4fc6a61a600ff00be6008c027de381353d1f9871f5ffeb95ade0f8913b2da:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmZjhkZmY0N2UxZjZlYzcyODdkZTdkYzhmNjZjODVmN2M4OTY0YjhjNTMzOWYyMTk1MWU5MzU3MmI1M2QwYTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiNzAxNWE5MjU0MzRkNjcxNGJiYjIzM2VmMmYwZWVhZGY4MjViODM0ODkyYjU2MjU5ZmZkN2Q5MjBiNGQwOTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlYWVmZTQxMWNlZmQ5MGEzZTI2NjFhNTMyNjE0ODljYTBkZGM0MmYyMzQ0NThjZDcyMTg0Mzk3YTM2ZmI4ZDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4dc1032a124547789499a35346cb1208",
+      "statement": "Flags are resolved through getattr(re, name) and unknown flag names raise ValueError, while patterns without a regex are silently dropped.",
+      "evidence": [
+        {
+          "resource": "repo://app/config.py#L205-L210",
+          "version": "repo-lines-v1:sha256:082891a575df1fd240ef1aabd581fa59bea5fd5c5ae8102eb46715850b33ba61:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmQ0Y2I2ZGI0NzNhMWYzMWU4NzJkNTE5NDQ0MDJkMjMxMWViOTMwZjAwZTk2ZGNhMDQ0MTE5OGFlNzBlZWI4ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjQ0MzMwNGMwNzcxMzYyZDU0ZDRjMmI0MjMwY2U5YTg4N2FhYThmMzkzMjZjYTI3MzA5M2M0YjU4ZmI1OGVjYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzUzOWJjOTFiNTZjMmNiMjhlNDEzM2Q2NDllZTIxNGIzN2ExMWFmY2I1Y2VjNWNkNDgzNGEzODJkZTUxNzg2NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmZmNzczOGQ2NDI5NmFkY2JiZDFiNzQ2MmFlMGQwZDY0M2YxNTYxN2RjOTk0MmIyNDZiODU3MjViNzQ2NmI0ZCJ9"
+        },
+        {
+          "resource": "repo://app/config.py#L40-L58",
+          "version": "repo-lines-v1:sha256:a97ba7f00f1644cf877b56c972d39bf1ce990fc33c175a5316c5a171da33042d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3YzZhMTRhOGFmMDVmYmEyNmRkZWM2MjFkNTc4NzdlNTY3MmYxZjIxM2E0M2M5MjA0ODBlOTM5ODkxNWE3MjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVkNTM4Njg5MGIxZDc3YWMzNjI5Zjc4NWY0YTgwNDY1NjA4ODgyYzY3M2E2NTVkZjZiNDQzYThmYjliODI4YTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyY2Y5NmVkZTVlOWMwZTM3MDc5NTFlNDQ3ZjAxNzg4ODY2MmU5ZDIzY2VkMjMyZmUxNWVmYTdiN2QyZjAzZWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_87304e3c22c74caab0fe94ef1d91636f",
+      "statement": "Database rules contribute only name and regex to the pattern builder, so config-file-only options such as flags and field_mapping are unavailable to dashboard-authored rules.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L327-L339",
+          "version": "repo-lines-v1:sha256:0a300b62b460eca8915dfadf7ce50615a0777454fb703d19e540efa9f59b6c16:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlYThlMWMwNjMyOTc3YTAwYjZmOTllMGMzZjNjOGM4ZTNlNDExYmRlOTg5ODJjOWIwYzE3NzA4MmM1MGY2ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiNGJjNDRkZTBiNTUzMjRlMDgyYTc2ZmQ2NWRkZTBmOTk3ODI5ODFhZmMzZTQzZGE0ZTAyNmZkMDYyM2E4NGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUwZjE4OTJkOGRlNGY5NWFkZmMyYTc1MWQwNTFlN2JkNzkwY2FmOGM3Nzc2NWYwODZkMzAxYWNhZTY1YTE5YTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc5ZDE0MGRmNzk0Y2U2NTlhMWQ5OWRkZDM5MGE5MmU2NTgxMmU4ZDk1NjI1NjQ3ODAwMWE2OWRmNmFhMjg1OTIifQ"
+        },
+        {
+          "resource": "repo://app/services/service.py#L85-L92",
+          "version": "repo-lines-v1:sha256:944adeff5dcdbf8015b6f2bcae18d469cd93fb8adf4b05b75011aae78eb8858e:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjhiMDE2YzFiZDY1NGVjZDc1MjQ4ZWE1ZGFkZDE1MDZmNmUzN2M3YjkwNjg3MzZhYzZkOGI2YjU2MDc3MzVkZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGM0YTYzZTUyMDg4MTkzYmMwMzk3MmNkMTU1MTE0NmI5NGJmMzBlZDZiY2M5ZTUwZDMyMjExMWE4YjE1MDRmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjA0N2YwMGJjN2VhODE1ZjcwOTgwOTRmMmI4NzU4MTAxOGQ5OGIzMWI4MjIzYTA0NTEyMTA4MzRlYzA5ZWYxOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTM0YTg3MGNjYTM2YTA5NTM1ZDM0ZTRiMTk4ZWZjOGJkN2MwYzJjY2Q4YWNmOTQzNjUxNTk2MjVjODQ2ZTQxNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0a4f179f335e4bab8fe28d1b47267b0e",
+      "statement": "extract_transaction uses re.search and takes the first pattern whose amount group yields a value, skipping patterns that match without an amount.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/parser.py#L96-L153",
+          "version": "repo-lines-v1:sha256:9497cd64df320725c143f64caf2d7df06f1d78f5317a418d0569279bc7cb6690:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxODI3MDZhNmRlYWY1ZTEyYjkxY2I4NjdhY2RjYzc1MzY2YWMyYTc4ODBhOWQxODBlMTk1MzA1MTY2NWJkMTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxMGQ2MTNjNDllZjQ4NjU4OWM1NDgzMzVjMWM5ODhiNWMzOGE3NTM3M2E3Y2I2OGRlZjRkNDc3YzY5NWNhOTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5NWFhNTljNGQyMmFmOThiNDhhZWYwZjgzODJkNTYxOGNkNjA4NGJjMWRmNjkxMmEwMDk5NWFjMzczZGI0ZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg4OTFkZTIwOThmNDlmZjljNjkxYzBhMmQ5OWQ4MTQ1ZjUyZjFhNWFmNGZmNmQ3MTlhNjJiODJhOGQ2MDY4MWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_09b5ed063dec4b05b2f430f68b7431bc",
+      "statement": "Field groups default to amount, merchant, description, card_last4, date, reference_no, channel, currency and vpa, all overridable through field_mapping.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/parser.py#L112-L127",
+          "version": "repo-lines-v1:sha256:847c8bfc03271f98d3a0f9fc6858fe307f03f3b99f3ebe7b95559dabb4a24987:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2YWQwNTJjNDRiOTUzZjBkODMyODZhMmRkZGVjMjE4NWU3ZjE4OWRiMGU0ZjUwMmM2ZjA2ZjM0NzU4NDU0YTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU5MTM5NjMwN2ZlNmNjNjFmMWUxMWUyMGIyYTM3NzQ5YjI5MGQ3YjBkYmI0OTc3ZjUzYTE2ZDIwMmVhMTc0NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzNWYzNGZmYjM3MTE2MGFiMDE2MDdmZjM1Yjg0ODVmMTg5NWVkOTFiMjQ0OWExYmM5ZWI5YWU0NzI3YTc5ZjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c926038708484d1f89758f04fc532550",
+      "statement": "The currency field is always set to INR because both branches of the currency expression return INR, so captured currency values are ignored.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/parser.py#L131-L134",
+          "version": "repo-lines-v1:sha256:4f498bb285739a27bd571b2d5b4f2005e02a35a1b9393c188519a03b4aec987c:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjk3ZjQwZTQ3NzcwMTUzYjJkYWUwMTI2N2RkOTY1MjA3ODBlOGFlNGZhM2RkMTAyNGMxOTk0ZGE3ZDlkZWY5NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODM1ZjM0ZmZiMzcxMTYwYWIwMTYwN2ZmMzViODQ4NWYxODk1ZWQ5MWIyNDQ5YTFiYzllYjlhZTQ3MjdhNzlmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzdkMmVkMGExM2YwZjk1MjZkMjljMzZiNmI5MTgxODU4ZGQ0Mjk1YTRmYWEzOTI4OGRmOWE3M2VhMWQ1YjExYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_30888ac096e84e8d811eac170dc38229",
+      "statement": "_normalize_date rewrites day-month-year dates to YYYY-MM-DD and passes any other format through unchanged.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/parser.py#L78-L88",
+          "version": "repo-lines-v1:sha256:baa2cea7b1d9946f84f13d88f1623e11c2b77efc2bdacab699b1c89a1c83d58b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhYTdjMTU2MmJiOTVkMWNlZWFmNjYzMWJjODhhY2E0ZDZmYzQ3NDIwNDE5NjU0ZDljMGNjOTdjNzYzYzM1YTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTVjNjZlMTdiMTQ1Mzk3ODM0YjhjODU0ZGM0MTkzZTIxMjUxODBhODk5NmExNGMzMTg4MzMyNmIyZWZiY2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5OGM3ZTllM2Q3MjIxMmFjYmZkMTM1ZGUzMzgxNDBkZDZhYjE3OGQ0Y2VhY2NhNjFkNTQyMzljYWFkMTEwNWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhNTIwYjYzYTE4NzM0OTljMTM0YjBmZmMxMWZlMTFiNGI3YjQ2N2JhMzUyODI1OWMwMmZlY2RkNGUyNzFmNzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ac1c5c7a45414b9993591f71701907cf",
+      "statement": "Pattern defaults are stored in the compiled pattern dictionary but never consulted during extraction, so declared defaults have no effect.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/parser.py#L115-L116",
+          "version": "repo-lines-v1:sha256:49207663a3df0be62678037bc4c32500a239a6fb0c988f49d9397a9abf7fbdbe:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjg3MmU3ZGU0YTZhMDFmOGEyYTZkOTlhYWI0ZWFhNzhiOWYwNTI0YTczM2JhZjlmYjA0MzNmYWE3YmY1N2U2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTFhNDczODI5NmYzNjcwYjk4ZTk4NmEzZmM5NTVlNTcwMTcxNTQwN2RjNmFkMjhmNzM5MTI2ZWFlYmE4ZDU2OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTA4NWIxZGJlNGE0N2EyNmE1MWU4NjAyNjdiYWNhNWNlYTY0ZWU0YTZiZmY3YWJlZjhkNzM2ZDM3OGQ5NjY4ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDE1YzI0YzA4MDVjYmNlN2Q2N2Y4ZWE1ZWRhYmQ3N2QwZWNjYTFhNmI2YTE5MjFlNmQ1ODNmM2QwOWUwYzk3YSJ9"
+        },
+        {
+          "resource": "repo://app/services/parser.py#L137-L152",
+          "version": "repo-lines-v1:sha256:99907b9d5d1a4b2c1982b6f8214d000821ea2e3e6982dc79587c97558244e638:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMzdlOTc3MjZiYTBiYzFjMzhiYThlYmQxOGRkYTgxMjRkNDMxMTkxYTVmNjJjMzE5NzU1N2MzNzdiN2MwYjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1OWFjMjIwMmU1MzEyN2RiYThiNzgxZjJiODk5NWIxNzQyMGU5ZDk4ZjE1MjFhYmY1MjU4MmI1NDcwZTI4YjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjMzlhZTFlMDY3ZDA1OTU2NDQ0NzVlODM3NDQwNWVjNGM1MzlhMGQ0YTUzZGNmOGYxMDU3MGU2ZDQ2ZjNjZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4eec73d1695f493f890de50423d46ca3",
+      "statement": "TransactionDetails.firefly is populated from the pattern firefly_mapping or firefly block, coerced from firefly_mapping, firefly, or the legacy source/destination keys.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/parser.py#L147-L151",
+          "version": "repo-lines-v1:sha256:cd96a250c7db944f254149144456ad99079871d4eecb5daed51eb989b023357b:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWU2ZmRlYmYzMGM1YjJhMGQzZDA2NDM0MGI3MmUyZDgyZjZkZDFjMWU2M2M3MWEzMzg0MTNhYTNlYTc4NmJjYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkwOWE1M2E2MThkMDI4ZTFkMzAwMGMwYTdhYmNlZWNiZTVmYjM3ZjRlNTExZWZlNDY2NDNmYWQ2ZTY2ODcyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGFkM2VhYmVjZmQ5MDVhN2UzMWIwMjI2YmYxYjNmZGM1MjI2ZGFhYTU3NjZkZDU0YzViM2IxYzA2NTU2M2FhMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjYwNTUzMWUwODMyZGFlYTAyNjRmZjdkMDkwOGJhZmI1YzNhZmUwOWIyNWQyZmMyNzgwNzViYjBhOWMwMjQ0NCJ9"
+        },
+        {
+          "resource": "repo://app/services/parser.py#L58-L74",
+          "version": "repo-lines-v1:sha256:946d1d34ae5e93d0979d5b430a8abb05318c33544763df00bb03e1c5bd6345bb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiNGQwYTg1MjhkMmE0N2JjMTE2YWMwMDE3ZjM3ZWI0NTIxNTMwNjU1MGI1NjY1ODQxOTc5NjhiYmI2YTZhYTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhYTdjMTU2MmJiOTVkMWNlZWFmNjYzMWJjODhhY2E0ZDZmYzQ3NDIwNDE5NjU0ZDljMGNjOTdjNzYzYzM1YTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwZGM5NjQ4ZTkxZDg2YTViY2YxYTBmMzRhNjU2MGJmZTIzYTUwNWQ4YzNhMmE4NmM3Zjg0NGU2ODQ1NzZjMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5OGM3ZTllM2Q3MjIxMmFjYmZkMTM1ZGUzMzgxNDBkZDZhYjE3OGQ0Y2VhY2NhNjFkNTQyMzljYWFkMTEwNWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7bbe1d2e1d704041ad531033eaea825b",
+      "statement": "extract_transaction_details re-runs the pattern search to attach positional groups and groupdict for the regex_group mapping resolver, extracting the body twice per message.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/parser.py#L156-L176",
+          "version": "repo-lines-v1:sha256:b8d8d3d70508b840d335f34727c0db24d1240a9dcdac10fc776c5a2e6e606a03:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMWYzMjRjNzljY2FhY2ExYWU3NjM2OGRhNjJkZmMzZjk5OTc3MzUyNzU1OTAwYzgwNDEzNmQ2YzgyYTM1MjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwYzJmYzNkYjY1NWNlNTcxYTk2ZmU5NGQyYjgyNGZlNDk2ZTI0YmNkNjQ0YzMyMTAzOWM0MjAwZWU5MGMyMmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjMzlhZTFlMDY3ZDA1OTU2NDQ0NzVlODM3NDQwNWVjNGM1MzlhMGQ0YTUzZGNmOGYxMDU3MGU2ZDQ2ZjNjZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkOTM0MjEzNmM0ODdhZGMzOTAzNmZjY2FhYTFiZjZmOWI3YjcwMTlmODJjOGU4OTdmYzVlYTY5Mzg2ZDZjOWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_825ce6f31c77466fa66e519d12d92d6f",
+      "statement": "convert_to_timezone treats naive datetimes as UTC and falls back to UTC when the requested zone is unknown.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/parser.py#L81-L94",
+          "version": "repo-lines-v1:sha256:d5c0ec7b878e916829b818925f206d091f4794dbfbc4fca16c044d6baba108b2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkZmZlOTcyNmYzYzc2ZWE3Njc0ZjhlMWU4ZDcyYWE4M2QwMjM3ZGU1NzI2MDE4MGFmODRiZmU1ZjNlNzRkOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiN2U2NmM3YjliY2M1NTI0ZWY1MjMxNzVhOGU4MTkyMDZlMTQ2NjViNzNhOGUwYjY4ZTNkMDU1Yjc5ZTY4YTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1YzYzNWY1ZjI1NDEzN2U3Yzk1ZmZmZjFkYjE4ODE1ZTA2MjEyYjE5ZTE5M2MyMzhhOWM4M2FlYzQ0NjliZjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3bf7f1a981fa4b1ab3a1011df16fbc26",
+      "statement": "The parser never sets transaction_type on TransactionDetails, so Firefly payloads default to withdrawal unless a mapping supplies the field.",
+      "evidence": [
+        {
+          "resource": "repo://app/models/__init__.py#L19-L39",
+          "version": "repo-lines-v1:sha256:277967359c4e748831cc5f1e3b18144adfa7f9fff717753aedecec4a1b9d6f01:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5M2FkYmRjMTg5NzA2NjAzN2ViNTM0MDBiMzdkNjNkYjg0OGQwYjJjNWI3YjI0ZGQ4Y2Y5MGNmYWIyNTY4YWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NDlmNjI1YTQ2NWE2MWM1YzkzYWUyMjE0NWU3YTM1M2Q3ZmQ0MjhmYmNiY2U3MGNlYTg0MzE1MzY3YTk3MWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkYmRhOTY0MTQwYTVkZmZhMGMzMTU1ZDVjNjU5MDU5MWZkMDA5MWQ2MGYxMWY5ZTdiMzk4MjI1MDlkMjJkY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNhZTk3ZDdiM2IxOTIzNGY4MTk0ZmM1OGI0Y2YxYzQ0MzFkMTM1ZDZhNGNmNjM5YWE3Mjg1YTBlYTQyNGE5NTYifQ"
+        },
+        {
+          "resource": "repo://app/services/parser.py#L137-L152",
+          "version": "repo-lines-v1:sha256:99907b9d5d1a4b2c1982b6f8214d000821ea2e3e6982dc79587c97558244e638:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmMzdlOTc3MjZiYTBiYzFjMzhiYThlYmQxOGRkYTgxMjRkNDMxMTkxYTVmNjJjMzE5NzU1N2MzNzdiN2MwYjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1OWFjMjIwMmU1MzEyN2RiYThiNzgxZjJiODk5NWIxNzQyMGU5ZDk4ZjE1MjFhYmY1MjU4MmI1NDcwZTI4YjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjMzlhZTFlMDY3ZDA1OTU2NDQ0NzVlODM3NDQwNWVjNGM1MzlhMGQ0YTUzZGNmOGYxMDU3MGU2ZDQ2ZjNjZDAifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-25T04:51:17.394Z"
+  }
+}

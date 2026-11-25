@@ -8,12 +8,37 @@ import socket
 from datetime import datetime, date
 
 from app.services import imap as imap_service
+from app.services.email_body import body_parts_from_message, body_text_from_message
 
 from app.db import session as database
 
 router = APIRouter(prefix="/api/v1", tags=["mailboxes"])
 
 logger = logging.getLogger(__name__)
+
+
+def _sample_payload(msg: Any) -> dict[str, Any]:
+    """Build the sample response for a fetched message.
+
+    `sample_text` is exactly what the transaction parser matches against (plain
+    part + stripped HTML part), so a regex written against it behaves the same
+    at sync time. `sample_html` is kept for reference/debugging.
+    """
+    meta = {
+        "subject": getattr(msg, "subject", None) or "",
+        "from": getattr(msg, "from_", None) or "",
+        "to": getattr(msg, "to", None) or "",
+        "cc": getattr(msg, "cc", None) or "",
+        "bcc": getattr(msg, "bcc", None) or "",
+        "date": getattr(msg, "date", None) or "",
+        "message_id": getattr(msg, "message_id", None) or "",
+    }
+    return {
+        "sample_text": body_text_from_message(msg),
+        "sample_html": getattr(msg, "html", None) or "",
+        "sample_meta": meta,
+        "sample_parts": body_parts_from_message(msg),
+    }
 
 @router.get("/mailboxes")
 def list_mailboxes() -> dict[str, Any]:
@@ -198,21 +223,8 @@ def mailbox_sample(mailbox_id: int) -> dict:
             # fetch most recent message; imap_tools MailBox.fetch supports reverse=True and limit
             messages = list(client.fetch(limit=1, reverse=True))
             if not messages:
-                return {"sample_text": "", "sample_meta": {}}
-            msg = messages[0]
-            # Message may have text/plain or html; prefer plain
-            body = getattr(msg, "text", None) or getattr(msg, "html", None) or ""
-            # collect metadata for IMAP field preview
-            meta = {
-                "subject": getattr(msg, "subject", None) or "",
-                "from": getattr(msg, "from_", None) or "",
-                "to": getattr(msg, "to", None) or "",
-                "cc": getattr(msg, "cc", None) or "",
-                "bcc": getattr(msg, "bcc", None) or "",
-                "sent_date": getattr(msg, "date", None) or "",
-                "message_id": getattr(msg, "message_id", None) or "",
-            }
-            return {"sample_text": body, "sample_meta": meta}
+                return {"sample_text": "", "sample_html": "", "sample_meta": {}, "sample_parts": []}
+            return _sample_payload(messages[0])
         finally:
             try:
                 client.logout()
@@ -261,19 +273,8 @@ def mailbox_sample_with_filter(mailbox_id: int, payload: dict) -> dict:
             messages = list(client.fetch(q, limit=1, reverse=True))
             logger.debug(f"fetched {len(messages)} messages")
             if not messages:
-                return {"sample_text": "", "sample_meta": {}}
-            msg = messages[0]
-            body = getattr(msg, "text", None) or getattr(msg, "html", None) or ""
-            meta = {
-                "subject": getattr(msg, "subject", None) or "",
-                "from": getattr(msg, "from_", None) or "",
-                "to": getattr(msg, "to", None) or "",
-                "cc": getattr(msg, "cc", None) or "",
-                "bcc": getattr(msg, "bcc", None) or "",
-                "date": getattr(msg, "date", None) or "",
-                "message_id": getattr(msg, "message_id", None) or "",
-            }
-            return {"sample_text": body, "sample_meta": meta}
+                return {"sample_text": "", "sample_html": "", "sample_meta": {}, "sample_parts": []}
+            return _sample_payload(messages[0])
         finally:
             try:
                 client.logout()

@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:ab1132d09d3ebe873a166f9891c14efa1fbf2b317f17474b848f3b74a8ddb8ce",
+  "claims": [
+    {
+      "id": "claim_b63237eb54e447c7928b213e14b1bb5d",
+      "statement": "POST /api/v1/sync acquires a module-level lock, initialises the schema, inserts a running sync_runs row and starts a daemon thread that builds the service from config.toml and calls run().",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/sync.py#L11-L27",
+          "version": "repo-lines-v1:sha256:129bf152a39cd392095d93e7e064f2639f484d2bdc958ce84a6971ef4416864c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiMzI3NWE2MDZhMDE4MGJmNzY1YzhhZWZhYmEwZjE1Y2MzYzdmZGViNWI1YjA4ZDUyOTJkMDAzZDU2MjVkOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5M2Q1MjIwOWFkN2E3MzgwZDQxOWQ3MjkyNjE0YWU4MDQwNjQ5N2FkZGU3MmI0MDA4YjQyZGMxMDYyYmU3NTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://cli/sync_worker.py#L28-L60",
+          "version": "repo-lines-v1:sha256:08d86b40b543ae772af94494666f65f1263a68c1ba6f167ef3f00d2e5daf89bb:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlMjc0NzM0YjI3NGZmZjVlOGM2OThmMTE4ZGU5MGEyY2FiZjFmZmI4MTBkOWExZGI5YmZiYzk5NWU1ZDJjN2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMmM4OGFjZmZjNDc1YmQwZTVmYzdkODhhY2Y3NDUzNjc3ZDFlYjFjZWE2YjI2NTcyMTVmZGEzMGNiOWQ3ZjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxZTg3NTJhZGEwMDI1ZDM5YjU2MjI4MDgwMDE1OGQxZmM3NjgwNGI0ZjdkYTI5MmUzM2I1Njk0M2ViZDQxYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e7a3eabce03e497bb65506c6b58b8e84",
+      "statement": "The worker always closes the sync_runs row in a finally block, writing success unless the run raised, then clears the current run id and releases the lock.",
+      "evidence": [
+        {
+          "resource": "repo://cli/sync_worker.py#L61-L95",
+          "version": "repo-lines-v1:sha256:dfc0c6876c456645463f6e9437a0379e8eaf79cd5f95bb80df8e3c0e703831da:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjMTRiODg5M2NhMTM2Zjc5NmUyZjQxNjRhY2E1Yzk2ZDAwNDdjYmE2NWNlN2RjNWNkM2E3NzcxZDUyMGYzYzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyODc4ZWEzMzY5ODk4ZDgwZjU2NDE2NWY2YzU0OTU2MjAxNDM0Y2E4NDFjOWU3YTdlNzU2NjEwMmI2MTAyNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_37312d1337b7415a8fec33a27ee35628",
+      "statement": "run() processes only database rules and logs 'No DB parsing rules found' instead of falling back to config-file sources.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L130-L144",
+          "version": "repo-lines-v1:sha256:183946d8e8a56fd36415364452aaf6ab84e4539d26da2393c2f01a9f21fc69d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlMTdiYjVmMjU2NmRkZDBlZWRlOTdmZTY1MTc4YWRkYzE3ZWFkOGMzOGFlOGRkMThkN2U3NWVkODVjZDUxOTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzOTgyODA3YTdkYzM3ZjE5MjIzNTg1YTA0NzkzMGMzNmM2YWQwNjc2M2QxOTg1MWFkOGY2ZDIwMmEzYWYyZDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzNzc0NmJiNDYzMzI1NGQxYjNlZDBhMzJmZTZlN2M0NmRiMGQ1MGE2ZjBmZjVjNGFiMDQwNzhlZWNhZTRjZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwZTIyNzRlODczMGFhMzc1MDhkYmQ1M2M2MjM0OTFhZDM5YzlkYjFjZWEyN2FlYWJhNjZlMTY0MzJhYjY2ZTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4c6bcc9351ef458caaba3ddb02e930a8",
+      "statement": "Each rule resolves its mailbox by name, re-reads credentials while stripping the password from logs, and resolves the processed tag through database, config and finally the literal 'processed'.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L147-L196",
+          "version": "repo-lines-v1:sha256:83d70228b2eff9655e09cb14525d807dd74afa078f600503927bfd996c423d16:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhMzAzNDgwNjYzODM3OGMzZjc0NzJiMTUyY2EyYmUxNDU1YjU5MTJhMjM4M2RkOTY4Njg3ZjQ0MTAyNWMzMzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5MGU4MmJiOGE1YmQwN2I3YTJmNGQ5MWMzM2U5OWE4MDM2YjEyMjQwMzBlOWNmOTIwNjA4YjZiM2VlMDI0NmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjZWFhN2E1Yzc0Y2E3ZDNhZTZmZjg2MWJjNGM2YWMzOWQ0NTU3OGRjYjk3NDIwYjEyMzA1ZTgzMDFmYmVmY2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_80da0d9b21b745f5872ac90eea181314",
+      "statement": "Messages are processed inside a per-message try/except and rule-level failures are caught and logged so remaining rules still run.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L197-L223",
+          "version": "repo-lines-v1:sha256:44305a65709638f7060783b7c235391161a6722f3e5dfcb234d36055b167c563:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyNDgzZDBiMTZlYTgzODUwNWExMTViN2NkYTE4YzgzNDBhMTI1NzQwNDU1MTg0OTE4NzRlYWM1MmU3ZTFmNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2MDczMjk2NmZhM2U1NzdiMTczY2MxZjViYmFjNDBjMDQ4MjhiOWVhNzQwOGVjYWMwZTAyMGQ1NTI5OGQyZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyOTM2OWMzYTBjZjMzNmM3YWQ5NmU2NWM4MGY2NmY0MjFiNTk2Zjc0MzFmYTVhZjM4YmU5YTM5OTEwZGJiY2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e73a3369709c40e7a2ccd90a3666f8bf",
+      "statement": "A message already carrying the processed tag is skipped without writing a transaction row when dev.enable_processed_tagging is true.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L225-L231",
+          "version": "repo-lines-v1:sha256:9bbd2b2bbaeb1cb8dceedaf40d0dbe1174d6ea7e75b48d89c7678cb9f95cf897:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmRjNTkwODA4ZjJmZWNiNDc2MjdhZDRkNjVjZWQ5NzIwMTQxMWM2MTJjZWNjOGVlOWY1MjU1MmI1YTRlOWUwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzQxNmE5MTU1MDBiN2Q1NzYzZWZkZjViZjE5ZTMyY2E4MGM2YTEzNGQwMTVjMWEzNTU1NTcwYzk2YzJmYjg2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTY1MzczYzg1ZWE4Yjg4Yzk5YjAwNGEzYjA1NWY3ODVlNjZiZWZiOWYxMDY2Y2EwOWZjZTliYmFkZThkOThlZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTk2YmNlNzE0Mjk0ODk2MDgwZDg2MDU4ZWExNTI4Y2NmNzU2ZmJhMGEwOTE1ZWNkN2FmODUxODk2NTE4YWNjOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1541ea9bc2c649b5857ce64193323fdf",
+      "statement": "Parser exceptions and no-match outcomes write error rows with raw_email set to body_text_from_message(message) and increment error_count.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L234-L290",
+          "version": "repo-lines-v1:sha256:7f7cd1f0cc8c021add80ce56129f1d5e5ea3fd6f73be3ca7740e9694f587f362:eyJzZWxlY3RlZExpbmVDb3VudCI6NTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2ZTUyZGQ0YTViZWZmYTA3MTAyNDY0YmI0MWJhYTMyNWIzODg4NTdkYmI5MWRjMTI5MmE2MzM1ZGFiZjQxMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlN2JjZDM2ZWY1M2I0NDUyM2U2NWU5OGQxOTQ0OTkzZTBmZjE3NDZmNTUzNmMxYTUxMTc0NmYzZTAxZTc1NmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2YzEwYTM3OWE5OWNkNmEyYzQ3YTdjY2IyNWYxNzhhM2FjZjYxMWM4OGYyZmIxOTUyODY2MDRjOWY0MmVjOWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiODk5MGU4NGM0YjQwNzE5N2ZlZDRmZjY2OTJlYzU0OWU1NDhhY2UwYTkxMGQ2NDNlZjZlZjk5ZDRhNjk1YmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e8539b56bc7d4d40a7d722fbd85db582",
+      "statement": "_prepare_details_for_firefly stores rule.mappings or rule.mappings_json under the details key mappings, and get_parsing_rules returns mappings_json as a JSON string rather than a list.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L266-L275",
+          "version": "repo-lines-v1:sha256:e428550dbea7cd2510ad1435e3c39831fbc20b8ecd3bfa519ca3bce482389d45:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4ZDI4YzliZDJhNzExYjEwZTRlZTc1ZjZkNDM2NDQ3YjYyYTM3N2JhYzgwODRiZWM0NTQ4YTIxYzk5YzVjNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlMDAxYjc2MzIyMzAxYTViOTg1ODQ5OTlhNTMxNDBkNGFhMGQ5MjYyNDA1NmJjNTUyMjFkOGY3ZDM0NzkwNDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjZmI1MWIwMDJkZWZiNDJmNTg1ODEwMzJiMDU5YjFmM2IzOTEzMDg1OGRkOTBiNTY0ODAzNGJkYTNhYjZiMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3ODg0OGFjMzRmYWVlNTE1ZWExNWI3YmRlZThhZTI0NmJlZWRiODdiOWZmZjE4OTc1ZTgwN2I4MWQ3MzBlNTgifQ"
+        },
+        {
+          "resource": "repo://app/services/service.py#L344-L358",
+          "version": "repo-lines-v1:sha256:d509d370b2e97202bbfd2456ed05c46060a442452a75c775be53f37eb5d638f5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhNjcyZGE1MGIwZDg1ZWZjNDIzYTE4N2Y2ZjYxMjdmMmI1NDUzNjA3OWM0MzAzMzJlMDk0YmE0ODZmNzdlZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmYjM2MTg4Y2VhNTFlYThiMjRjNTBhOGVhMTkyOWYwNjBjNzljMjAyODg4NTI3MmRmMGE4ZDkyNDQ1OTFjMWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwMzliYjJiYzUyMTI5MGRjNDRkNjg1OGQ5OTNiMGNjNzAyODM3YjU2NGViOGYzYmM0ZDM2ZTJhYjY1OTRjOGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzOTgzZGY1YzA2NDEzMzI3OGRkNzE4ZWM1ZDQzOTU1MzQ3NmI5MGY0ZDY4YWE0Mzc4N2U2NGUwN2VkMDI4NjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1e6989263d7f4343b299d19c8414da3c",
+      "statement": "Because _build_firefly_payload only applies mappings when they are a list, the JSON-string mappings stored on details are silently ignored at sync time.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/firefly_builder.py#L57-L67",
+          "version": "repo-lines-v1:sha256:7462c665c48da27b417fc72566355774830abcd7a6aaca010378688d87827e21:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YTJjMTJmY2ZmNjZiNjQ3ZTU0MmUwMTM2ZDY3MjcwYjVmNmMyODk1MzllODc5N2EyZGNmOTM5YzhiODhjYzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlMzNjM2MwM2U0ZTVhNmE0MWY1NTg1ZmNhM2I3MTg0Y2ExY2I1YjUyNzhhY2M1MDY2NTFlNmQwOTA3YjhiMGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhYzIzMjBmYzM4NzZjMDVmY2UyZTk1ZmM1YzJkMzI4ODk4ZjE4OTM3ZDcwMzE3OWIxZjRlODEwMTk4NzYxZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3MzlhM2Q5ZTRjMmQ4NzY4YmIwMjc5MjZkNmJmNGJiZGFlMzRhZDQ2MWU3ZWVkZjQwMDEwOWY2OGZkNmRlZDAifQ"
+        },
+        {
+          "resource": "repo://app/services/mapping_resolvers.py#L89-L112",
+          "version": "repo-lines-v1:sha256:8bbb6912b82be656f0b5cde0633f7b8f7711eab415b32e957e55b3df99cfddad:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmMmU2M2Q3NTQ4YjBlMjlkOWRlZDgxNzU5ZGNlYjg0OWM0ODg2NTU0ZjliMzRjODIxZDEwMDRhNTAxOTgzZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0NTI2YWZkNzhlMmJiZGM0N2QwODZmNjliOTdhZjYwZTQ5MjAzZDNjNDlhMTAwMDNmNTQxNzEyODlmOTYxZTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5NGVhMGFiMDAxZDU1OTI5M2M3NWIxOWM3M2NmMGY0MzdiNmI1ZDM5Y2ExMTRlNjU4NDA1ZWQ4NThlNDA5MmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fd90ec9574f648c8a50123fcb607b147",
+      "statement": "One transactions row is written per processed message with status synced, pending or error plus rule metadata, subject, reference number, raw_email and the stringified payload.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L173-L216",
+          "version": "repo-lines-v1:sha256:f1508f72a8707644614af83c284f963e06670a8744695cc2f10381249de961e4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjNGZhZmNmMTBkMTEzNzBiYzhkNTM1ODA0ODJlZDAyNTk2YTllYjJjZjI3Y2IzN2ViMGFiYWY1YWY3NzQ1ZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzYzRmMzQwZjc3NmVhNjE2ZGYwYWRkZTcxNDJhZDU2ZDc1ODFhNmI5NWVmMjdhZjY1MzNmMzY1NjA5YWI0YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxNTNiOWVjMjZhMDg2MTRhZWQ0ZTkwZTE1NDNmZDE2ZGZkOTEzNjk0ODcxOWIzMjNmMTJjNGIzNWI0MDI0OTEifQ"
+        },
+        {
+          "resource": "repo://app/services/service.py#L292-L325",
+          "version": "repo-lines-v1:sha256:0831c8fbfe812a146280a610afef6cb6a4d8dcd5708e1204e47aa5b4f953b1d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhZmZmZTZkODc3M2YxMWJkNWI1Zjg3OTI1NTc5YjAxMjQ4OWQ3MGRkZTA1ZjE2ZDQ0MWZiZDE2MWJiNWUzMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxM2QwM2IxNTZkMzEwNDJhNjJjMWE1YjBjMzMyYmJhYjZhYmNmZjQwNzZkYWJiMTk5MjcxZjk0MTBjM2IxYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1NmMyY2ZiZmIzOTY0MDQyZTM2YWE0MjQzMzlhNDk5M2U3Y2FiNWEzNjQ5MmNiYzlhZGI1NTZhMmYzZmQ5NTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ac0be0c5710a488785e806ef5aec64ed",
+      "statement": "The pending branch, used when no Firefly client is configured, counts the transaction as parsed but does not mark the message processed, so subsequent runs re-import it.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L375-L394",
+          "version": "repo-lines-v1:sha256:24123bd80b65871fe8c296a85440e8803ab124ebd0db144eb88b99f03e519bcc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0Mzk1ZDUyZDIwOGM2NTk0ZDAwYTQ5NGQ1MDU0Y2NjMjJmNDYyZDlhMzIyY2UxNzJkNmI3NmJhNDg2YzQxMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyZmQ3ZmMwNTY2Yzk0ZGViOTk5ZjVjMGZmMjU0MGFiNjkxY2E3Y2NlYzgxMmQxNmUyMDNlYzI0MDQ4MWQ1ZGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3NGUwOGYxZDlmOTgwNDUyYzIxODkxYzZkZTg2MzQ2ZTQxN2YzY2U1NTk1N2IzOTNlMmIyNWY3ODM5ZDMzNGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e25aa3042d0a4530a4f15210ec4107d6",
+      "statement": "cli/main.py runs the service synchronously with no run id, so CLI log lines are stored with a null run id.",
+      "evidence": [
+        {
+          "resource": "repo://app/db/session.py#L238-L247",
+          "version": "repo-lines-v1:sha256:e15464376ba313f440df71cdb337be8f85aedf492902a0a949fd0cd277f468a7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMDhhY2Q2NjI3OGQ5YWVkNmRiNjk4NTg1OGMwNjI4ODhiZjM0OGE2N2UxY2NmNTE2ODExOWY1ZWU1Y2ExYzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzYzRmMzQwZjc3NmVhNjE2ZGYwYWRkZTcxNDJhZDU2ZDc1ODFhNmI5NWVmMjdhZjY1MzNmMzY1NjA5YWI0YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExZjM3Njg2NDRkNzVhYTIyNDQ3ZTgwNmE1YWYzNjQzMDhiNmM0MGZlN2QwZGM5NjdiNWNjMDUxMTU1Y2EyNjQifQ"
+        },
+        {
+          "resource": "repo://cli/main.py#L1-L18",
+          "version": "repo-lines-v1:sha256:05a94ea7646d8c0ccf4dca0ec253e67078558efd2eb213a80742a7ce77fc89d3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODRiZmRiMmRmMzgwYjY1NTdjYzdhNzFkMTY4OTE0MTViY2NhYTg3Njk5NDA2ZTIzNmY3NTJjNjQxNTM4OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4ZTk5MjMyY2QzYTMwOWY1MGNiZDZmNjYyMTI3ZWVhYWZjZTFmNzM2MjkyZGVmYjExM2Q5ODFhMjBjN2Q4NTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-25T04:51:17.394Z"
+  }
+}

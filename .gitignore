@@ -24,3 +24,6 @@ sample-data/
 categorizer-data/
 data/*.db
 rclone-config/rclone.conf
+
+# OpenWiki transient run state (wiki pages themselves are committed)
+openwiki/.run.json

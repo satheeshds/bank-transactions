@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:af09f796fdc3c747527c18ac10997439c249fd2d495134f7b71456636216469c",
+  "claims": [
+    {
+      "id": "claim_9dd140d91c6547e2a373c02f0725f5ef",
+      "statement": "The wizard uses a single reactive form and a step ref, loading Firefly custom keys on step 4 and the email sample on step 3 through a watcher.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L5-L65",
+          "version": "repo-lines-v1:sha256:9386978ca221b86814d59ea8843fcd39e1330c85299f0d6260f45102e53624fc:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1YjUwNDlmNzA4MTMxYWQ1MDZmNDdiMGM5ODUxMWE4M2M2OGY0NjYwZmU1Y2FjOWJjMTBhNzc1NjFjNDJlZjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1OWNkNWJkYjk3NTc0M2ZmMzU5ZDcxNTRkZGZiNTQwNThlOTNlNWQ1YmMyM2UzMDdhM2Y1NjdmNWJjMGFhMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmOWU4ZGJiYjhhMTUxMmRmZGQ5ZjBkYjhjZWJmM2RjYzk5ODNlOWQ5YTkwNjAzMGY5N2U2N2JhYTViMjI0MGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4df3ddc034314e61aa482347a6c3fef1",
+      "statement": "Entering step 3 POSTs the form's conditions and condition_mode to the mailbox sample endpoint and assigns sample_text verbatim, falling back to stripHtml only when the response carries sample_html.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L163-L200",
+          "version": "repo-lines-v1:sha256:9eb32def1dee869a892a48c66f391d67ded5b1bf65fd25ada4a43cbb8f1026df:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiZDIzYTY3YjdlYTA4N2Y0MjI4ZTdhYmJhOTc4ZDE0MWUxMWY2MGRhMmYwMzJkYjliMzBkNmRjNmRjY2I3NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1YjgwNmZmM2Q1MjQxYmU3YjRmMjc4ZWQ2ZDM2NTcxZGMwNWE4NjQwODkzOGQ5NDlhOTkwMjc4NTNjZTAwOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiYWQ1MjAxZmFiOTU5YjU5YmJjOTdhOWQyMWMyZDgwZjBmYzY5NDBlMjU0MmM4ODQxMTFkNzE1NTVlYWJmMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4NWI1Njc2NDVkNTQ3OWU1NjkxNGE3OGMwYWVlMWUxZjg4NjRkNDVjNmMwMTdjNzA3ODU1MzJmMzVjMTkwMDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_09bf4b10dc4d46ada81a246bcd6a8d32",
+      "statement": "The wizard debounces regex and sample changes by 300ms and calls POST /api/v1/regex_preview, keeping server groups, named groups and groupindex for the group tiles.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L67-L110",
+          "version": "repo-lines-v1:sha256:01220bbff1c23928435ef8f8902e6db2694349efde96a2289d7d0dbd07202a5e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3ZjRlNGNkMGY1NDBjM2RmZDA2NTNiZmFiNDQ1NTZlOTZmNGRiOGVhMGZkNjhjYWE2MjE5MGI2ZjQ1NWQ2YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmOTI1MjA0Mjg5OTdkMDI4ZDIxMzNlNTcxMGM3NzBhZDdhY2MyMDE2ZDg0MGMzMjBlOTBmODJlZGM4OWZhMDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmMTIyNTJhMzZjMTFjZTZiM2M0M2I3MDg2NTNjNDUxNjIzYjA4NjNiZWVmMzllMTY5ZTkxNmY2OWJhYjQ4OGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNmNTAzNjJiMTZhMjA3MmU3MTVjN2I5NGQ0YTVjYTA1ODBiMWNmYTIxMjQyZDVkNzhmOWFkNWNjZWUyMWQ0NTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a2e2f03c4df74a61b2c51200aabde2bb",
+      "statement": "When no server preview exists the component falls back to a browser RegExp, converting Python-style named groups to the JS syntax.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L111-L150",
+          "version": "repo-lines-v1:sha256:f484d2ccd9bef5d6074e2aa4bc582f8a45ba0cde080baa330632ba98cd588c46:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyODRjNTM1MWI2NjMwOTI1NDdjOWJmYzVkY2FlNTViZjI0NThmZmZjOGZkZWI3ZjZiZTU2NGJiMjBjYjRlMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkNTJkYTcwMWE5NzBlZDJlZjhkOTc1Nzk2MjRmNzBkYTJhZDYyYzNhY2Y5YmVjOWFkZGU0NzU2NDVlZDYxYWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3NjMzMjA5NjUwMmY5ZWU2MTcxOGRjZDBjMGI3M2MxMzU0YWNkZDY5YWQ0NWY4YTIzMWRhOGZjM2JmNWJlM2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmNWE5MzAyOGIyNmQ1MTY4NmMxODljZGY3ZDZiMGM0YzI4MDIzOWU1ZGI0Zjg0NGYxOGZkNjk3YTIyNjYxNjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1811594dcd61413b8d641b3847517caf",
+      "statement": "availableGroups caps at 12 groups and merges group numbers restored from saved mappings so an edited rule still shows its groups without a sample.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L149-L161",
+          "version": "repo-lines-v1:sha256:6e22ae820d58743e798ed0a1e0dbfe33c7de3b942834eda6006511c08517ca35:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkN2JjNjUyOWYxMDE1YTRiYzM3NjBkYWRhNzcxNTM4YTljNjhlYTMxNDRiNTBhNDBiM2RjMTU5ZTk3ZDhhNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU4YjU1MDcyY2U2N2JhYmNlODhkZjY4Mzc1MGZkNDExNDA0Njc4YjFjZTg5ZjBlNTM2NDA0MGM4ZDZhMDBjZjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjODZiNWZhYmQ2N2E2Y2NlZTNjZTViYWE3NjQ5YjFiM2Q0N2IzYmM2NWNkMDQzZjZlNTAxNmNmMmU0ZDZhNjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3490bde19c3348d1a82a1b62887832e9",
+      "statement": "AI Suggest posts the current sample_text to /api/v1/ai/regex and writes the returned regex into the form.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L259-L272",
+          "version": "repo-lines-v1:sha256:ea5091858d5718e801213c7103481d77db0bc324d80a68a63bcd3e97b26cc103:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyMjY1ZDYxZmIxNGIxMjQ4ZjE0OGI4OTBlZGIxZDcyMGNkYjdjYTEyMTE1OWQ2MDA1Y2E2NWNkYjBhNDRmMGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2NzQzZTJiNTc4ODUyMzQ0NmUzNDQyMTcwNDlmNWJmMThhMjRkNDdhMmFiNjhhMjliZjY4YjY3MTZjNDA5YTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3MzMyNjg3MjE0YzYzZjY1YWFlZjQwNjRjOGJlMzFhOWMyNzVkNmE4YjYyZDRlYTUwYzkzMTViYzcxNjNhZGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFjMzE3Njk2NDlhZDc4NTVkZTQzNDE1ZjFkNzIwOGVmMDNmNzg2NWJiMzg4MTIxYTk2MDI1MTdmNTZmNDlhMTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_722628f66cf640a491a1c18630222cca",
+      "statement": "Mappings support regex_group, fixed, custom_key, imap and firefly source types, with the firefly picker resolving an autocomplete collection by substring match on the field key.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L398-L445",
+          "version": "repo-lines-v1:sha256:91f077f6d13c693f0cea953bc40dfdcc1fa15789b535bd84a87347fba5af9307:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiYjQ4ZWM5MjE5NGUwNDMwMTBiZThlZjIxOGQ0OTE0NzRiOTNlODMwYTcxODg1OGMyNTBlZDkyZTA1ZjQ1NjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1YTMzNGI1ODU2ZjRlNzYwMzY2MmUxMzY5NGMyMWUyODlhZWQ4NTAwNDY3MTZiMjA3MmE1OTMyZjFlOGJlNWQifQ"
+        },
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L700-L740",
+          "version": "repo-lines-v1:sha256:962049f8af8302f8cca4538ec4536dcd1e4c4fd03c788d98b459fcdfe2e98ed4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5M2RmY2UzNDU5N2Y5YmIxYmE3MjU3ZGQ0OWJmNzllMzVkNmIxYWQyNTVhNWViMjVhYWRhM2YwYWFjNTNjNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYjZjMzkyNzQ5ZjRiZDNhMWQ5NzM1NDI0MWM2MjQxZmEzYzJlMWViODgyM2I0ZjgzYjQyN2I4NzEzMWU3ZWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1Mzk3MmI3MDE1OTM3YTczNTY1OTZiMjc3YjdhOWQ2NTFkNWFlYmMwZTVjZjU2OTRiNGIxYTUwMDA3ZGRlOWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3YmRmMTIzOTJmY2U5MDcxOGZlYmM1YzAyZmJkOTQ2ZTEyOTY0ZDQzZWYyMjNjYTdlNGIzZjBjNDQwMGMxYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fa9e8787b488461fb977f169b04e3ffa",
+      "statement": "submitRule requires an amount mapping that either references a positive regex group or carries a non-empty fixed value, and persists source_name, rule_name, regex, transaction_type, card_last4, conditions, condition_mode and the narrowed mappings array.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L456-L505",
+          "version": "repo-lines-v1:sha256:5a34f7cac1376d86096dfa5d6e43432de80fe58b266d39c070863a384019207b:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlNTI4NzZhZDIxNzkxMDAyYWVjZjdhYzk5MTZhNGI4NTRmZGJjODhmNDJmZjEzMTI5YmIzNmQ1NDlkMmFjYzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4NGE3YTczMzIyMzY2YzBjM2M2NTVmZjcwYjYyZDM5ODUxYjU5MjdhMTNjYzkzODJhZWY2MDQyNDIxNDZmOGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0YTdhOGQ1NmU4NTFjNTBkNzkyYmVmYTU0MDVjZGE1MDAwMDlkNzliYjNmYjgzMTVmMGVlMDI2MmM5ODhlZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0MzI3YWUxNzA5ZDQwMTE0NzZiNWU1ZjE0ODBlMGQ4YTI3YzQ3OWQ5ZjYwNWZjYTk5NWIxMzI3YmNlZjc1NDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b80e5e5eed4748d9b23a59e026f651c1",
+      "statement": "Condition rows fix the operator by field (Equals for from/to, Contains for subject/text, date comparisons for date) and only newly added conditions inherit condition_mode as their connector.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L376-L396",
+          "version": "repo-lines-v1:sha256:0b9c98fcc1231711e8c236c9383228b5c9827e70d1fe9d4362d2fbeb0bbac907:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2ZWY0NTRlMjEwNTE2MjAwNGIzNDRlNzRjZWJhYjkyNTY2MGEzNGFkODk2ODQ3YTY0M2NlOTNhM2QzNjZlNmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxZTY4MGY2ZjZhOGJkYWNhNzcyMjBjOTk3ZThlMGZiNzIxZTRhZThkNjAyMTRiZGE1MzdmMWVjNDNmNmMwMTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1ZWFkMmEzZWM5ODUyZTExNDhlYTUxMDkxNmFmNzIwNGI4ZTVmMDlkMmI5NmIxZGY3YmEwNmIzOGU4MWM1YmIifQ"
+        },
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L595-L630",
+          "version": "repo-lines-v1:sha256:2da411451cc952ae5e66848c113a9ef78f6a3275fe9fb81bd8d5f685e1557a39:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMjgwMzZiNTA5NWM3ZDFhZDkxOWZjMGQxMzgzMDA4MjhiODBmNjczMTg3MzUzMzJiZmYwMDAzMjQwNTM2ZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhNzY3ZDhmMmQ2YTgzN2M4Mzg0YjkxYjE0ZDk5ZTljMmIxMWMwMThmZGY5MzFkODE3YTdhZGQ4MzViZGE5YTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgzMjBmZWQ0ODRhNjJlZmIyNjdmYThjMWE4MmZiYjczZjJjODU3ZmE3YzVlZWY4ZTUzOTI5Yjk3MjA1NWQwOWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiODQ3ZDVjNDIxN2ZlMjYyOTkzOTc5ODIwZmM1NDFmMjkwYzdhNWY0NTZmMGVjODIyM2VhYTllYTcxNzVkYTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8b388d3e765e4deeaca82d738e521e97",
+      "statement": "The rules list view fetches GET /api/rules, deletes via DELETE /api/v1/rules/{id}, and refreshes every 30 seconds or when the shared store's refreshTrigger changes.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/ParsingRulesView.vue#L1-L35",
+          "version": "repo-lines-v1:sha256:9cdd5154b5cc40412b4843eaaccfdf33930f535d7286921d96a507b606126412:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzMGQwZWNmNjA2MDA1NGZjOWQ3MmE2MzZjNDQ5MTM4NzMzZGE0MWFiZmFlMDEzMWUzNTljNjNjNDUzMTk5YzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmMzU4ZjAzNzFhNmU3MzJjNDM0MDMzMjIzNTE5OWRjZDkxZWJjNDYyMzlhNWRkY2ZlNmY5YTYzZTZlYmVjZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkZjRkNTUxYjIyZTAxMWI4NTIyMWY2NzlmYThiYTdiZmViM2M1YTk3NTg5NmE0MjU0ZjI5M2NmNDc2OWRjMTYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-25T04:51:17.394Z"
+  }
+}

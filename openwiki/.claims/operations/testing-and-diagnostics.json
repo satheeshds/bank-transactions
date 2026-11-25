@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:b466e45175b7373ed730fea7baeddc5eaa1e6b7893c47d5ec7415f9740146122",
+  "claims": [
+    {
+      "id": "claim_23a33ffd2f594287955e3f0ea1a7f25e",
+      "statement": "tests/test_email_body.py is stdlib-only and pins the body contract, including a regression asserting that HTML content is present when the plain part is only the HTML-enabled-client boilerplate.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_email_body.py#L1-L50",
+          "version": "repo-lines-v1:sha256:51e84f3bb4e7209f68b25c2e1a6eb989fcfca7683a555f63e0abfba49d1e29a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0Y2NkNjM5NTdhZTNkNjE4Mzk5MmU4NjBlMjViYTE0MDVkNjBjOTNjYTdkZWI0ZTRiOTBmYjQ3MDkyOGJiNzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmOWJhMTdiNGVlNTlkNGYzYjhjMWZmZjAzOTY0MzUzYzhjZDlhNGNjMzM3N2IyYzAwMzFkYWE0NzUxNDgzMDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiNjk0NGEyMTA3MGY4NzhhMmJlYWZiMDc2OWVhZTZjY2Y1MmVjY2M3MDdiYzQ0YmQ2MDllOWVlMzRlNDgyMjUifQ"
+        },
+        {
+          "resource": "repo://tests/test_email_body.py#L92-L135",
+          "version": "repo-lines-v1:sha256:deffc2afc00266e0601314d565c46bf48387350dcfdf84f466b03d14627d4ee8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhZmQ1N2ZkMjM4NzVkNDIxYjNhNWJlYTlhMjMxNjE5YzEzODlmYzZlMzdhNDJiNGQyM2M0YWU3ODc3YzYxNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5MGY1MGIyYWUzMTA2Mjk0MjU4YjE4ODE0N2JmNzNkMGFjZjJhOGVjOWYxNGY2ZjEzMjEzMjQ5ZjE1NjE4NGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1YTAzNjc1ZjA1YTllYmYwZWQxM2FlNWIwNzIxZWVkNDZjZWZhZDlhNzNhMDViZGE0YmRkNzBkYTJmZjY0YjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2YTFkYWUzMTgxMGJkYTMzYTY4NTU1ZTQxNTQ4NGQxMGYxNTU4NDg0YzlhMzY2OTk4N2UxYTQ5NjE1ZDY3NDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c204504a286d4fc49a41d886095a4f7a",
+      "statement": "tests/test_parser.py no longer imports because it depends on modules removed by the app/ refactor (config, imap_client, main) and on a git-ignored sample-data directory.",
+      "evidence": [
+        {
+          "resource": "repo://.gitignore#L14-L22",
+          "version": "repo-lines-v1:sha256:800fbb233575ae53c42c0e7ee9dd75a6db8f3a4f04e52eb42f77cc9d50428e2b:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODI0YzcxN2NlYjlmYjg3ZGNiMjJmZmNiMTczMTkxNGUyODFlNDI4ODk5YjYwYmJlOWQ2OWE5NDM2Yjk3OGYzZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2ViMzAzZmVjNzdkZWMxYzI5NDllODEwODgxZWQ0NjA2MTczZTA1MjY4MTkxNWQ1YTc3YmMzNzY2MzM0N2VhZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODY2NTNjYTBkOWY3ZTgwZGNjZWQxNjcxNWMwODFjZjE0YWMyNTkwMjYyMmYzYzM1MGMyYmRjYTQ4MjdiYTI2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTQ2ZDYzMTgzNTQ2ZjQxNGU0ODg1ZDc0M2MyN2RkY2M2MDRiMGFiNzAwZmRjYzM5MWE3YjhiYmI0NGJkYjNhZCJ9"
+        },
+        {
+          "resource": "repo://tests/test_parser.py#L1-L34",
+          "version": "repo-lines-v1:sha256:870d51dd4a59d183b47eb7b76f16ff545fa81a3dcb3764fefa55416dec36429f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxZDkyNDgxY2ZkNWRiN2VjNTc0ZmJkM2RkZWYzNzM0YzYyOWVjNzc5ZTg0ZWFhNmFkOTJjMTI1OTM2MzIwYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhZTg0NmNjZjQ0YzljNDMxOWM3NGU0NzliM2VlNDgzYjNmNTRiOWYzOTVjZTkzYmJkNzRhOWVkNDNiODEwZTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3MWZiMTg4OGIzZDBiNWNkMWUxNTc1M2YzZGQ2NjE5Zjg2YzZiYTZhNjg4NzUwNjc5YThhYjE3ZDkxYTQzM2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_424e0ee7caaa49799ba2c06193987c82",
+      "statement": "MAIL2FIREFLY_LOG_LEVEL is read at import time and enables parser traces, IMAP query construction logs and worker progress logging.",
+      "evidence": [
+        {
+          "resource": "repo://app/main.py#L19-L47",
+          "version": "repo-lines-v1:sha256:67daf5525dd0b13b0e80523072071e61cd34b5920dc73fd3f16d635b05a0d3a7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4NDFiM2I5MGJiOGMzMDViM2RiZDhjYmRkOWMwMzZhNTBmNDA3MTQ4MzFkYjgwNDg3YzA4NGNhNDIyYjNlNzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNTdiNTdjOGI2MzU2MzRjNWQ5NTc5YzE3YjQ4YmQxMDBmYzQ4NzJjMTgxOWZmNDAyNzk2OGZhZWNlNzcwYzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmMGRkNzc4NWZjNmYyMmQ0N2U1MTJlMjExNGNiN2IyNTY3ZWNkYTNiYTA0NzAzNTcyOGVkOWE4ZjE1NzAzNDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExZDIyZjQwNjYxNGI2ZmZiYWM3YzRhMjljOWI2ZGY2MmY4MjMxMmZjOGQzNzkzOTM3ZjExY2Q3MWMzODIyZjkifQ"
+        },
+        {
+          "resource": "repo://app/services/imap.py#L63-L70",
+          "version": "repo-lines-v1:sha256:b5ba916e0deafa157359ebb96d72011e8df5106bc98568b736302dcd8400bf26:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTkwZjhmZGMyZDFlMzlhNDgzY2U4YmMwMjU5YWRlZjQ3MTViNWNhNGI0ZjQzYTY0N2IyM2ZlNzY3ZjI3Zjg3MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzIxMzdlMWJlMGIzZmU2ZGU2ZDY1MTFiNDc4OWZkNzkwMWQ3ZGYyMTMwMWFmNzczZWJmMzBlODA3OTQ1NWYwZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDJlNWNjMmJiYTNiMjlhMWFkN2Y2ZGI1OTdiNmE1NjExOTBjZTVhOGM3NzEwYTljZGY0MTgxOGZhN2RlNjZkNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmZjYjcxZDQzOTk2N2IwYmU1MzgyN2FkNGZjMWY2MzBiMzdhMjRkNGE1NjM0MDA5NGY4OTU2NmI0NDY5ZDVkNiJ9"
+        },
+        {
+          "resource": "repo://app/services/parser.py#L120-L135",
+          "version": "repo-lines-v1:sha256:264a38900fccb30624a8ec27954da534ca127f21b34137d6a8a90b430495e18d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0Y2IyNGRhYmI3MzA4YTk5NTUwNTNiYzdlZmJlOWRhYWRhNDAyNzBmNTE1NDI3ZDA4ZmUzMDhkMWI5YTMzZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2ZWM2ZDVkZTBjYWQwOWJiMGMxN2I1NmFkNmUwNGYxMzY4NmFhOThkMmIxNTUyMWI3MTM0NmUzMzIyZDZhNDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxNWMyNGMwODA1Y2JjZTdkNjdmOGVhNWVkYWJkNzdkMGVjY2ExYTZiNmExOTIxZTZkNTgzZjNkMDllMGM5N2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4NDU0NjJjY2JjOWNmYzJhZDk4OGRhNDAyMWI0ZDFjYTgyMmNhNTAyNWM5Y2U4NWZjNjAxNDRkNDU4MGI2YTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a24bdfe6e35a467f879596c9c7c4c847",
+      "statement": "GET /api/v1/logs returns the newest limit sync_logs rows in chronological order, while GET /api/v1/transactions applies the status filter in Python after limiting rows.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/logs.py#L1-L14",
+          "version": "repo-lines-v1:sha256:d70c57e13e50bc8f7392bbac2ea06dce0b7b16a12e0245f2afcd479c57542d18:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODRiZmRiMmRmMzgwYjY1NTdjYzdhNzFkMTY4OTE0MTViY2NhYTg3Njk5NDA2ZTIzNmY3NTJjNjQxNTM4OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5ZWViMDNiYWZmMmQ4MzEyYjUxMjFmY2MzODcyYjUwMTI5NzQ1NjQwOGVhNzRiM2ZmZGZlZTI5MTY3NzBmZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://app/api/v1/endpoints/transactions.py#L10-L26",
+          "version": "repo-lines-v1:sha256:bf7b297a6fe30b646012ba923cba25a46a85f72c1011a9afcec5a39e3ec4b2f9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkOTVhOTNjYTBiNTlhMDc5YzhmNjczYjdhZTJmNmI1ZWU1ZDJkMGU1ZjlmMzNhMmY4Mzg1MTE5NGMxMWY3MDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0OGFmZDA2NDBkY2U0MDczZTI3ZmRjYzM1OTAyZjM5NWE5MTIwYzdlNTBmMmQyYzI3YzUwM2NjZGYzNDg0NDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5MjhlN2E5N2U4NzQwMmRlNzlkZGUxNjgwYjllZWM1ZWRlN2RiNTI4ZDFiOWYzMjI5NzI2NDBiNGNhYjM4NmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://app/db/session.py#L310-L317",
+          "version": "repo-lines-v1:sha256:5992d35923ae601c1cb1fb56081b50eb0b3f4626c4a01302600de169a2139d79:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzZkNzUzMjhiM2I1NDBhNGQ3NzdhZTgzZTczM2ZlMjA0NTExY2U5ZWI4OTgwMTAxNzU0NjlkYWNiMTJkYThlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGQxZjBlMGYzMDkxYjYxNTYxNjU4MzQwZjc4MDBjYzQ1OGEzMTRlYWE3NWFhNmY3MmJhMWZiZDA3ZjA2YTRkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDNjNGYzNDBmNzc2ZWE2MTZkZjBhZGRlNzE0MmFkNTZkNzU4MWE2Yjk1ZWYyN2FmNjUzM2YzNjU2MDlhYjRiOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGIzYzc0NzEwOTA0YzA5NTc2NjU5YjdlMmQxYWQ1ZDdjZjI5ZDM2NjJkOGQyMGUyYjMyZTdhMWI4OWE0ZDFlYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4e6a5898b798490b964f4b7a7cd16a03",
+      "statement": "The Failed Parse detail view fetches /api/transactions/{id}, renders raw_email through an HTML sanitiser before v-html injection, and shows firefly_payload and error_message.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/FailedParseDetailView.vue#L105-L125",
+          "version": "repo-lines-v1:sha256:4a83da8b7877676a6342ee7b8e2539f29151d73cfac4b514beef21cd78ceb222:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyNzNkNmM4NGZmZjEyZWU2ZGFjNDk1YTRhZTcwNjkxNDU5MDhjNGI2Mjk2OGZhNjZkNzVkZDljMjdhNGIwZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwNTYzMDRiMGVlYWJkODhhZDRjYmRkNjBiZGY0NjY1MWFkODU3YWQxZTAxMDRlNDJhYmZmNmIwNDNhZThlYTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmNjY3N2UzYTQxZjExNWY0ZGI5ZjE0MGMzZjNlNGU2OGQ0NGFiZDc2ZDdiODljYzRiYzg4YTJlZTlhMDUwMTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1MjI4NDBlZDVlYzU4YTM2MmYyMGI3MWI4YWViNjc1ZDdlZmI5NzQzOWM5MGMzZjYxNTVhZmVjNjUyODU5NDMifQ"
+        },
+        {
+          "resource": "repo://frontend/src/views/FailedParseDetailView.vue#L11-L56",
+          "version": "repo-lines-v1:sha256:9b2ea11bd852d2502be441d81d373a36799069dd3324e0093a5c319241196e43:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxN2FhMmU0YjIwZmYwODgzMjFlNjMyNWM1NDAxNWJiNDdmZGQ4ODBmZjVmNmY1NzdkMTZiNmFiMmE2NTBlN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlZjM4MWIwZTJmYmMyZDg5MTllNzVmZTc0YzE2ZDU4YmYyMmFlYzg2M2FkMmJhOGJjOTA3MWY1NTI3NWMwZWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhNGZmNTExMmRmMTJmZWFkMWVjYjFjMWQwM2JiNmI1NWFhODNjYmQzNDkwMWU5ZTM1NTlkNGUzNDVlMDE4MmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZjMTExMzNmMzNjZTI4NGMyOTdkNmYwZWY2NDczZGExOWI2YmZkY2FkMjIwYzQyMzkwODllOTAxMDZiOTgwMzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_92f80ac0a06a4cd7bbefc4687ced7b48",
+      "statement": "Failed parses are logged with status error and leave the message untagged so it is retried on the next run; nothing in the codebase deduplicates imports and the Firefly payload sets error_if_duplicate_hash to false.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/firefly_builder.py#L140-L150",
+          "version": "repo-lines-v1:sha256:34c5e5be56c19eb855af0153591e51dc453eb66d23d40a7b41efcadb33889874:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMTBiNDg3YmU0YzM1MjNiOWRlOWY5YWRhNTNlNTg3YzQxYWUxYjVhM2FiM2VkODhkNzY4NmNmZDUwMWNlYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4NWI1YzY3NmUxNjdhOGNjMmIxM2NjMjQzNzA0MzBlOTcwZDBiOTc5ZjBmZjNiMGNkZmY3MzE1NzYwMGQxODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmYTM4Njk1ZGFiYTE4N2ZkMDJlNDhmZjllNzM0YTc2MTU0MzliMGFjMTAyNmM3MWQzOWQyZDdjZDJlMzU1YWIifQ"
+        },
+        {
+          "resource": "repo://app/services/service.py#L236-L300",
+          "version": "repo-lines-v1:sha256:08532c4bde912d744b61f24146c3288a15761c554a4421400533d8c3332162cf:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MDMyZTk2NGQwOTMyMzUxZTVkMTg1MjY5MjgxYjE3MWEzYTA5YjA4YjI4NmU2NjFlYTQ3MDMyM2M4MmViNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMWMzODRkOGFjYTM1MDg3NDY5Mzc3NDY4NzNlNTBkZmY0MDlmMjkyZDAwYWQ4OTEzMGRhODk3ZTBhYzdhMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczNTk5MzBiOTAxZDdlOWUyYjEyMmNhNTRjZGNmMjk2ZmFlYTQ4MjRkYzZiY2QxOWU2MDRhNWYxOTFjNDYyYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhNGVmYWYxOTkxMmQ5ZDFlMjExMTEzZjQzYTBhYmE3NGYxOTRkOGY1OTU0ZDI4MzFmMTRkYTg2MTJkNTEzNjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e99556a7b2964ab68bf135073050b22d",
+      "statement": "POST /api/v1/regex_preview returns positional groups, named groups and groupindex, or a compile_error/timeout error object.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/regex_preview.py#L14-L49",
+          "version": "repo-lines-v1:sha256:ec8c7a5361f54ab9e91d2023b76b214163589accce084b4c31654d4337143a03:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyZjIxYzYyMGJlMDljYjk2NTMzMWM4Yjk3NDA2NmVkYTY5NTFiYjAyOTE0YjgzZjlhMjRjNzdmMDJkODg3YTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhMTFjMDU2N2QwYTVmOWU5YjEzNWY2NWNkMjUzNzJkZmQ2Mjg3NzVmN2MxZWQyNTNmOGJhZDQyZGQyZDY2NjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyOGFjMDZjMjYwZWIxMjg5NWQwOWE1MzkxNmE0OTBmY2IxNGExNTA1NDlmODIyNDQ2ZWNlZmMzZmMxNjg5OGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_02a58425b25f44d89e8bf90973bd8102",
+      "statement": "The transaction log distinguishes a parser exception from a no-match outcome by error_message text, and stores raw_email as the parser-visible body text.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L236-L300",
+          "version": "repo-lines-v1:sha256:08532c4bde912d744b61f24146c3288a15761c554a4421400533d8c3332162cf:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MDMyZTk2NGQwOTMyMzUxZTVkMTg1MjY5MjgxYjE3MWEzYTA5YjA4YjI4NmU2NjFlYTQ3MDMyM2M4MmViNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMWMzODRkOGFjYTM1MDg3NDY5Mzc3NDY4NzNlNTBkZmY0MDlmMjkyZDAwYWQ4OTEzMGRhODk3ZTBhYzdhMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczNTk5MzBiOTAxZDdlOWUyYjEyMmNhNTRjZGNmMjk2ZmFlYTQ4MjRkYzZiY2QxOWU2MDRhNWYxOTFjNDYyYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhNGVmYWYxOTkxMmQ5ZDFlMjExMTEzZjQzYTBhYmE3NGYxOTRkOGY1OTU0ZDI4MzFmMTRkYTg2MTJkNTEzNjQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-25T04:51:17.394Z"
+  }
+}

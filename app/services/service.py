@@ -9,6 +9,7 @@ import traceback
 from app.services.firefly_builder import _build_firefly_transaction
 from app.services.firefly_client import FireflyClientError, build_firefly_client
 from app.services.imap import build_query, get_mailbox_client, is_message_processed, mark_message_processed
+from app.services.email_body import body_text_from_message
 from imap_tools import A, OR
 from app.models import SourceDefinition
 from app.services.parser import convert_to_timezone, extract_transaction_details
@@ -238,7 +239,9 @@ class TransactionImportService:
             self.error_count += 1
             from app.db.session import log_transaction
             rule_name = getattr(source, '_db_rule_name', None)
-            raw_email_body = getattr(message, 'html', None) or getattr(message, 'text', None) or None
+            # store the same text the parser matched against so the failure
+            # detail view shows a readable body instead of raw HTML
+            raw_email_body = body_text_from_message(message) or None
             log_transaction(
                 transaction_date=None,
                 merchant=None,
@@ -270,7 +273,7 @@ class TransactionImportService:
             self.error_count += 1
             from app.db.session import log_transaction
             rule_name = getattr(source, '_db_rule_name', None)
-            raw_email_body = getattr(message, 'html', None) or getattr(message, 'text', None) or None
+            raw_email_body = body_text_from_message(message) or None
             log_transaction(
                 transaction_date=None,
                 merchant=None,
@@ -303,7 +306,7 @@ class TransactionImportService:
         except Exception:
             tx_date = merchant = amount = currency = reference_no = rule_name = rule_id = None
 
-        raw_email_body = getattr(message, 'html', None) or getattr(message, 'text', None) or None
+        raw_email_body = body_text_from_message(message) or None
         payload_str = str(payload) if 'payload' in locals() else None
         log_transaction(
             transaction_date=tx_date,

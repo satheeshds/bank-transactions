@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:7c8d5ca796b93d4416450214016d207f856c4575cd39b54b07d1885f8629c063",
+  "claims": [
+    {
+      "id": "claim_e82dfe061fdf46aa9494aa4ed1638693",
+      "statement": "The Dockerfile is a two-stage build: node:18-alpine compiles the Vite frontend and python:3.12-slim installs requirements.txt, copies app/, cli/, web.py and config.toml, and runs uvicorn web:app on port 8000.",
+      "evidence": [
+        {
+          "resource": "repo://Dockerfile#L1-L47",
+          "version": "repo-lines-v1:sha256:582f6c43c10be39e3d41e532ca584d4ee8f5aa1df3c48b390793546e0ebacfe3:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhYWIyZDQ1MDZkNGE4YjMzZjBmOWM0ZGMxN2E1NDc4OGRhZjQ0MDZhMjE2YjVjNTAwZjVlYjVkNzA1NzYwN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzY2JmYTNlOWViMTIzNzkzNDExOTVmMmFjMWQ5MDhhMWNiNTU4ZjAyZDQ2MmQ2MWMxODYwZTQ0MWRlZWNhYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6004e44ca5b242c6907cd983f78151ce",
+      "statement": "The runtime image has no Node runtime and copies the frontend bundle from /src/static/dist, so UI changes require rebuilding the image.",
+      "evidence": [
+        {
+          "resource": "repo://Dockerfile#L14-L47",
+          "version": "repo-lines-v1:sha256:8372c773fa2136e63c35e90e53350f434eb1986c40aa654b006e18c7af9ea029:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlOTA0MGI2YzE2YjY1ZTM5NDI5ZTEzZmZmMTg5OWZhZmUzYzgwNDJlNzQ2MWNkNDdiYzlmY2RlYmUwZDUzNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzY2JmYTNlOWViMTIzNzkzNDExOTVmMmFjMWQ5MDhhMWNiNTU4ZjAyZDQ2MmQ2MWMxODYwZTQ0MWRlZWNhYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2OWI5NjcxOWJhYzc3MzljNDkyNTE1ZmZmMWFhNTNlYjMwNDU4MGRhY2M0MWNkNDI4ZjQ5OTU0ZDRmZjlkZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://frontend/vite.config.js#L5-L8",
+          "version": "repo-lines-v1:sha256:37eb4399282c7efe4880de6423657607936a6a0a5fbce7fff7eb36d18e7786b5:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWFlYzk3Y2ViNzU4OWIxODZmNGY2YTlkZWJmZThmNzQwMThiNTVkNzVkOTY2Mjg1ZjFiYTM1Mzc4ZTk4NGMwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmM3NTBlNmU4ZjZkY2UwZTkzMjI0YjZkN2U5OTJjODA2ZGY3YmIzZjVhMDM4Y2E5ZGEwNzkwMDMwZmQ2YTU1NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDUxNzZlNTI0ZTFkMTQwYmE2OGRmN2E0NzM1MzQ5YTE1MDNlNjJmZTY2ZmMzMTc1MjYyNjgxYzY2NTliNWI1ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjIxNmU4MjIzZDFkN2MyMzYwYTlkOWE3NDQ4NWQ2OTY0OWIwZjc4YTYxMDQyMjkxYmVkNDhhMjE3OWM4OTc4NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd4911443e624405804f763bb6645fa1",
+      "statement": "The web service in compose runs with DB_CONNECTION=mysql against the db service, exposes port 8000, and sets MAIL2FIREFLY_LOG_LEVEL=debug.",
+      "evidence": [
+        {
+          "resource": "repo://docker-compose.yml#L68-L86",
+          "version": "repo-lines-v1:sha256:27e46b12525d27328f8eb512f3d5b9e7954053bdcbe7d12d0ea997cfbac3ab50:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2YjE4MDJhM2EwNGVlYWZiZDNiOWUzYmQ0NDIzYmVhYzhlMDgxZGMzMWE1NzQ0YTk2NWFmMThlMDMwOTQ3NTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2ZDZmY2ZkNTQ1MWE1OWQwZTBjZWIyZDBiYmM3MTQxNjE3MmRjZmVlNWNkY2YxYjkwZDJkMmRjNjI0NGFkMzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxZTQxMDljODVmZTczODM3MWQ4YmE2NWVmNWMyM2QxZjA4MzFiZTJlZGE2YTAzYzllM2Q3NGY3NWVjOGZjZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0MjIzNDM3NTc3ZTRhZjc2MWE2YmYyZWNiOWFjMGNmOWRjMWY3YmU1ZmQ1MzhmOWIxOWQ2MzJkODhlNGMzMjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ad9db096ce2c41a6b53d1c235859c06a",
+      "statement": "docker/db-init/init.sh creates the Mail2Firefly database and user from WEB_DB_NAME, WEB_DB_USER and WEB_DB_PASSWORD, warning instead of failing when no mysql or mariadb client is present.",
+      "evidence": [
+        {
+          "resource": "repo://docker/db-init/init.sh#L1-L42",
+          "version": "repo-lines-v1:sha256:7c1af4ceb83d97ece37099ffbb793928f45533e84bcab4ea9dac0304fed9870b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4MDc2ZDNkMjhkMjFlMDIwMTJiMjBlYWY3ZGJmNzU0MDlhNjI3NzEzNDQzOTAyNWYyODJlMzY4ZTMzMDVhYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNmZjNGZmZjU5ZTI5YzJjMTBkMGI1NzY2NjVhMzc3NWI3NGRmYmZjNWYzY2YwMWNlODcxMmY4ZTI4NjNkYWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e77a43cafe4a4fa9b1abc7878442816d",
+      "statement": "The sync cron job in the scheduler fcrontab runs at minute 0 of hours 7 through 21 every third hour by POSTing to http://web:8000/api/v1/sync.",
+      "evidence": [
+        {
+          "resource": "repo://scheduler-worker/crontab#L52-L54",
+          "version": "repo-lines-v1:sha256:8aff98b8984a7943ddbf28504ac988ba0626b538fe45eea29132c7b17a955dfb:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWJiZmI3NDQ5N2ZlY2FiZDMyZTU5Y2FjZmRlMjEzOWNjMjRlMTc4YjQzN2IxZWU1MmNmMDA4MzA5NTU5YWUxNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjAxZDk5NWExODJlMzg3Y2U1MTMyNTM0ZDNmMTljZGY0ZTYyZTZlMmQ1ZmQ3YzBmNTBiMzAzY2QzZDUxNTViNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzVhNDRjZWY4NzkyMjgzMzJjYWFmZTJlMTc4MmRlZGJlMzQ2NzIzNmVlODU3NDA4ZWZjYzAyN2FlZmM1ZGNhOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e28a8fd36e694c619843d729fb1e9da8",
+      "statement": "The scheduler entrypoint only validates environment variables and the rclone remote before starting fcron; it does not read or rewrite cron entries, so the mounted crontab file is the schedule of record.",
+      "evidence": [
+        {
+          "resource": "repo://scheduler-worker/entrypoint.sh#L1-L58",
+          "version": "repo-lines-v1:sha256:06c9562b2711a0b579f362b711c2aee54dcf1ee2ea2601e5c05b5ec2df6646c8:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4MDc2ZDNkMjhkMjFlMDIwMTJiMjBlYWY3ZGJmNzU0MDlhNjI3NzEzNDQzOTAyNWYyODJlMzY4ZTMzMDVhYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlMTI0YjMwMTEzZGQyYWJiZTY4NGQ5MjJjMDk3YWE0OThjZTVhOGE1ZjIyNTVhOTQxZmYyYzFlMDVkNGUxOTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_868cd226ef3346bb8c8d625db449093b",
+      "statement": "backup.sh dumps both the Firefly database and the Mail2Firefly database in mysql mode, gzips them, uploads via rclone copy, and prunes remote backups older than BACKUP_AGE days.",
+      "evidence": [
+        {
+          "resource": "repo://scheduler-worker/backup.sh#L1-L65",
+          "version": "repo-lines-v1:sha256:b9245138e88367e11e232190a816dcdf43e82b875d703735f454ecc93962b78b:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4MDc2ZDNkMjhkMjFlMDIwMTJiMjBlYWY3ZGJmNzU0MDlhNjI3NzEzNDQzOTAyNWYyODJlMzY4ZTMzMDVhYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwYzU4MmQ5NDc3NzVmZTlhNzAyMmVhNWEwNTFkMjVhZmI0MGY5ODZlNjcxYmY3MjhhNzU2NGI3NGQ1ZDUxZTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aa96bb7a10d54ad984dc00227d38fc0a",
+      "statement": "The scheduler image is based on satheeshds/fcron-container and adds mariadb-client, postgresql-client, sqlite3, rclone, gzip and curl to support the backup job.",
+      "evidence": [
+        {
+          "resource": "repo://scheduler-worker/Dockerfile#L1-L14",
+          "version": "repo-lines-v1:sha256:11377b7ff7b8257edb0e18e957690096fa9f2a0215a83d0fc1313113e8422086:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2N2VmMmYxOTIxYTMzNWQ3YzhjZDQ2MjIxNDIyNDkyYTljZjczMmJiZDNiMmE2ZDc0NWEzNzg4NDNlMzEwMzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxNDU4MTEwMWY3MDhkODNlYzA1MTQ1NTdiZDc3NjQ1NmVhNmY1Mzc0ZGEwNDk1MzhmYjQ3MjE0OGI0Nzc2YzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4NjIzOTVkZWI0ZGUyOTNkZWEwNDRlOTA5ZGNmM2NjNmEwNzQyZWVmNDk0NzhhZGM0MWQ3NzM5NDc4MjA1OGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_41097df978af419d951a666209a6530d",
+      "statement": "compose also runs Firefly III core, MariaDB, and the Firefly AI categorizer alongside the Mail2Firefly web service, with the scheduler mounting scheduler-worker/crontab and an rclone config directory.",
+      "evidence": [
+        {
+          "resource": "repo://docker-compose.yml#L1-L67",
+          "version": "repo-lines-v1:sha256:2747aacf771132d5ae4f4e09d163a3217a52c3e9da23cef81a7d4c122dfce2a1:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhNzNmY2NkYzk5ZWE4MzU5NjdjN2RlZTdlZmJlZDFmM2NhODcyNjBkOTI5MzE4NTBmZGQ2NmRhOGNiMTJmMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3ODFhYzdhODZhMmVhMmZlMmVmZmMyMjcyOGFiNTM2NDRkMmQ4NDMwYmY2ODE4ZTFkZGE0NzJiNzNjN2U5NjYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-25T04:51:17.394Z"
+  }
+}

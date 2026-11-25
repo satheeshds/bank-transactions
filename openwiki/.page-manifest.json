@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "pages": {
+    "/openwiki/architecture/configuration-and-secrets.md": {
+      "pageVersion": "sha256:e6c9ad9cb43561f4b9f1c3a76aae98cd073e2070def39246e4f0a61b26b734d0",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    },
+    "/openwiki/architecture/system-overview.md": {
+      "pageVersion": "sha256:907398607e4880112b552fb52d1c37217900b62b5f8ac1f4b067068842f16b0b",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    },
+    "/openwiki/operations/deployment-and-scheduling.md": {
+      "pageVersion": "sha256:7c8d5ca796b93d4416450214016d207f856c4575cd39b54b07d1885f8629c063",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    },
+    "/openwiki/operations/testing-and-diagnostics.md": {
+      "pageVersion": "sha256:b466e45175b7373ed730fea7baeddc5eaa1e6b7893c47d5ec7415f9740146122",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    },
+    "/openwiki/quickstart.md": {
+      "pageVersion": "sha256:20c5539540cfcc064e6af7e22adae9b76c6429c7a343744001f0a5738c0f97ad",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    },
+    "/openwiki/systems/dashboard-api.md": {
+      "pageVersion": "sha256:26140f7797423e1c9d7a665b8e080e219bbb477e8892772cbeaa7ec7acb3db81",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    },
+    "/openwiki/systems/email-body-extraction.md": {
+      "pageVersion": "sha256:6ae013db84eb58b8975360bdb6271c9485b863ad037b72c5717814f14a22fbbd",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    },
+    "/openwiki/systems/email-ingestion.md": {
+      "pageVersion": "sha256:c3cb66c34bf46cf721fc1063364a1e0291b113f8d31e3e8b6a89dab7886cdbb4",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    },
+    "/openwiki/systems/firefly-posting.md": {
+      "pageVersion": "sha256:1c81e7e497e615b44b201963db597b4fa408812a0b8f52860e53fbaea1a37eac",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    },
+    "/openwiki/systems/persistence.md": {
+      "pageVersion": "sha256:b69ec624722394a09649d6c0fe51e050544aeb71f6a4f288935ab9f41febfa20",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    },
+    "/openwiki/systems/rule-authoring-workflow.md": {
+      "pageVersion": "sha256:af09f796fdc3c747527c18ac10997439c249fd2d495134f7b71456636216469c",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    },
+    "/openwiki/systems/transaction-parsing.md": {
+      "pageVersion": "sha256:e583424940832caaa1163ee7c307cd8e9bc5281c4acdcabae25659b3c94f32f5",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    },
+    "/openwiki/workflows/sync-pipeline.md": {
+      "pageVersion": "sha256:ab1132d09d3ebe873a166f9891c14efa1fbf2b317f17474b848f3b74a8ddb8ce",
+      "completedBy": "omp",
+      "completedRunId": "0b341071-dda4-425e-a224-52eba1feb969",
+      "gitHead": "901692944214588d472958909fefca67794c295d",
+      "sourceFingerprint": "sha256:941d0d873ed227a194f11d912166cc406bfcb44ff6252a6ae1119aa73f475f07"
+    }
+  }
+}

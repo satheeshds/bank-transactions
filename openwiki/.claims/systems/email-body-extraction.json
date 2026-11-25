@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6ae013db84eb58b8975360bdb6271c9485b863ad037b72c5717814f14a22fbbd",
+  "claims": [
+    {
+      "id": "claim_75c3bb91842f4b7f86f13a47a86323c8",
+      "statement": "body_text_from_message concatenates the coerced text part and the coerced HTML part with a newline, returning an empty string when the message has neither.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/email_body.py#L75-L94",
+          "version": "repo-lines-v1:sha256:d1773f1aef9cac49b8713c624a9575f97d30f44f3243b0fd181367b4f04efb64:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkMjllNzFmYWFkZDU2ZGZlMDgzOTZlMzdkMGEyOGI5ZmU3YTVkOGI4MjExOTI5YjI0NGYwMWI2N2EyNTczNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNDEwMTk1MzUxMDM3M2UxNzE0ZjFiYjEyNzFjNDJjNTRiZTc4N2FmOTkxMTBlN2YxYmM2MDEwODQwMmZiY2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg3MzdhYzU4MTUwMjM3N2M4YjE5OGEzNzY4ZjZiNmU1MjFmMmY2Y2YyYzVkNzVmZmE3NDI5OWU5NzFmZTk4OWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e6080f59fb454a3fa8b2002b4d413716",
+      "statement": "strip_html removes style and script blocks, strips tags, collapses all whitespace to single spaces, and returns an empty string for falsy input.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/email_body.py#L21-L31",
+          "version": "repo-lines-v1:sha256:eaa6d9590322540449c403e85bcf25b522dce4c4da33e2bcad453351eb2978c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2ZDRkMmZhMWRlMGNkYzQyODQ1NWQyMzNhZWNhNDI1MGY4MDU1ZjBhOGJhZjI2MTM3OWI2ZmI5ODNjMWJhNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjZGI0MjYzMTc1ZDkzMTk1NDY0Nzc1ZDViYzg4MTQ4MzIwZWU5MTkyZjdlZWE5MzNjYWRiZTQzYzhiNzRmMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBjMTNjYTE5ZmIwOTNjN2ViZDg1ODdiOTY0NzY0MzcxYjQ2N2UzMDI4OTNiMGJmZDU0OGMzY2U1OWM5MDk1OWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c7765af69dd641b38621986405f94bc6",
+      "statement": "coerce_text_content re-parses content that looks like a full MIME message, strips content containing html or body tags, and otherwise returns the input unchanged.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/email_body.py#L60-L73",
+          "version": "repo-lines-v1:sha256:cbb6aa33125fac44bf29d6951fc3ce3b1f5bdff04c15df5ae5af5a9bb3a89dc3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1ODdlZjBjOGZiYjJiNGY4MDZlYzE5ZThlOTVlNTFhMTY4NDk1MzllZGEyYWRmYjI1Y2UxZDE5ZGUxZmJjZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkZWYzNDM0MTQyMjhlNzhkNTNhNzFjNzc1ZjQxYTQxMDIyZWVlNzVlYTk2OWI1MGZjMDNlNDIzOTg2NzA0NzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjYmYxNmI2OTkyMDgzYzIxZmI1YmFmNGI4MDgyMzgyOGIyZTNlNzlkMmJlYTRkZjM2ZjUzM2Q5YTEzMDEyNzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4c18941e24f84452b23113ad90b019f9",
+      "statement": "The parser routes every source kind (bytes, path, string, message-like object) through the single helper _body_text_from_source, which calls body_text_from_message for objects exposing text or html.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/parser.py#L156-L166",
+          "version": "repo-lines-v1:sha256:43f6858bd68ab7f243f059e7b8315e7dd19b170a481533acf21fdc44da423060:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMWYzMjRjNzljY2FhY2ExYWU3NjM2OGRhNjJkZmMzZjk5OTc3MzUyNzU1OTAwYzgwNDEzNmQ2YzgyYTM1MjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5ZDVmODBjODdkMDc1M2IxMjliZDZiYjNkM2FkY2I0YTYyNjE1NjU1ZjVmMjQ1NWJlNjBiYzI2YmM1MDk4YjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjMzlhZTFlMDY3ZDA1OTU2NDQ0NzVlODM3NDQwNWVjNGM1MzlhMGQ0YTUzZGNmOGYxMDU3MGU2ZDQ2ZjNjZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkOTlmMjVhZWMyOGZhM2U4NTY0ZmY5M2JlNjkyODA2ZjhmZTQ5NmExYWVlMDVhMzQ5MTJlMmQyZDdlYjRhYjYifQ"
+        },
+        {
+          "resource": "repo://app/services/parser.py#L28-L57",
+          "version": "repo-lines-v1:sha256:f1510b280dfd514c6e78a7fc3b3b9ab0afe2b97d63e96705d2e89e5399cbabcd:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhMzhjY2E4NDIyMWFkNDczODUyZjg4ZmM0NTUxYjNkNjk3YjdmYjE2ZmY3NDhjZGEzZTI2NjRlM2IzN2VmN2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmOGM2MGIyZjhkYWE2ODRlYWM0OGI1YmQzNmIxYWEwNjMwOTM5MzJmMmQ5ZmVjYWFjYmFiYTVjNzBkNzFiODcifQ"
+        },
+        {
+          "resource": "repo://app/services/parser.py#L96-L99",
+          "version": "repo-lines-v1:sha256:802132ed0e695db2c0475573a2a6abdce286167a16b2d701f005047af357af2e:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTE4MjcwNmE2ZGVhZjVlMTJiOTFjYjg2N2FjZGNjNzUzNjZhYzJhNzg4MGE5ZDE4MGUxOTUzMDUxNjY1YmQxMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTdjMzFlMDAwY2U5ZWI0MWI2ZWNmYjQxZTUzMDAwNzIzNzJhYTU4OWExZTkzNjA4MDc0ZDBlZGJkZjRiODA5MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODk1YWE1OWM0ZDIyYWY5OGI0OGFlZjBmODM4MmQ1NjE4Y2Q2MDg0YmMxZGY2OTEyYTAwOTk1YWMzNzNkYjRmZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTk0YjgyODljZWU4MzVhMTRlZmM2YjY3N2JhOGE4Nzc0ODhkMzdjM2ExMWIzZDlkNWU1YWZmOTFkZTRjZTM3MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_815dc48322644291bc323a91a2780618",
+      "statement": "The wizard assigns data.sample_text verbatim and only falls back to the browser stripHtml helper when the response carries sample_html alone.",
+      "evidence": [
+        {
+          "resource": "repo://frontend/src/views/AddParsingRuleView.vue#L160-L200",
+          "version": "repo-lines-v1:sha256:83286d00084b71cab81c40a20c422596a65d5acd6677bf03d87f1e9987d09910:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0NTI2YWZkNzhlMmJiZGM0N2QwODZmNjliOTdhZjYwZTQ5MjAzZDNjNDlhMTAwMDNmNTQxNzEyODlmOTYxZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1YjgwNmZmM2Q1MjQxYmU3YjRmMjc4ZWQ2ZDM2NTcxZGMwNWE4NjQwODkzOGQ5NDlhOTkwMjc4NTNjZTAwOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5Yjk2YWM4MDRlY2IzMjFkZGI0ZTVkZjI1MzMyOGJlMWUzMTFkODRjMWY3NTY4NmRlOTFjMjhhYzUwMGEyNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4NWI1Njc2NDVkNTQ3OWU1NjkxNGE3OGMwYWVlMWUxZjg4NjRkNDVjNmMwMTdjNzA3ODU1MzJmMzVjMTkwMDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c89d8d22a2284be2af0b9933c9c876a0",
+      "statement": "The worker stores raw_email as body_text_from_message(message) at the parser-exception, no-match and success logging sites.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/service.py#L236-L260",
+          "version": "repo-lines-v1:sha256:798f7fdbcca599d048fec20a14eca7364ea46d5059cd6cfd1d322a06c56b2aa9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MDMyZTk2NGQwOTMyMzUxZTVkMTg1MjY5MjgxYjE3MWEzYTA5YjA4YjI4NmU2NjFlYTQ3MDMyM2M4MmViNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhOTY2Mzc1MDYxNjgyN2QwMzI1ZGVhZjhlYzM2NzIwZWQ2MmIwNTg2MzUxZDlkOTExNjQ1MWQxY2E3M2Q4MTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczNTk5MzBiOTAxZDdlOWUyYjEyMmNhNTRjZGNmMjk2ZmFlYTQ4MjRkYzZiY2QxOWU2MDRhNWYxOTFjNDYyYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExMmRhNjRiMzE0NjFjNWIxOTRiYTc2ZTQzNDQ2ZjhmMDUxZjA5Y2RhMjVlNjliMTEyMGQxNjE3ZDRjY2RlZmUifQ"
+        },
+        {
+          "resource": "repo://app/services/service.py#L303-L320",
+          "version": "repo-lines-v1:sha256:660353249c5b1e544de9b3362950cb46a50125257ed48e22f83a5958382a6392:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwNjFjZDNiYjc3ZTg5NTEwMTFmNDU3MzJkMGU1MmU5MzEwNDA3YjdlYzdjOWZlZTNiNmJiOTNjNjdmNWE2NTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlMjI2MDQ4ZDFkOGM5YmM2Y2FkOTUwOTg3OTRjNjE0NDBjNTYwMTIwNTNkMmY3M2EwMWM0NjdhMGNiZWNiODkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmZWU3ODAzMWJmNGQxNDhlNzdkMDAyY2MzYzQ1YWNhODk2NWVmNTMzYWY1Y2JjY2JhYTA1ZDc1YjhiZTQxYWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5ZDAwNDYyNDkxMDA5Zjc1YWU0OTkyMzVlMzliODIyOTgxMDljMzg5YTg2ZmExNjdlOGI0ODQxNGVmMTZlMzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_51167e6363804a43bcc979ca42dcff53",
+      "statement": "body_parts_from_message reports which MIME parts contributed, and the sample endpoint returns that list as sample_parts.",
+      "evidence": [
+        {
+          "resource": "repo://app/api/v1/endpoints/mailboxes.py#L20-L41",
+          "version": "repo-lines-v1:sha256:a0628fd6cf877195d83135a339bb975b4267664469b5b3ea7304fca1db7d436d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyNjExYzBjNDgwYTAxYTViMzEwNjA0MzlmYjUxYzA4YTY3YWZjMzMyNWUwMTQwMGI3NzQ5N2YxOTJmODE0YmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyMDA5N2U0YWE1MDA2OGJhMTU3ZjlhMjczOWZhZDg2OTk1ZTFlMGNkY2NkYWRjNTg5N2MyMDM0Yzc0ZDNlZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyMjc4ZDM3YjliYzA2Yzg2ZTQ4ZTU2MDZkZDY3Y2Q4OWJkYzI0ZjExNzVlMzM5ZWUzMDNhYmFhOThmZDY5MWYifQ"
+        },
+        {
+          "resource": "repo://app/services/email_body.py#L96-L103",
+          "version": "repo-lines-v1:sha256:8f6567ae07fa352efe9e872ef45647f955a3280c583d37f54f84bab1129006cf:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWMxOGNhYzcxYjcxMWM1NzFkOWZmMTIxOWU5NTNiZTgzODJlYTJjNzAwYTFkODBlZWU5YWM5YWM0ODJiNzJhYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzMwYzZmMjk1MjFjZWYwNDFjZTA3OTdiMWM0YjRkMjU0ZmJiMjBiNTI1MTNhYTFiZjEwODA0MGFlYzMxNTQ3OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTBlZDhjNjMxOTRkNmU5MjdmNTZkZTk3ZWQwZThjM2UzOGEzZWQwODQ0YzVlMDc2NjFkZjAwNDU0NTBjYzIzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0b737670af944e838d7487a5675a70ab",
+      "statement": "The email body module imports only stdlib modules (email, html, re) so it can be used by endpoints, parser and worker without pulling FastAPI or imap_tools into the graph.",
+      "evidence": [
+        {
+          "resource": "repo://app/services/email_body.py#L1-L19",
+          "version": "repo-lines-v1:sha256:d09194904bf4f97be665cdcf328550c7a68da1505da06a120fb049118cccefc7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmODE4YWViYzQxODU1YWM4MmI1MDhkY2EyNmE1ZWRiNGFjNjhhZDhlNjhmNDljNzU2YjU1MWRhYTI1M2NjM2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1N2U3N2YxNmU0YWFmMjFhNjgzYjE1MGIyZWVkODhmM2FiMThlNzk1NTNhNjMwMTA1MDdlYjdjNGQ2YWZiNDkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_05ea8dbbb99f4b69830f00638d6d09fd",
+      "statement": "tests/test_email_body.py asserts the boilerplate-plus-HTML regression and equality between the fake message body and the equivalent raw MIME parse.",
+      "evidence": [
+        {
+          "resource": "repo://tests/test_email_body.py#L92-L127",
+          "version": "repo-lines-v1:sha256:8b6b9a666f50b4c18b4a1c3da608921241e21104df5b2eb44af550f9967a2d19:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhZmQ1N2ZkMjM4NzVkNDIxYjNhNWJlYTlhMjMxNjE5YzEzODlmYzZlMzdhNDJiNGQyM2M0YWU3ODc3YzYxNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1YTAzNjc1ZjA1YTllYmYwZWQxM2FlNWIwNzIxZWVkNDZjZWZhZDlhNzNhMDViZGE0YmRkNzBkYTJmZjY0YjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4NzY4MTU5MzljMmM0NDFmNmE1ODIxNzE2ZWM1ZTgzYzM0Zjc0NmU0NDk5ODMwZjZhMDk5ODVmNDk0M2EwZjIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-25T04:51:17.394Z"
+  }
+}
